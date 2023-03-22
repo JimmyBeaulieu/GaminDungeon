@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Music;
+import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
 import com.gamindungeon.gametest.gamepanel.GameOver;
 import com.gamindungeon.gametest.gamepanel.Performance;
@@ -46,6 +47,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private GameDisplay gameDisplay;
     private Music music;
     TileManager tileManager;
+    Score score;
     boolean mapLoaded = false;
 
 
@@ -67,6 +69,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //initialize player
         //GameObject(Context, X pos, Y pos, Sprite)
         SpriteSheet spriteSheet = new SpriteSheet(context);
+        score = new Score(context);
 
 
 
@@ -77,9 +80,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //enemy = new Enemy(context, gridPos(6), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player);
 
         //using bitmap
-        //enemyList.add(new Enemy(getContext(), gridPos(1), gridPos(2),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
-        //enemyList.add(new Enemy(getContext(), gridPos(2), gridPos(1),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
-        enemyList.add(new Enemy(getContext(), gridPos(0), gridPos(1), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+
+        //------------------------------------------col---------row------------------------------------------------------------------------image
+        enemyList.add(new Enemy(getContext(), gridPos(5), gridPos(2), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(10), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(4), gridPos(10), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(8), gridPos(10), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(2), gridPos(16), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(14), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
 
 
         //using sprite
@@ -98,6 +106,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         gameDisplay = new GameDisplay(displayMetrics.widthPixels-176, displayMetrics.heightPixels-176, player);
 
         tileManager = new TileManager(context, gameDisplay, player);
+        player.setTileManager(tileManager);
+
+        for(Enemy enemy : enemyList){
+            enemy.setTileManager(tileManager);
+        }
+
         music = new Music();
         Random rand = new Random();
         music.play(context, rand.nextInt(3));
@@ -109,7 +123,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
     private double gridPos(int i) {
-        return (i-1)*176;
+        return (i)*176;
     }
 
     float startX = 0;
@@ -187,6 +201,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 */
                 //enemy.move();
 
+
+
                 if(!checkCollision()){
                     player.move(move);
                     for(Enemy enemy:enemyList){
@@ -256,14 +272,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             gameOver.draw(canvas);
         }
         drawGrid(canvas);
+        score.draw(canvas);
+
 
         //******************************************************************************************
         // TO BE DEACTIVATED FOR FULL RELEASE
 
-        drawDebug(canvas);
+        //drawDebug(canvas);
 
         //******************************************************************************************
 
+        //
+        //COLLISION CHECKER#########################################################################START
+        //
         if(checkCollision()){
 
             //brings the player back to their old position so that the two objects colliding don't stay on top of each other
@@ -285,6 +306,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             for(int i =0; i< enemyList.size();i++){
                 if(enemyList.get(i).getHealth() <= 0){
                     enemyList.remove(enemyList.get(i));
+                    score.setExperience(score.getExperience() + 1);
                 }
             }
 
@@ -302,6 +324,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
             }
         }
+        //
+        //COLLISION CHECKER#########################################################################END
+        //
 
 
     }
@@ -385,6 +410,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     }
     public void update() {
+
+
 
         //Stop updating the game if the player is dead
 

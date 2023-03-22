@@ -20,7 +20,7 @@ public class TileManager{
 
     Tile[] tiles;
     Context context;
-    int mapTileNum[][];
+    public int mapTileNum[][];
     GameDisplay gameDisplay;
     Player player;
     public TileManager(Context context, GameDisplay gameDisplay, Player player){
@@ -32,11 +32,14 @@ public class TileManager{
         getTileImage();
         loadMap();
     }
+    public Tile getTiles(int index){
+        return tiles[index];
+    }
 
     public void getTileImage(){
 
         try{
-            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.rock), true);
+            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.rock), false);
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.water), true);
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.wood), false);
         }

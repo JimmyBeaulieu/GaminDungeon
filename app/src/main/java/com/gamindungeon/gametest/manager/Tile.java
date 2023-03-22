@@ -14,6 +14,9 @@ public class Tile {
     public boolean getCollision(){
         return collision;
     }
+    public void setCollision(boolean isCollidiable){
+        collision = isCollidiable;
+    }
     public Bitmap getBitmap(){
         return bitmap;
     }
