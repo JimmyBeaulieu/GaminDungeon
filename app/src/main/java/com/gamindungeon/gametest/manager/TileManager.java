@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.object.GameObject;
+import com.gamindungeon.gametest.object.Player;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -21,12 +22,13 @@ public class TileManager{
     Context context;
     int mapTileNum[][];
     GameDisplay gameDisplay;
-    public TileManager(Context context, GameDisplay gameDisplay){
+    Player player;
+    public TileManager(Context context, GameDisplay gameDisplay, Player player){
         this.context = context;
         tiles = new Tile[3];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
-
+        this.player = player;
         getTileImage();
         loadMap();
     }
@@ -85,11 +87,22 @@ public class TileManager{
 
             int tileNum = mapTileNum[col][row];
 
-            canvas.drawBitmap(Bitmap.createScaledBitmap(
-                            tiles[tileNum].getBitmap(), 176, 176, false),
+            int worldX = col * 176;
+            int worldY = row * 176;
+
+            if( worldX + 176 > player.getPositionX() - gameDisplay.getDisplayCenterX() &&
+                worldX - 176 < player.getPositionX() + gameDisplay.getDisplayCenterX()&&
+                worldY + 176 > player.getPositionY() - gameDisplay.getDisplayCenterY()&&
+                worldY - 176 < player.getPositionY() + gameDisplay.getDisplayCenterY()){
+
+                canvas.drawBitmap(Bitmap.createScaledBitmap(
+                        tiles[tileNum].getBitmap(), 176, 176, false),
                     (float) gameDisplay.gameToDisplayCoordinatesX(x) + 20,
-                    (float) gameDisplay.gameToDisplayCoordinatesY(y),
-                    null);
+                        (float) gameDisplay.gameToDisplayCoordinatesY(y),
+                        null);
+            }
+
+
             col++;
             x+= 176;
             if(col == gameDisplay.getMaxScreenColumns()){

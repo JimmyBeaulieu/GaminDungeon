@@ -97,7 +97,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         gameDisplay = new GameDisplay(displayMetrics.widthPixels-176, displayMetrics.heightPixels-176, player);
 
-        tileManager = new TileManager(context, gameDisplay);
+        tileManager = new TileManager(context, gameDisplay, player);
         music = new Music();
         Random rand = new Random();
         music.play(context, rand.nextInt(3));

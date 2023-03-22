@@ -5,6 +5,15 @@ import com.gamindungeon.gametest.object.GameObject;
 public class GameDisplay {
     private double gameToDisplayCoordinateOffsetX;
     private double gameToDisplayCoordinateOffsetY;
+
+    public double getDisplayCenterX() {
+        return displayCenterX;
+    }
+
+    public double getDisplayCenterY() {
+        return displayCenterY;
+    }
+
     private double displayCenterX;
     private double displayCenterY;
     private double gameCenterX;
@@ -12,6 +21,8 @@ public class GameDisplay {
     private GameObject centerObject;
     private final int maxScreenColumns = 50;
     private final int maxScreenRows = 50;
+    private final int worldWidth = 176 * maxScreenColumns;
+    private final int worldHeight = 176 * maxScreenRows;
 
     public GameDisplay(int widthPixels, int heightPixels, GameObject centerObject){
         this.centerObject = centerObject;
@@ -40,5 +51,11 @@ public class GameDisplay {
     }
     public int getMaxScreenRows(){
         return  maxScreenRows;
+    }
+    public int getWorldWidth(){
+        return worldWidth;
+    }
+    public int getWorldHeight(){
+        return worldHeight;
     }
 }
