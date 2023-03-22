@@ -25,7 +25,7 @@ public class TileManager{
     Player player;
     public TileManager(Context context, GameDisplay gameDisplay, Player player){
         this.context = context;
-        tiles = new Tile[3];
+        tiles = new Tile[10];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
@@ -39,9 +39,11 @@ public class TileManager{
     public void getTileImage(){
 
         try{
-            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.rock), true);
-            tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.water), true);
-            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.wood), false);
+            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.a_rock), true, "wall");
+            tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.b_water), true, "wall");
+            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.c_wood), false, "floor");
+            tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.d_coin), false, "coin");
+            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleport");
         }
         catch(Exception e){
             e.printStackTrace();
