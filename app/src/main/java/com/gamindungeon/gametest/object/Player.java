@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.graphics.Sprite;
+import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.TileManager;
 
 public class Player extends GameObject{
@@ -22,13 +23,14 @@ public class Player extends GameObject{
 
     private String lastKnownMove = "";
     TileManager tm;
+    Music mp;
 
-    public Player(Context context, Bitmap bitMapSprite){
+    public Player(Context context, Bitmap bitMapSprite, Music music){
         super(context, 176 * 3, 176 * 4);
         health = 10;
         maxHealth = health;
         strength = 3;
-
+        mp=music;
 
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
         oldPositionX = 0;
@@ -61,15 +63,6 @@ public class Player extends GameObject{
     }
      */
     public void draw(Canvas canvas, GameDisplay gameDisplay) {
-
-        /*
-        sprite.draw(
-                canvas,
-                (int)gameDisplay.gameToDisplayCoordinatesX(getPositionX()) - sprite.getWidth()/2,
-                (int)gameDisplay.gameToDisplayCoordinatesY(getPositionY()) - sprite.getHeight()/2
-        );
-*/
-        //collision.set();
 
         canvas.drawBitmap(
                 bitMapSprite,
@@ -106,57 +99,116 @@ public class Player extends GameObject{
         oldPositionX = positionX;
         oldPositionY = positionY;
 
-//column
-        int gridXPos = ((int)positionX / 176);
 //row
+        int gridXPos = ((int)positionX / 176);
+//column
         int gridYPos = (((int)positionY / 176));
 
-        System.out.println("################################################################ up tile [" + gridYPos + "] [" + gridXPos + "]");
+        System.out.println("################################################################ up tile y[" + gridYPos + "] x[" + gridXPos + "]");
+        int x =tm.mapTileNum[gridXPos][gridYPos];
+        System.out.println("################################################################ up tile type =" + tm.getTiles(x).getType());
 
         int tileUp = tm.mapTileNum[gridXPos][gridYPos-1];
         int tileDown = tm.mapTileNum[gridXPos][gridYPos+1];
         int tileLeft = tm.mapTileNum[gridXPos-1][gridYPos];
         int tileRight = tm.mapTileNum[gridXPos+1][gridYPos];
 
+        int currentTile = tm.mapTileNum[gridXPos][gridYPos];
 
-        if(direction.equals("up")){
-            if(!tm.getTiles(tileUp).getCollision()) {
-                setPositionY(getPositionY() - 176);
-                if (getPositionY() < 0) {
-                    setPositionY(0);
+        switch(direction) {
+            case "up":
+
+                if (!tm.getTiles(tileUp).getCollision()) {
+                    setPositionY(getPositionY() - 176);
+
+                    if (getPositionY() < 0) {
+                        setPositionY(0);
+                    }
                 }
-            }
-        }
-        if(direction.equals("down")){
-            if(!tm.getTiles(tileDown).getCollision()) {
-                setPositionY(getPositionY() + 176);
-                if (getPositionY() > 49 * 176) {
-                    setPositionY(49 * 176);
+                break;
+            case "down":
+
+                if (!tm.getTiles(tileDown).getCollision()) {
+
+                    setPositionY(getPositionY() + 176);
+
+                    currentTile = tm.mapTileNum[gridXPos][gridYPos];
+                    if (tm.getTiles(currentTile).getType().equals("teleport")) {
+                        System.out.println("On a teleporter!");
+                        if (gridYPos == 17 && gridXPos == 12) {
+                            setPositionX(39 * 176);
+                            setPositionY(24 * 176);
+                        }
+                    }
+
+                    if (getPositionY() > 49 * 176) {
+                        setPositionY(49 * 176);
+                    }
                 }
-            }
-        }
-        if(direction.equals("right")){
-            if(!tm.getTiles(tileRight).getCollision()) {
-                setPositionX(getPositionX() + 176);
-                if (getPositionX() > 49 * 176) {
-                    setPositionX((49 * 176));
+                break;
+            case "left":
+
+                if (!tm.getTiles(tileLeft).getCollision()) {
+
+                    setPositionX(getOldPositionX() - 176);
+                    if (getPositionX() < 0) {
+                        setPositionX(0);
+                    }
+                    currentTile = tm.mapTileNum[gridXPos][gridYPos];
+                    if (tm.getTiles(currentTile).getType().equals("teleport")) {
+                        System.out.println("On a teleporter!");
+                        if (gridYPos == 17 && gridXPos == 12) {
+                            setPositionX(39 * 176);
+                            setPositionY(24 * 176);
+                        }
+                    }
                 }
-            }
-        }
-        if(direction.equals("left")){
-            if(!tm.getTiles(tileLeft).getCollision()) {
-                setPositionX(getOldPositionX() - 176);
-                if (getPositionX() < 0) {
-                    setPositionX(0);
+
+                    break;
+            case "right":
+
+                        if (!tm.getTiles(tileRight).getCollision()) {
+
+                            setPositionX(getPositionX() + 176);
+
+                            currentTile = tm.mapTileNum[gridXPos][gridYPos];
+                            if (tm.getTiles(currentTile).getType().equals("teleport")) {
+                                System.out.println("On a teleporter!");
+                                if (gridYPos == 17 && gridXPos == 12) {
+                                    setPositionX(39 * 176);
+                                    setPositionY(24 * 176);
+                                }
+                            }
+
+                            if (getPositionX() > 49 * 176) {
+                                setPositionX((49 * 176));
+                            }
+                        }
+
+                        break;
                 }
-            }
-        }
-        /*
-        tileUp = tm.mapTileNum[gridXPos][gridYPos];
-        tileDown = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
-        tileLeft = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
-        tileRight = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
-        */
+        //row
+                gridXPos = ((int)positionX / 176);
+        //column
+                gridYPos = (((int)positionY / 176));
+                currentTile = tm.mapTileNum[gridXPos][gridYPos];
+                if (tm.getTiles(currentTile).getType().equals("teleport")) {
+                    System.out.println("On a teleporter!");
+
+                    if (gridYPos == 17 && gridXPos == 12) {
+                        setPositionX(39 * 176);
+                        setPositionY(24 * 176);
+                        mp.stop();
+                        mp.play(context, 0);
+                    }
+                }
+
+                System.out.println("Is it a teleport? " + tm.getTiles(currentTile).getType().equals("teleport"));
+
+                    if(tm.getTiles(currentTile).getType().equals("teleport")) {
+                        System.out.println("On a teleporter!");
+                    }
+
         lastKnownMove = direction;
     }
 

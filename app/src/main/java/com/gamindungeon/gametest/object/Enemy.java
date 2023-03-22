@@ -23,15 +23,16 @@ public class Enemy extends GameObject{
     double oldPosX = 0;
     double oldPosY = 0;
     TileManager tm;
+    boolean isFocused;
+    boolean isHoming;
+    int adhdLevel = 0;
 
-//without sprite
     public Enemy(Context context, double positionX, double positionY, Bitmap bitMapSprite, Player player, TileManager tm) {
         super(context, positionX, positionY);
         health = 7;
         maxHealth = health;
         strength = 2;
         this.player = player;
-        //this.sprite = sprite;
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
         hpBar = new HealthBar(this);
         this.tm = tm;
@@ -45,30 +46,10 @@ public class Enemy extends GameObject{
         int rectBottom = rectTop + rectHeight;
 
         collision = new Rect(rectLeft, rectTop, rectRight, rectBottom);
-        Log.d("ENEMY_COLLISION_DETECTION", "Collision created!");
     }
-
-
-
-
-
-    //with sprite
-    /*
-        public Enemy(Context context, double positionX, double positionY, Player player, Sprite sprite) {
-        super(context, positionX, positionY);
-        health = 7;
-        maxHealth = health;
-        strength = 2;
-        this.player = player;
-        this.sprite = sprite;
-        hpBar = new HealthBar(this);
-    }
-     */
 
     @Override
     public void draw(Canvas canvas, GameDisplay gameDisplay) {
-
-        //sprite.draw(canvas, (int)gameDisplay.gameToDisplayCoordinatesX(getPositionX()), (int)gameDisplay.gameToDisplayCoordinatesY(getPositionY()));
 
         canvas.drawBitmap(
                 bitMapSprite,
@@ -135,28 +116,6 @@ public class Enemy extends GameObject{
                 }
             }
         }
-
-/*
-        if(direction.equals("up")){
-
-            positionY -= 176;
-        }
-        if(direction.equals("down")){
-            positionY += 176;
-        }
-        if(direction.equals("right")){
-            positionX += 176;
-        }
-        if(direction.equals("left")){
-            positionX -= 176;
-        }
-        if(health < maxHealth){
-            health++;
-        }
-        if(health > maxHealth){
-            health = maxHealth;
-        }
-    */
     }
 
 
@@ -164,10 +123,6 @@ public class Enemy extends GameObject{
     public void update() {
         //move();
     }
-
-    boolean isFocused;
-    boolean isHoming;
-    int adhdLevel = 0;
 
     //decides if the enemy is randomly roaming or going for the player
     public void statusBranch() {
@@ -303,5 +258,11 @@ public class Enemy extends GameObject{
 
     public void setTileManager(TileManager tileManager) {
         tm = tileManager;
+    }
+    public int getAdhdLevel(){
+        return  adhdLevel;
+    }
+    public boolean isFocused(){
+        return  isFocused;
     }
 }

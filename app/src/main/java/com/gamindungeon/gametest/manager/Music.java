@@ -6,14 +6,17 @@ import android.media.MediaPlayer;
 import com.gamindungeon.gametest.R;
 
 public class Music {
+    private final Context context;
     MediaPlayer mp;
+    int song;
 
-    public Music(){
+    public Music(Context context){
+
         mp = new MediaPlayer();
+        this.context = context;
     }
 
     public void play(Context context, int songNumber){
-
 
         switch(songNumber){
             case 0:
@@ -29,8 +32,16 @@ public class Music {
         if (!mp.isPlaying())
         {
             mp.start();
+            song = songNumber;
             mp.setLooping(true);
         }
 
+    }
+
+    public void pause(){
+        mp.pause();
+    }
+    public void stop(){
+        mp.stop();
     }
 }
