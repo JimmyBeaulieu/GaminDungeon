@@ -82,12 +82,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //using bitmap
 
         //------------------------------------------col---------row------------------------------------------------------------------------image
-        enemyList.add(new Enemy(getContext(), gridPos(5), gridPos(2), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
-        enemyList.add(new Enemy(getContext(), gridPos(10), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
-        enemyList.add(new Enemy(getContext(), gridPos(4), gridPos(10), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
-        enemyList.add(new Enemy(getContext(), gridPos(8), gridPos(10), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
-        enemyList.add(new Enemy(getContext(), gridPos(2), gridPos(16), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
-        enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(14), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(9), gridPos(4), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(17), gridPos(5), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(23), gridPos(11), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(11), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
+        enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(18), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
 
 
         //using sprite
@@ -114,7 +114,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         music = new Music();
         Random rand = new Random();
-        music.play(context, rand.nextInt(3));
+        music.play(context, 2);
 
         setFocusable(true);
 

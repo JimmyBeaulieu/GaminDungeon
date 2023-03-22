@@ -24,7 +24,7 @@ public class Player extends GameObject{
     TileManager tm;
 
     public Player(Context context, Bitmap bitMapSprite){
-        super(context, 176, 176);
+        super(context, 176 * 3, 176 * 4);
         health = 10;
         maxHealth = health;
         strength = 3;

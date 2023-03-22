@@ -203,7 +203,7 @@ public class Enemy extends GameObject{
             adhdLevel--;
         }
         Random rand = new Random();
-        switch (rand.nextInt(4)) {
+        switch (rand.nextInt(5 )) {
             case 0:
                 return;
             case 1:
