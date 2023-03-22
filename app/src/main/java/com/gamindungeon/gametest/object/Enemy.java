@@ -19,6 +19,8 @@ public class Enemy extends GameObject{
     private HealthBar hpBar;
     private Sprite sprite;
     public boolean inCombat;
+    double oldPosX = 0;
+    double oldPosY = 0;
 
 //without sprite
     public Enemy(Context context, double positionX, double positionY, Bitmap bitMapSprite, Player player) {
@@ -109,6 +111,8 @@ public class Enemy extends GameObject{
     boolean isHoming;
     int adhdLevel = 0;
     public void statusBranch() {
+        oldPosX = positionX;
+        oldPosY = positionY;
 
         if(!inCombat) {
             if (adhdLevel >= 5) {
@@ -130,6 +134,7 @@ public class Enemy extends GameObject{
 
             if (isHoming) homing();
             else random();
+
         }
     }
 
@@ -176,11 +181,10 @@ public class Enemy extends GameObject{
         }
 
         Random rand = new Random();
-        if(movementOptions.size() == 0){
-        }
-        else {
+        if(movementOptions.size() > 0){
+
             int choice = rand.nextInt(movementOptions.size());
-            if (choice < 0 || choice > 4) {
+            if (choice > 4) {
                 choice = 0;
             }
             move(movementOptions.get(choice));
@@ -192,22 +196,10 @@ public class Enemy extends GameObject{
     public Context getContext() {
         return context;
     }
-
-    @Override
-    public double getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public double getPositionY() {
-        return positionY;
-    }
-
     @Override
     public double getMaxHealth() {
         return maxHealth;
     }
-
     @Override
     public double getHealth() {
         return health;
@@ -225,5 +217,27 @@ public class Enemy extends GameObject{
 
     public void setIsInCombat(boolean inCombat) {
         this.inCombat = inCombat;
+    }
+    @Override
+    public double getPositionX() {
+        return positionX;
+    }
+    @Override
+    public double getPositionY() {
+        return positionY;
+    }
+    public void setPositionX(double newPos){
+        positionX = newPos;
+    }
+    public void setPositionY(double newPos){
+        positionY = newPos;
+    }
+
+    public double getOldPositionX() {
+        return oldPosX;
+    }
+
+    public double getOldPositionY() {
+        return oldPosY;
     }
 }

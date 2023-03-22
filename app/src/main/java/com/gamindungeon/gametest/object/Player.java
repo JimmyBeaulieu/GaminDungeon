@@ -19,7 +19,7 @@ public class Player extends GameObject{
     double oldPositionX;
     double oldPositionY;
 
-    private String lastKnownMove;
+    private String lastKnownMove = "";
 
     public Player(Context context, Bitmap bitMapSprite){
         super(context, 0, 0);

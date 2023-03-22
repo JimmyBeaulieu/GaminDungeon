@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -75,9 +76,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //enemy = new Enemy(context, gridPos(6), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player);
 
         //using bitmap
-        enemyList.add(new Enemy(getContext(), gridPos(5), gridPos(5),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
-        enemyList.add(new Enemy(getContext(), gridPos(6), gridPos(3),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
-        enemyList.add(new Enemy(getContext(), gridPos(7), gridPos(4), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        enemyList.add(new Enemy(getContext(), gridPos(1), gridPos(2),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        enemyList.add(new Enemy(getContext(), gridPos(2), gridPos(1),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        enemyList.add(new Enemy(getContext(), gridPos(0), gridPos(1), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
 
 
         //using sprite
@@ -132,7 +133,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //user stop touching the screen
             case MotionEvent.ACTION_UP:
-                if(!checkCollision()) {
+                if(!checkCollision() && player.getHealth() > 0) {
 
                     //calculates the difference between the point where the user originally touches the screen vs the point where the user stops
                     deltaX = event.getX() - startX;
@@ -191,7 +192,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     }
                 }
 
-                if (combatTimer == 0) {
+                //gradually regenerate health when not in combat
+                if (combatTimer == 0 && player.getHealth() >0) {
                     if (player.getHealth() < player.getMaxHealth()) {
                         player.setHealth(player.getHealth() + 1);
                     }
@@ -249,64 +251,96 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         if(player.getHealth() <= 0){
             gameOver.draw(canvas);
         }
-
-        performance.draw(canvas);
         drawGrid(canvas);
-        drawHealth(canvas);
+
+        //******************************************************************************************
+        // TO BE DEACTIVATED FOR FULL RELEASE
+
+        drawDebug(canvas);
+
+        //******************************************************************************************
 
         if(checkCollision()){
-            int tries = 0;
 
-                player.setPositionX(player.getOldPositionX());
-                player.setPositionY(player.getOldPositionY());
+            //brings the player back to their old position so that the two objects colliding don't stay on top of each other
+            player.setPositionX(player.getOldPositionX());
+            player.setPositionY(player.getOldPositionY());
 
-                //player.setPositionX(player.getPositionX() + 176);
-                //player.setPositionY(player.getPositionY() + 176);
+            System.out.println("New player's positionX=" + player.getPositionX() + "| position Y:" + player.getPositionY());
 
-                System.out.println("New player's positionX=" + player.getPositionX() + "| position Y:" + player.getPositionY());
+            for(int i = 0; i<enemyList.size();i++){
 
-            for(Enemy enemy:enemyList){
-                if(enemy.inCombat){
-                    combat(enemy, player);
+                if(enemyList.get(i).inCombat){
+                    combat(enemyList.get(i), player);
+                    enemyList.get(i).setPositionY(enemyList.get(i).getOldPositionY());
+                    enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
+                    Log.d("ENEMY_COMBAT_STATUS", "Enemy #" +i);
+                    break;
+                }
+            }
+            for(int i =0; i< enemyList.size();i++){
+                if(enemyList.get(i).getHealth() <= 0){
+                    enemyList.remove(enemyList.get(i));
+                }
+            }
+
+        }
+
+        //checks if two enemies intersects, if so, prevent movement for one enemy for one turn
+        for(int i = 0; i<enemyList.size();i++){
+            for(int j = 0; j<enemyList.size(); j++){
+                if(j == i){
+                    break;
+                }
+                else if(enemyList.get(i).getCollision().intersect(enemyList.get(j).getCollision())){
+                    enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
+                    enemyList.get(i).setPositionY(enemyList.get(i).getOldPositionY());
                 }
             }
         }
 
 
-        //DEBUG PURPOSES, DRAWS COLLISION BOXES
-/*
-        Paint paint = new Paint();
-        paint.setColor(0xffff0000);
-        for(Enemy enemy:enemyList){
-            canvas.drawRect(enemy.getCollision(), paint);
-        }
-        canvas.drawRect(player.getCollision(), paint);
-*/
-
     }
 
-    private void drawHealth(Canvas canvas) {
+    private void drawDebug(Canvas canvas) {
         String playerHealth = Double.toString(player.getHealth());
 
         Paint paint = new Paint();
         int color = ContextCompat.getColor(getContext(), R.color.yellow);
+
+        //DRAWS UPS(update per seconds) AND FPS(frames per seconds)
+        performance.draw(canvas);
+
+        //DRAWS PLAYER'S CURRENT HP
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("Current Health: " + playerHealth, 100, 300, paint);
 
-        //TO BE REMOVED
+        //DRAWS COMBAT TIMER
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("Combat Timer: " + combatTimer, 100, 400, paint);
 
         /*
+
+        //DRAWS ENEMY ADHDLEVEL
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("ADHD Level: " + enemy.adhdLevel, 100, 500, paint);
 
+        //DRAWS ENEMY FOCUS STATUS
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("Focused: " + enemy.isFocused, 100, 600, paint);
+
+        //DRAWS ENEMY COLLISION BOXES
+        paint.setColor(0xffff0000);
+        for(Enemy enemy:enemyList){
+            canvas.drawRect(enemy.getCollision(), paint);
+        }
+        canvas.drawRect(player.getCollision(), paint);
+
+
         */
     }
 
@@ -384,7 +418,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 switch (player.getLastKnownMove()){
                     case "up":
                         player.setPositionY(player.getPositionY() + 176);
-
                         break;
                     case "down":
                         player.setPositionY(player.getPositionY() - 176);
@@ -407,21 +440,21 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 enemy.setIsInCombat(true);
                 flag = true;
             }
+
         }
         return flag;
     }
 
 
-    private void combat(GameObject enemy, GameObject player) {
-        enemy.inCombat = false;
+    private void combat(Enemy enemy, Player player) {
         enemy.setHealth(enemy.getHealth()-player.getStrength());
         player.setHealth(player.getHealth() -enemy.getStrength());
 
 
-        enemyList.removeIf(targetEnemy -> targetEnemy.getHealth() <= 0);
+        //enemyList.removeIf(targetEnemy -> targetEnemy.getHealth() <= 0);
 
         System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
-
+        enemy.setIsInCombat(false);
     }
 
 }
