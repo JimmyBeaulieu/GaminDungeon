@@ -46,6 +46,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private GameDisplay gameDisplay;
     private Music music;
     TileManager tileManager;
+    boolean mapLoaded = false;
 
 
 
@@ -76,8 +77,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //enemy = new Enemy(context, gridPos(6), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player);
 
         //using bitmap
-        enemyList.add(new Enemy(getContext(), gridPos(1), gridPos(2),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
-        enemyList.add(new Enemy(getContext(), gridPos(2), gridPos(1),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        //enemyList.add(new Enemy(getContext(), gridPos(1), gridPos(2),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        //enemyList.add(new Enemy(getContext(), gridPos(2), gridPos(1),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
         enemyList.add(new Enemy(getContext(), gridPos(0), gridPos(1), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
 
 
@@ -96,10 +97,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         gameDisplay = new GameDisplay(displayMetrics.widthPixels-176, displayMetrics.heightPixels-176, player);
 
-        tileManager = new TileManager(context);
+        tileManager = new TileManager(context, gameDisplay);
         music = new Music();
         Random rand = new Random();
         music.play(context, rand.nextInt(3));
+
         setFocusable(true);
 
     }
@@ -237,7 +239,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        tileManager.draw(canvas, gameDisplay);
+        tileManager.draw(canvas);
+
+
 
         player.draw(canvas, gameDisplay);
 
@@ -301,7 +305,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
     }
-
     private void drawDebug(Canvas canvas) {
         String playerHealth = Double.toString(player.getHealth());
 
@@ -343,7 +346,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         */
     }
-
     private void drawGrid(Canvas canvas) {
         int screenWidth = canvas.getWidth();
         int screenHeight = canvas.getHeight();
@@ -382,7 +384,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
     }
-
     public void update() {
 
         //Stop updating the game if the player is dead
@@ -399,12 +400,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         gameDisplay.update();
     }
-
     public void pause() {
         gameLoop.stopLoop();
     }
-
-
     private boolean checkCollision() {
 
         boolean flag = false;
@@ -444,8 +442,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
         return flag;
     }
-
-
     private void combat(Enemy enemy, Player player) {
         enemy.setHealth(enemy.getHealth()-player.getStrength());
         player.setHealth(player.getHealth() -enemy.getStrength());
@@ -456,5 +452,4 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
         enemy.setIsInCombat(false);
     }
-
 }

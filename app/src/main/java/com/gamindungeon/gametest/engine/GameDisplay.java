@@ -10,6 +10,8 @@ public class GameDisplay {
     private double gameCenterX;
     private double gameCenterY;
     private GameObject centerObject;
+    private final int maxScreenColumns = 50;
+    private final int maxScreenRows = 50;
 
     public GameDisplay(int widthPixels, int heightPixels, GameObject centerObject){
         this.centerObject = centerObject;
@@ -32,5 +34,11 @@ public class GameDisplay {
 
     public double gameToDisplayCoordinatesY(double y) {
         return y + gameToDisplayCoordinateOffsetY;
+    }
+    public int getMaxScreenColumns(){
+        return maxScreenColumns;
+    }
+    public int getMaxScreenRows(){
+        return  maxScreenRows;
     }
 }
