@@ -1,13 +1,12 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.engine;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -18,15 +17,20 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.manager.Music;
+import com.gamindungeon.gametest.manager.TileManager;
 import com.gamindungeon.gametest.gamepanel.GameOver;
 import com.gamindungeon.gametest.gamepanel.Performance;
 import com.gamindungeon.gametest.graphics.SpriteSheet;
 import com.gamindungeon.gametest.object.Enemy;
+import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 // Game manages all objects in the game and is responsible for updating
 // all states and render all objects oto the screen
@@ -40,7 +44,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private GameOver gameOver;
     private Performance performance;
     private GameDisplay gameDisplay;
-    MediaPlayer mp;
+    private Music music;
     TileManager tileManager;
 
 
@@ -62,6 +66,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //initialize player
         //GameObject(Context, X pos, Y pos, Sprite)
         SpriteSheet spriteSheet = new SpriteSheet(context);
+
+
+
         player = new Player(getContext(), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protag));
         //player = new Player(getContext(), spriteSheet.getPlayerSprite());
         //added player reference so the enemy can know where the player is
@@ -69,9 +76,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //enemy = new Enemy(context, gridPos(6), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player);
 
         //using bitmap
-        enemyList.add(new Enemy(getContext(), gridPos(5), gridPos(5),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
-        enemyList.add(new Enemy(getContext(), gridPos(6), gridPos(3),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
-        enemyList.add(new Enemy(getContext(), gridPos(7), gridPos(4), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        enemyList.add(new Enemy(getContext(), gridPos(1), gridPos(2),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        enemyList.add(new Enemy(getContext(), gridPos(2), gridPos(1),BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
+        enemyList.add(new Enemy(getContext(), gridPos(0), gridPos(1), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player));
 
 
         //using sprite
@@ -90,22 +97,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         gameDisplay = new GameDisplay(displayMetrics.widthPixels-176, displayMetrics.heightPixels-176, player);
 
         tileManager = new TileManager(context);
-
-        playMusic(context);
+        music = new Music();
+        Random rand = new Random();
+        music.play(context, rand.nextInt(3));
         setFocusable(true);
 
     }
 
-    public void playMusic(Context context){
 
-        mp = MediaPlayer.create(context, R.raw.dungeon1);
-        if (!mp.isPlaying())
-        {
-            mp.start();
-            mp.setLooping(true);
-        }
-
-    }
 
     private double gridPos(int i) {
         return (i-1)*176;
@@ -122,41 +121,79 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //handle touch event actions
         final float MIN_DISTANCE = 150f;
+        String move="";
 
         switch (event.getAction()) {
+
+            // user touches the screen
             case MotionEvent.ACTION_DOWN:
                 startX = event.getX();
                 startY = event.getY();
                 break;
-            case MotionEvent.ACTION_UP:
-                deltaX = event.getX() - startX;
-                deltaY = event.getY() - startY;
 
-                System.out.println("startX:" + startX + "| startY:" + startY + "| deltaX:" + deltaX + "| deltaY:" + deltaY);
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    if (deltaX > MIN_DISTANCE) {
-                        player.setPosition("right");
-                        System.out.println("right");
-                    } else if (deltaX < MIN_DISTANCE * -1) {
-                        player.setPosition("left");
-                        System.out.println("left");
-                    }
-                } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
-                    if (deltaY > MIN_DISTANCE) {
-                        player.setPosition("down");
-                        System.out.println("down");
-                    } else if (deltaY < MIN_DISTANCE * -1) {
-                        player.setPosition("up");
-                        System.out.println("up");
+                //user stop touching the screen
+            case MotionEvent.ACTION_UP:
+                if(!checkCollision() && player.getHealth() > 0) {
+
+                    //calculates the difference between the point where the user originally touches the screen vs the point where the user stops
+                    deltaX = event.getX() - startX;
+                    deltaY = event.getY() - startY;
+
+                    System.out.println("startX:" + startX + "| startY:" + startY + "| deltaX:" + deltaX + "| deltaY:" + deltaY);
+                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                        if (deltaX > MIN_DISTANCE) {
+                            move = "right";
+                            System.out.println("right");
+                        } else if (deltaX < MIN_DISTANCE * -1) {
+                            move = "left";
+                            System.out.println("left");
+                        }
+                    } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
+                        if (deltaY > MIN_DISTANCE) {
+                            move = "down";
+                            System.out.println("down");
+                        } else if (deltaY < MIN_DISTANCE * -1) {
+                            move = "up";
+                            System.out.println("up");
+                        }
                     }
                 }
+                //check collision before enemy moves, so that way if the player moves on an enemy, it will start battle before the enemy can move away
+               /*
+                if (checkCollision()) {
+
+                    System.out.println("COLLISISON!!!!");
+                    player.setPositionX(player.getOldPositionX());
+                    player.setPositionY(player.getOldPositionY());
+
+                    for (Enemy enemy : enemyList) {
+                        if (enemy.inCombat) {
+                            combat(enemy, player);
+                        }
+                    }
+                } else {
+                    player.move(move);
+                    for (Enemy enemy : enemyList) {
+                        enemy.statusBranch();
+                        if(checkCollision()){
+                            player.setPositionX(player.getOldPositionX());
+                            player.setPositionY(player.getOldPositionY());
+                            combat(enemy, player);
+                        }
+                    }
+                }
+                */
                 //enemy.move();
 
-                for(Enemy enemy:enemyList){
-                    enemy.move();
+                if(!checkCollision()){
+                    player.move(move);
+                    for(Enemy enemy:enemyList){
+                        enemy.statusBranch();
+                    }
                 }
 
-                if(combatTimer == 0) {
+                //gradually regenerate health when not in combat
+                if (combatTimer == 0 && player.getHealth() >0) {
                     if (player.getHealth() < player.getMaxHealth()) {
                         player.setHealth(player.getHealth() + 1);
                     }
@@ -164,12 +201,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         player.setHealth(player.getMaxHealth());
                     }
                 }
-                if(combatTimer > 0){
+                if (combatTimer > 0) {
                     combatTimer--;
                 }
                 System.out.println("Player X:" + player.getPositionX() + " | Player Y:" + player.getPositionY());
-
         }
+
 
         return true;
     }
@@ -194,10 +231,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
 
     }
+
 //used to draw things on the screen
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
         tileManager.draw(canvas, gameDisplay);
 
         player.draw(canvas, gameDisplay);
@@ -208,40 +247,100 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             enemy.draw(canvas, gameDisplay);
         }
 
-
         //Draw Game Over if (player's hp <= 0)
         if(player.getHealth() <= 0){
             gameOver.draw(canvas);
         }
-
-        performance.draw(canvas);
         drawGrid(canvas);
-        drawHealth(canvas);
+
+        //******************************************************************************************
+        // TO BE DEACTIVATED FOR FULL RELEASE
+
+        drawDebug(canvas);
+
+        //******************************************************************************************
+
+        if(checkCollision()){
+
+            //brings the player back to their old position so that the two objects colliding don't stay on top of each other
+            player.setPositionX(player.getOldPositionX());
+            player.setPositionY(player.getOldPositionY());
+
+            System.out.println("New player's positionX=" + player.getPositionX() + "| position Y:" + player.getPositionY());
+
+            for(int i = 0; i<enemyList.size();i++){
+
+                if(enemyList.get(i).inCombat){
+                    combat(enemyList.get(i), player);
+                    enemyList.get(i).setPositionY(enemyList.get(i).getOldPositionY());
+                    enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
+                    Log.d("ENEMY_COMBAT_STATUS", "Enemy #" +i);
+                    break;
+                }
+            }
+            for(int i =0; i< enemyList.size();i++){
+                if(enemyList.get(i).getHealth() <= 0){
+                    enemyList.remove(enemyList.get(i));
+                }
+            }
+
+        }
+
+        //checks if two enemies intersects, if so, prevent movement for one enemy for one turn
+        for(int i = 0; i<enemyList.size();i++){
+            for(int j = 0; j<enemyList.size(); j++){
+                if(j == i){
+                    break;
+                }
+                else if(enemyList.get(i).getCollision().intersect(enemyList.get(j).getCollision())){
+                    enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
+                    enemyList.get(i).setPositionY(enemyList.get(i).getOldPositionY());
+                }
+            }
+        }
+
 
     }
 
-    private void drawHealth(Canvas canvas) {
+    private void drawDebug(Canvas canvas) {
         String playerHealth = Double.toString(player.getHealth());
 
         Paint paint = new Paint();
         int color = ContextCompat.getColor(getContext(), R.color.yellow);
+
+        //DRAWS UPS(update per seconds) AND FPS(frames per seconds)
+        performance.draw(canvas);
+
+        //DRAWS PLAYER'S CURRENT HP
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("Current Health: " + playerHealth, 100, 300, paint);
 
-        //TO BE REMOVED
+        //DRAWS COMBAT TIMER
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("Combat Timer: " + combatTimer, 100, 400, paint);
 
         /*
+
+        //DRAWS ENEMY ADHDLEVEL
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("ADHD Level: " + enemy.adhdLevel, 100, 500, paint);
 
+        //DRAWS ENEMY FOCUS STATUS
         paint.setColor(color);
         paint.setTextSize(50);
         canvas.drawText("Focused: " + enemy.isFocused, 100, 600, paint);
+
+        //DRAWS ENEMY COLLISION BOXES
+        paint.setColor(0xffff0000);
+        for(Enemy enemy:enemyList){
+            canvas.drawRect(enemy.getCollision(), paint);
+        }
+        canvas.drawRect(player.getCollision(), paint);
+
+
         */
     }
 
@@ -291,9 +390,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         if(player.getHealth() <= 0){
             return;
         }
-
-
-
         //update game state
         player.update();
         //checkCollision();
@@ -308,38 +404,57 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         gameLoop.stopLoop();
     }
 
-    //NEED TO BE FIXED, PROBLEM WITH COLLISIONS
-    /*
-    private void checkCollision() {
 
-        for(Enemy enemy: enemyList){
-            if(isColliding(enemy, player)){
-                System.out.println("Enemy current health: " + enemy.health);
-                combatTimer = 3;
-                combat(enemy, player);
+    private boolean checkCollision() {
 
-                if(enemy.health <= 0){
+        boolean flag = false;
 
-                    enemyList.remove(enemy);
+        for (Enemy enemy : enemyList) {
+
+            if (player.getCollision().intersect(enemy.getCollision())) {
+
+                //System.out.println("COLLISION!");
+                //System.out.println(player.getLastKnownMove());
+                switch (player.getLastKnownMove()){
+                    case "up":
+                        player.setPositionY(player.getPositionY() + 176);
+                        break;
+                    case "down":
+                        player.setPositionY(player.getPositionY() - 176);
+                        break;
+                    case "left":
+                        player.setPositionX(player.getPositionX() + 176);
+                        break;
+                    case "right":
+                        player.setPositionX(player.getPositionX() - 176);
+                        break;
                 }
+
+                /*
+                player.setPositionX(player.getOldPositionX());
+                player.setPositionY(player.getOldPositionY());
+
+                 */
+
+                combatTimer = 3;
+                enemy.setIsInCombat(true);
+                flag = true;
             }
+
         }
+        return flag;
     }
 
 
-    private void combat(GameObject enemy, GameObject player) {
-        enemy.inCombat = false;
-        enemy.health -= player.strength;
-        player.health -= enemy.strength;
-        enemy.afterClash();
-        player.afterClash();
+    private void combat(Enemy enemy, Player player) {
+        enemy.setHealth(enemy.getHealth()-player.getStrength());
+        player.setHealth(player.getHealth() -enemy.getStrength());
+
+
+        //enemyList.removeIf(targetEnemy -> targetEnemy.getHealth() <= 0);
+
+        System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
+        enemy.setIsInCombat(false);
     }
-
-    private boolean isColliding(GameObject obj1, GameObject obj2) {
-        return obj1.positionY == obj2.positionY && obj1.positionX == obj2.positionX;
-    }
-*/
-
-
 
 }

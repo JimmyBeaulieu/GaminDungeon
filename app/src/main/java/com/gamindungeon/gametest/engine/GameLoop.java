@@ -1,7 +1,6 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.engine;
 
 import android.graphics.Canvas;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 
 public class GameLoop extends Thread{

@@ -1,4 +1,4 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.manager;
 
 import android.graphics.Bitmap;
 

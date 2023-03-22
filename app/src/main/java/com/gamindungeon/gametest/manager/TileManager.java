@@ -1,10 +1,13 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.manager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
+import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.object.GameObject;
 
 public class TileManager extends GameObject {
@@ -33,6 +36,8 @@ public class TileManager extends GameObject {
 
     public void draw(Canvas canvas, GameDisplay gameDisplay){
 
+
+
         canvas.drawBitmap(Bitmap.createScaledBitmap(
                 tiles[0].bitmap, 176, 176, false),
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
@@ -40,36 +45,27 @@ public class TileManager extends GameObject {
                 null);
 
         canvas.drawBitmap(Bitmap.createScaledBitmap(
-                        tiles[1].bitmap, 176, 176, false),
+                tiles[1].bitmap, 176, 176, false),
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY + 176),
                 null);
 
         canvas.drawBitmap(Bitmap.createScaledBitmap(
-                        tiles[2].bitmap, 176, 176, false),
+                tiles[2].bitmap, 176, 176, false),
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX + 176),
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
     }
 
     @Override
-    public void setPosition(String direction) {
-
-    }
+    public void move(String direction) { }
 
     @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void afterClash() {
-
-    }
+    public void update() {}
 
     @Override
     public Context getContext() {
-        return null;
+        return context;
     }
 
     @Override
@@ -89,6 +85,16 @@ public class TileManager extends GameObject {
 
     @Override
     public double getHealth() {
+        return 0;
+    }
+
+    @Override
+    public Rect getCollision() {
+        return collision;
+    }
+
+    @Override
+    public double getStrength() {
         return 0;
     }
 }

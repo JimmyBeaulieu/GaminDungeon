@@ -3,8 +3,10 @@ package com.gamindungeon.gametest.object;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.util.Log;
 
-import com.gamindungeon.gametest.GameDisplay;
+import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.gamepanel.HealthBar;
 import com.gamindungeon.gametest.graphics.Sprite;
 
@@ -16,6 +18,9 @@ public class Enemy extends GameObject{
     private Player player;
     private HealthBar hpBar;
     private Sprite sprite;
+    public boolean inCombat;
+    double oldPosX = 0;
+    double oldPosY = 0;
 
 //without sprite
     public Enemy(Context context, double positionX, double positionY, Bitmap bitMapSprite, Player player) {
@@ -27,10 +32,25 @@ public class Enemy extends GameObject{
         //this.sprite = sprite;
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
         hpBar = new HealthBar(this);
+
+        //collision rectangle calculation:
+        int rectWidth = 100;
+        int rectHeight = 50;
+        int rectLeft = (int)positionX - rectWidth/2;
+        int rectTop = (int)positionY - rectHeight/2;
+        int rectRight = rectLeft + rectWidth;
+        int rectBottom = rectTop + rectHeight;
+
+        collision = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+        Log.d("ENEMY_COLLISION_DETECTION", "Collision created!");
     }
+
+
+
+
+
     //with sprite
     /*
-    WITH SPRITE
         public Enemy(Context context, double positionX, double positionY, Player player, Sprite sprite) {
         super(context, positionX, positionY);
         health = 7;
@@ -54,12 +74,22 @@ public class Enemy extends GameObject{
                 null);
 
         hpBar.draw(canvas, gameDisplay);
+
+        //update collision box
+        int rectWidth = 176;
+        int rectHeight = 176;
+        int rectLeft = (int)gameDisplay.gameToDisplayCoordinatesX(positionX) + 20;
+        int rectTop = (int)gameDisplay.gameToDisplayCoordinatesY(positionY);
+        int rectRight = rectLeft + rectWidth;
+        int rectBottom = rectTop + rectHeight;
+
+        collision = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+
     }
 
     @Override
-    public void setPosition(String direction) {
-        oldPositionX = positionX;
-        oldPositionY = positionY;
+    public void move(String direction) {
+
         if(direction.equals("up")) positionY -= 176;
         if(direction.equals("down")) positionY += 176;
         if(direction.equals("right")) positionX += 176;
@@ -80,7 +110,9 @@ public class Enemy extends GameObject{
     boolean isFocused;
     boolean isHoming;
     int adhdLevel = 0;
-    public void move() {
+    public void statusBranch() {
+        oldPosX = positionX;
+        oldPosY = positionY;
 
         if(!inCombat) {
             if (adhdLevel >= 5) {
@@ -102,6 +134,7 @@ public class Enemy extends GameObject{
 
             if (isHoming) homing();
             else random();
+
         }
     }
 
@@ -148,46 +181,63 @@ public class Enemy extends GameObject{
         }
 
         Random rand = new Random();
-        if(movementOptions.size() == 0){
-        }
-        else {
+        if(movementOptions.size() > 0){
+
             int choice = rand.nextInt(movementOptions.size());
-            if (choice < 0 || choice > 4) {
+            if (choice > 4) {
                 choice = 0;
             }
-            setPosition(movementOptions.get(choice));
+            move(movementOptions.get(choice));
             adhdLevel++;
         }
-    }
-
-    @Override
-    public void afterClash() {
-        positionX = oldPositionX;
-        positionY = oldPositionY;
     }
 
     @Override
     public Context getContext() {
         return context;
     }
-
-    @Override
-    public double getPositionX() {
-        return positionX;
-    }
-
-    @Override
-    public double getPositionY() {
-        return positionY;
-    }
-
     @Override
     public double getMaxHealth() {
         return maxHealth;
     }
-
     @Override
     public double getHealth() {
         return health;
+    }
+    public void setHealth(double health) {
+        this.health = health;
+    }
+    public Rect getCollision(){
+        return collision;
+    }
+    @Override
+    public double getStrength() {
+        return strength;
+    }
+
+    public void setIsInCombat(boolean inCombat) {
+        this.inCombat = inCombat;
+    }
+    @Override
+    public double getPositionX() {
+        return positionX;
+    }
+    @Override
+    public double getPositionY() {
+        return positionY;
+    }
+    public void setPositionX(double newPos){
+        positionX = newPos;
+    }
+    public void setPositionY(double newPos){
+        positionY = newPos;
+    }
+
+    public double getOldPositionX() {
+        return oldPosX;
+    }
+
+    public double getOldPositionY() {
+        return oldPosY;
     }
 }

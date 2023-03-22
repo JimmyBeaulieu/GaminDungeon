@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
-import com.gamindungeon.gametest.GameDisplay;
+import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.object.GameObject;
 
@@ -66,7 +66,7 @@ public class HealthBar {
                 (float)gameDisplay.gameToDisplayCoordinatesY(healthTop),
                 (float)gameDisplay.gameToDisplayCoordinatesX(healthRight),
                 (float)gameDisplay.gameToDisplayCoordinatesY(healthBottom),
-                borderPaint
+                healthPaint
         );
 
     }
