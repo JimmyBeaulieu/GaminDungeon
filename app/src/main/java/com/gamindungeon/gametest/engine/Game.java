@@ -73,34 +73,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
 
-        player = new Player(getContext(), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protag));
-        //player = new Player(getContext(), spriteSheet.getPlayerSprite());
-        //added player reference so the enemy can know where the player is
-
-        //enemy = new Enemy(context, gridPos(6), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player);
+        music = new Music(context);
+        music.play(context, 2);
+        player = new Player(getContext(), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protag), music);
 
         //using bitmap
-
         //------------------------------------------col---------row------------------------------------------------------------------------image
-
+/*
         enemyList.add(new Enemy(getContext(), gridPos(9), gridPos(4), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(17), gridPos(5), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(23), gridPos(11), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(11), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(18), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
-
-
-        //using sprite
-        /*
-        enemyList.add(new Enemy(getContext(), gridPos(5), gridPos(5), player, spriteSheet.getPlayerSprite()));
-        enemyList.add(new Enemy(getContext(), gridPos(6), gridPos(3), player, spriteSheet.getPlayerSprite()));
-        enemyList.add(new Enemy(getContext(), gridPos(7), gridPos(4), player, spriteSheet.getPlayerSprite()));
-
-         */
-
-
-
+*/
         //Initialize game display and center it around the player
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -112,10 +98,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         for(Enemy enemy : enemyList){
             enemy.setTileManager(tileManager);
         }
-
-        music = new Music();
-        Random rand = new Random();
-        music.play(context, 2);
 
         setFocusable(true);
 
@@ -175,35 +157,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         }
                     }
                 }
-                //check collision before enemy moves, so that way if the player moves on an enemy, it will start battle before the enemy can move away
-               /*
-                if (checkCollision()) {
-
-                    System.out.println("COLLISISON!!!!");
-                    player.setPositionX(player.getOldPositionX());
-                    player.setPositionY(player.getOldPositionY());
-
-                    for (Enemy enemy : enemyList) {
-                        if (enemy.inCombat) {
-                            combat(enemy, player);
-                        }
-                    }
-                } else {
-                    player.move(move);
-                    for (Enemy enemy : enemyList) {
-                        enemy.statusBranch();
-                        if(checkCollision()){
-                            player.setPositionX(player.getOldPositionX());
-                            player.setPositionY(player.getOldPositionY());
-                            combat(enemy, player);
-                        }
-                    }
-                }
-                */
-                //enemy.move();
-
-
-
                 if(!checkCollision()){
                     player.move(move);
                     for(Enemy enemy:enemyList){
@@ -257,8 +210,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(canvas);
 
         tileManager.draw(canvas);
-
-
 
         player.draw(canvas, gameDisplay);
 
@@ -350,27 +301,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         paint.setTextSize(50);
         canvas.drawText("Combat Timer: " + combatTimer, 100, 400, paint);
 
-        /*
-
         //DRAWS ENEMY ADHDLEVEL
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("ADHD Level: " + enemy.adhdLevel, 100, 500, paint);
+        canvas.drawText("ADHD Level: " + enemy.getAdhdLevel(), 100, 500, paint);
 
         //DRAWS ENEMY FOCUS STATUS
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("Focused: " + enemy.isFocused, 100, 600, paint);
+        canvas.drawText("Focused: " + enemy.isFocused(), 100, 600, paint);
 
         //DRAWS ENEMY COLLISION BOXES
         paint.setColor(0xffff0000);
         for(Enemy enemy:enemyList){
             canvas.drawRect(enemy.getCollision(), paint);
         }
+        //draws player collision box
         canvas.drawRect(player.getCollision(), paint);
 
-
-        */
     }
     private void drawGrid(Canvas canvas) {
         int screenWidth = canvas.getWidth();
@@ -383,22 +331,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(1);
 
-        //original
-/*
-        for(int i = 0; i < screenWidth+176; i+= gridSize){
-            //draws vertical lines
-            canvas.drawLine(i, 0, i, screenHeight+88, paint);
-        }
-
-        for(int i =0; i< screenHeight+176;i+= gridSize){
-            //draw horizontal lines
-            canvas.drawLine(0, i, screenWidth, i, paint);
-        }
-*/
 
         //offset to middle
-        //drawLine(float startX, float startY, float stopX, float stopY, Paint paint)
-        //paint.setColor(ContextCompat.getColor(getContext(), R.color.green));
         for(int i = 88; i < screenWidth; i+= gridSize){
             //draws vertical lines X
             canvas.drawLine(i, 0, i, screenHeight, paint);
@@ -411,8 +345,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     }
     public void update() {
-
-
 
         //Stop updating the game if the player is dead
 
@@ -439,8 +371,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
             if (player.getCollision().intersect(enemy.getCollision())) {
 
-                //System.out.println("COLLISION!");
-                //System.out.println(player.getLastKnownMove());
                 switch (player.getLastKnownMove()){
                     case "up":
                         player.setPositionY(player.getPositionY() + 176);
@@ -456,12 +386,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         break;
                 }
 
-                /*
-                player.setPositionX(player.getOldPositionX());
-                player.setPositionY(player.getOldPositionY());
-
-                 */
-
                 combatTimer = 3;
                 enemy.setIsInCombat(true);
                 flag = true;
@@ -473,9 +397,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private void combat(Enemy enemy, Player player) {
         enemy.setHealth(enemy.getHealth()-player.getStrength());
         player.setHealth(player.getHealth() -enemy.getStrength());
-
-
-        //enemyList.removeIf(targetEnemy -> targetEnemy.getHealth() <= 0);
 
         System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
         enemy.setIsInCombat(false);

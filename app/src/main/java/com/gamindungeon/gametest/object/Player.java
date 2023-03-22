@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.graphics.Sprite;
+import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.TileManager;
 
 public class Player extends GameObject{
@@ -22,13 +23,14 @@ public class Player extends GameObject{
 
     private String lastKnownMove = "";
     TileManager tm;
+    Music mp;
 
-    public Player(Context context, Bitmap bitMapSprite){
+    public Player(Context context, Bitmap bitMapSprite, Music music){
         super(context, 176 * 3, 176 * 4);
         health = 10;
         maxHealth = health;
         strength = 3;
-
+        mp=music;
 
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
         oldPositionX = 0;
@@ -61,15 +63,6 @@ public class Player extends GameObject{
     }
      */
     public void draw(Canvas canvas, GameDisplay gameDisplay) {
-
-        /*
-        sprite.draw(
-                canvas,
-                (int)gameDisplay.gameToDisplayCoordinatesX(getPositionX()) - sprite.getWidth()/2,
-                (int)gameDisplay.gameToDisplayCoordinatesY(getPositionY()) - sprite.getHeight()/2
-        );
-*/
-        //collision.set();
 
         canvas.drawBitmap(
                 bitMapSprite,
@@ -205,6 +198,8 @@ public class Player extends GameObject{
                     if (gridYPos == 17 && gridXPos == 12) {
                         setPositionX(39 * 176);
                         setPositionY(24 * 176);
+                        mp.stop();
+                        mp.play(context, 0);
                     }
                 }
 
@@ -214,14 +209,6 @@ public class Player extends GameObject{
                         System.out.println("On a teleporter!");
                     }
 
-
-
-        /*
-        tileUp = tm.mapTileNum[gridXPos][gridYPos];
-        tileDown = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
-        tileLeft = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
-        tileRight = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
-        */
         lastKnownMove = direction;
     }
 

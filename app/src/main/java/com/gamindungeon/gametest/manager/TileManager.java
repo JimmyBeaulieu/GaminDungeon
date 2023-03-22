@@ -101,10 +101,10 @@ public class TileManager{
             int worldX = col * 176;
             int worldY = row * 176;
 
-            if( worldX + 176 > player.getPositionX() - gameDisplay.getDisplayCenterX() &&
-                worldX - 176 < player.getPositionX() + gameDisplay.getDisplayCenterX()&&
-                worldY + 176 > player.getPositionY() - gameDisplay.getDisplayCenterY()&&
-                worldY - 176 < player.getPositionY() + gameDisplay.getDisplayCenterY()){
+            if( worldX + 352 > player.getPositionX() - gameDisplay.getDisplayCenterX() &&
+                worldX - 352 < player.getPositionX() + gameDisplay.getDisplayCenterX()&&
+                worldY + 352 > player.getPositionY() - gameDisplay.getDisplayCenterY()&&
+                worldY - 352 < player.getPositionY() + gameDisplay.getDisplayCenterY()){
 
                 canvas.drawBitmap(Bitmap.createScaledBitmap(
                         tiles[tileNum].getBitmap(), 176, 176, false),
