@@ -66,7 +66,7 @@ public class HealthBar {
                 (float)gameDisplay.gameToDisplayCoordinatesY(healthTop),
                 (float)gameDisplay.gameToDisplayCoordinatesX(healthRight),
                 (float)gameDisplay.gameToDisplayCoordinatesY(healthBottom),
-                borderPaint
+                healthPaint
         );
 
     }

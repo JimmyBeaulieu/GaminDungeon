@@ -18,6 +18,7 @@ public class Enemy extends GameObject{
     private Player player;
     private HealthBar hpBar;
     private Sprite sprite;
+    public boolean inCombat;
 
 //without sprite
     public Enemy(Context context, double positionX, double positionY, Bitmap bitMapSprite, Player player) {
@@ -86,8 +87,7 @@ public class Enemy extends GameObject{
 
     @Override
     public void move(String direction) {
-        oldPositionX = positionX;
-        oldPositionY = positionY;
+
         if(direction.equals("up")) positionY -= 176;
         if(direction.equals("down")) positionY += 176;
         if(direction.equals("right")) positionX += 176;
@@ -189,12 +189,6 @@ public class Enemy extends GameObject{
     }
 
     @Override
-    public void afterClash() {
-        positionX = oldPositionX;
-        positionY = oldPositionY;
-    }
-
-    @Override
     public Context getContext() {
         return context;
     }
@@ -218,11 +212,18 @@ public class Enemy extends GameObject{
     public double getHealth() {
         return health;
     }
+    public void setHealth(double health) {
+        this.health = health;
+    }
     public Rect getCollision(){
         return collision;
     }
     @Override
     public double getStrength() {
         return strength;
+    }
+
+    public void setIsInCombat(boolean inCombat) {
+        this.inCombat = inCombat;
     }
 }

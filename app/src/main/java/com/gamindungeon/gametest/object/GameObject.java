@@ -14,8 +14,7 @@ public abstract class GameObject {
     protected double strength;
     protected double positionX;
     protected double positionY;
-    protected double oldPositionX;
-    protected double oldPositionY;
+
     //protected Bitmap sprite;
     protected Context context;
     protected Bitmap bitMapSprite;
@@ -36,8 +35,6 @@ public abstract class GameObject {
     public abstract void draw(Canvas canvas, GameDisplay gameDisplay);
     public abstract void move(String direction);
     public  abstract  void update();
-    public abstract void afterClash();
-
     public abstract Context getContext();
 
     public abstract double getPositionX();

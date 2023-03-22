@@ -27,6 +27,7 @@ import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -119,41 +120,78 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //handle touch event actions
         final float MIN_DISTANCE = 150f;
+        String move="";
 
         switch (event.getAction()) {
+
+            // user touches the screen
             case MotionEvent.ACTION_DOWN:
                 startX = event.getX();
                 startY = event.getY();
                 break;
-            case MotionEvent.ACTION_UP:
-                deltaX = event.getX() - startX;
-                deltaY = event.getY() - startY;
 
-                System.out.println("startX:" + startX + "| startY:" + startY + "| deltaX:" + deltaX + "| deltaY:" + deltaY);
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    if (deltaX > MIN_DISTANCE) {
-                        player.move("right");
-                        System.out.println("right");
-                    } else if (deltaX < MIN_DISTANCE * -1) {
-                        player.move("left");
-                        System.out.println("left");
-                    }
-                } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
-                    if (deltaY > MIN_DISTANCE) {
-                        player.move("down");
-                        System.out.println("down");
-                    } else if (deltaY < MIN_DISTANCE * -1) {
-                        player.move("up");
-                        System.out.println("up");
+                //user stop touching the screen
+            case MotionEvent.ACTION_UP:
+                if(!checkCollision()) {
+
+                    //calculates the difference between the point where the user originally touches the screen vs the point where the user stops
+                    deltaX = event.getX() - startX;
+                    deltaY = event.getY() - startY;
+
+                    System.out.println("startX:" + startX + "| startY:" + startY + "| deltaX:" + deltaX + "| deltaY:" + deltaY);
+                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                        if (deltaX > MIN_DISTANCE) {
+                            move = "right";
+                            System.out.println("right");
+                        } else if (deltaX < MIN_DISTANCE * -1) {
+                            move = "left";
+                            System.out.println("left");
+                        }
+                    } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
+                        if (deltaY > MIN_DISTANCE) {
+                            move = "down";
+                            System.out.println("down");
+                        } else if (deltaY < MIN_DISTANCE * -1) {
+                            move = "up";
+                            System.out.println("up");
+                        }
                     }
                 }
+                //check collision before enemy moves, so that way if the player moves on an enemy, it will start battle before the enemy can move away
+               /*
+                if (checkCollision()) {
+
+                    System.out.println("COLLISISON!!!!");
+                    player.setPositionX(player.getOldPositionX());
+                    player.setPositionY(player.getOldPositionY());
+
+                    for (Enemy enemy : enemyList) {
+                        if (enemy.inCombat) {
+                            combat(enemy, player);
+                        }
+                    }
+                } else {
+                    player.move(move);
+                    for (Enemy enemy : enemyList) {
+                        enemy.statusBranch();
+                        if(checkCollision()){
+                            player.setPositionX(player.getOldPositionX());
+                            player.setPositionY(player.getOldPositionY());
+                            combat(enemy, player);
+                        }
+                    }
+                }
+                */
                 //enemy.move();
 
-                for(Enemy enemy:enemyList){
-                    enemy.statusBranch();
+                if(!checkCollision()){
+                    player.move(move);
+                    for(Enemy enemy:enemyList){
+                        enemy.statusBranch();
+                    }
                 }
 
-                if(combatTimer == 0) {
+                if (combatTimer == 0) {
                     if (player.getHealth() < player.getMaxHealth()) {
                         player.setHealth(player.getHealth() + 1);
                     }
@@ -161,12 +199,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         player.setHealth(player.getMaxHealth());
                     }
                 }
-                if(combatTimer > 0){
+                if (combatTimer > 0) {
                     combatTimer--;
                 }
                 System.out.println("Player X:" + player.getPositionX() + " | Player Y:" + player.getPositionY());
-
         }
+
 
         return true;
     }
@@ -191,6 +229,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
 
     }
+
 //used to draw things on the screen
     @Override
     public void draw(Canvas canvas) {
@@ -214,6 +253,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         performance.draw(canvas);
         drawGrid(canvas);
         drawHealth(canvas);
+
+        if(checkCollision()){
+            int tries = 0;
+
+                player.setPositionX(player.getOldPositionX());
+                player.setPositionY(player.getOldPositionY());
+
+                //player.setPositionX(player.getPositionX() + 176);
+                //player.setPositionY(player.getPositionY() + 176);
+
+                System.out.println("New player's positionX=" + player.getPositionX() + "| position Y:" + player.getPositionY());
+
+            for(Enemy enemy:enemyList){
+                if(enemy.inCombat){
+                    combat(enemy, player);
+                }
+            }
+        }
+
 
         //DEBUG PURPOSES, DRAWS COLLISION BOXES
 /*
@@ -313,29 +371,57 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     }
 
 
-    private void checkCollision() {
+    private boolean checkCollision() {
 
-        for(Enemy enemy: enemyList){
-            if(player.getCollision().intersect(enemy.getCollision())){
-                //System.out.println("Enemy current health: " + enemy.health);
-                combatTimer = 3;
+        boolean flag = false;
 
-                combat(enemy, player);
+        for (Enemy enemy : enemyList) {
 
-                if(enemy.getHealth() <= 0)
-                    enemyList.remove(enemy);
+            if (player.getCollision().intersect(enemy.getCollision())) {
+
+                //System.out.println("COLLISION!");
+                //System.out.println(player.getLastKnownMove());
+                switch (player.getLastKnownMove()){
+                    case "up":
+                        player.setPositionY(player.getPositionY() + 176);
+
+                        break;
+                    case "down":
+                        player.setPositionY(player.getPositionY() - 176);
+                        break;
+                    case "left":
+                        player.setPositionX(player.getPositionX() + 176);
+                        break;
+                    case "right":
+                        player.setPositionX(player.getPositionX() - 176);
+                        break;
                 }
+
+                /*
+                player.setPositionX(player.getOldPositionX());
+                player.setPositionY(player.getOldPositionY());
+
+                 */
+
+                combatTimer = 3;
+                enemy.setIsInCombat(true);
+                flag = true;
             }
         }
-
+        return flag;
+    }
 
 
     private void combat(GameObject enemy, GameObject player) {
         enemy.inCombat = false;
         enemy.setHealth(enemy.getHealth()-player.getStrength());
         player.setHealth(player.getHealth() -enemy.getStrength());
-        enemy.afterClash();
-        player.afterClash();
+
+
+        enemyList.removeIf(targetEnemy -> targetEnemy.getHealth() <= 0);
+
+        System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
+
     }
 
 }

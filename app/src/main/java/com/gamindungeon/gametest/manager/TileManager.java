@@ -62,9 +62,6 @@ public class TileManager extends GameObject {
     public void update() {}
 
     @Override
-    public void afterClash() {}
-
-    @Override
     public Context getContext() {
         return context;
     }
