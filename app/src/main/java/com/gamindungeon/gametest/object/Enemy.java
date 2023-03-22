@@ -9,6 +9,7 @@ import android.util.Log;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.gamepanel.HealthBar;
 import com.gamindungeon.gametest.graphics.Sprite;
+import com.gamindungeon.gametest.manager.TileManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,10 @@ public class Enemy extends GameObject{
     public boolean inCombat;
     double oldPosX = 0;
     double oldPosY = 0;
+    TileManager tm;
 
 //without sprite
-    public Enemy(Context context, double positionX, double positionY, Bitmap bitMapSprite, Player player) {
+    public Enemy(Context context, double positionX, double positionY, Bitmap bitMapSprite, Player player, TileManager tm) {
         super(context, positionX, positionY);
         health = 7;
         maxHealth = health;
@@ -32,6 +34,7 @@ public class Enemy extends GameObject{
         //this.sprite = sprite;
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
         hpBar = new HealthBar(this);
+        this.tm = tm;
 
         //collision rectangle calculation:
         int rectWidth = 100;
@@ -90,17 +93,72 @@ public class Enemy extends GameObject{
     @Override
     public void move(String direction) {
 
-        if(direction.equals("up")) positionY -= 176;
-        if(direction.equals("down")) positionY += 176;
-        if(direction.equals("right")) positionX += 176;
-        if(direction.equals("left")) positionX -= 176;
+        //column
+        int gridXPos = (int)positionX / 176;
+        //row
+        int gridYPos = (int)positionY / 176;
+
+        int tileUp = tm.mapTileNum[gridXPos][gridYPos-1];
+        int tileDown = tm.mapTileNum[gridXPos][gridYPos+1];
+        int tileLeft = tm.mapTileNum[gridXPos-1][gridYPos];
+        int tileRight = tm.mapTileNum[gridXPos+1][gridYPos];
+
+        if(direction.equals("up")){
+            if(!tm.getTiles(tileUp).getCollision()) {
+                setPositionY(getPositionY() - 176);
+                if (getPositionY() < 0) {
+                    setPositionY(0);
+                }
+            }
+        }
+        if(direction.equals("down")){
+            if(!tm.getTiles(tileDown).getCollision()) {
+                setPositionY(getPositionY() + 176);
+                if (getPositionY() > 49 * 176) {
+                    setPositionY(49 * 176);
+                }
+            }
+        }
+        if(direction.equals("right")){
+            if(!tm.getTiles(tileRight).getCollision()) {
+                setPositionX(getPositionX() + 176);
+                if (getPositionX() > 49 * 176) {
+                    setPositionX((49 * 176));
+                }
+            }
+        }
+        if(direction.equals("left")){
+            if(!tm.getTiles(tileLeft).getCollision()) {
+                setPositionX(getOldPositionX() - 176);
+                if (getPositionX() < 0) {
+                    setPositionX(0);
+                }
+            }
+        }
+
+/*
+        if(direction.equals("up")){
+
+            positionY -= 176;
+        }
+        if(direction.equals("down")){
+            positionY += 176;
+        }
+        if(direction.equals("right")){
+            positionX += 176;
+        }
+        if(direction.equals("left")){
+            positionX -= 176;
+        }
         if(health < maxHealth){
             health++;
         }
         if(health > maxHealth){
             health = maxHealth;
         }
+    */
     }
+
 
     @Override
     public void update() {
@@ -110,6 +168,8 @@ public class Enemy extends GameObject{
     boolean isFocused;
     boolean isHoming;
     int adhdLevel = 0;
+
+    //decides if the enemy is randomly roaming or going for the player
     public void statusBranch() {
         oldPosX = positionX;
         oldPosY = positionY;
@@ -147,16 +207,16 @@ public class Enemy extends GameObject{
             case 0:
                 return;
             case 1:
-                positionY += 176;
+                move("down");
                 break;
             case 2:
-                positionY -= 176;
+                move("up");
                 break;
             case 3:
-                positionX += 176;
+                move("right");
                 break;
             case 4:
-                positionX -= 176;
+                move("left");
                 break;
         }
 
@@ -239,5 +299,9 @@ public class Enemy extends GameObject{
 
     public double getOldPositionY() {
         return oldPosY;
+    }
+
+    public void setTileManager(TileManager tileManager) {
+        tm = tileManager;
     }
 }

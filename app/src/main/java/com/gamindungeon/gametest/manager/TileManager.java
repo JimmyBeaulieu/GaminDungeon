@@ -1,6 +1,7 @@
 package com.gamindungeon.gametest.manager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,23 +10,36 @@ import android.graphics.Rect;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.object.GameObject;
+import com.gamindungeon.gametest.object.Player;
 
-public class TileManager extends GameObject {
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
+public class TileManager{
 
     Tile[] tiles;
     Context context;
-    public TileManager(Context context){
-        super(context, 20, 0);
+    public int mapTileNum[][];
+    GameDisplay gameDisplay;
+    Player player;
+    public TileManager(Context context, GameDisplay gameDisplay, Player player){
         this.context = context;
         tiles = new Tile[3];
-
+        this.gameDisplay = gameDisplay;
+        mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
+        this.player = player;
         getTileImage();
+        loadMap();
+    }
+    public Tile getTiles(int index){
+        return tiles[index];
     }
 
     public void getTileImage(){
 
         try{
-            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.rock), true);
+            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.rock), false);
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.water), true);
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.wood), false);
         }
@@ -34,67 +48,74 @@ public class TileManager extends GameObject {
         }
     }
 
-    public void draw(Canvas canvas, GameDisplay gameDisplay){
+    public void loadMap(){
+        try{
+            InputStream is = context.getResources().openRawResource(R.raw.testmap);
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
+            int col = 0;
+            int row = 0;
 
+            while(col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()){
 
-        canvas.drawBitmap(Bitmap.createScaledBitmap(
-                tiles[0].bitmap, 176, 176, false),
-                (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
-                (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
-                null);
+                String line = br.readLine();
+                System.out.println(line);
+                while(col < gameDisplay.getMaxScreenColumns()){
+                    String[] numbers = line.split(" ");
 
-        canvas.drawBitmap(Bitmap.createScaledBitmap(
-                tiles[1].bitmap, 176, 176, false),
-                (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
-                (float)gameDisplay.gameToDisplayCoordinatesY(positionY + 176),
-                null);
+                    int num = Integer.parseInt(numbers[col]);
 
-        canvas.drawBitmap(Bitmap.createScaledBitmap(
-                tiles[2].bitmap, 176, 176, false),
-                (float)gameDisplay.gameToDisplayCoordinatesX(positionX + 176),
-                (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
-                null);
+                    mapTileNum[col][row] = num;
+                    col++;
+                }
+                if(col == gameDisplay.getMaxScreenColumns()){
+                    col = 0;
+                    row++;
+                }
+            }
+            br.close();
+
+        }catch(Exception e){
+
+        }
     }
 
-    @Override
-    public void move(String direction) { }
+    public void draw(Canvas canvas) {
+        int col = 0;
+        int row = 0;
+        int x = 0;
+        int y = 0;
 
-    @Override
-    public void update() {}
+        while (col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()) {
 
-    @Override
-    public Context getContext() {
-        return context;
+            int tileNum = mapTileNum[col][row];
+
+            int worldX = col * 176;
+            int worldY = row * 176;
+
+            if( worldX + 176 > player.getPositionX() - gameDisplay.getDisplayCenterX() &&
+                worldX - 176 < player.getPositionX() + gameDisplay.getDisplayCenterX()&&
+                worldY + 176 > player.getPositionY() - gameDisplay.getDisplayCenterY()&&
+                worldY - 176 < player.getPositionY() + gameDisplay.getDisplayCenterY()){
+
+                canvas.drawBitmap(Bitmap.createScaledBitmap(
+                        tiles[tileNum].getBitmap(), 176, 176, false),
+                    (float) gameDisplay.gameToDisplayCoordinatesX(x) + 20,
+                        (float) gameDisplay.gameToDisplayCoordinatesY(y),
+                        null);
+            }
+
+
+            col++;
+            x+= 176;
+            if(col == gameDisplay.getMaxScreenColumns()){
+                col = 0;
+                x = 0;
+                row++;
+                y += 176;
+            }
+
+        }
     }
 
-    @Override
-    public double getPositionX() {
-        return 0;
-    }
-
-    @Override
-    public double getPositionY() {
-        return 0;
-    }
-
-    @Override
-    public double getMaxHealth() {
-        return 0;
-    }
-
-    @Override
-    public double getHealth() {
-        return 0;
-    }
-
-    @Override
-    public Rect getCollision() {
-        return collision;
-    }
-
-    @Override
-    public double getStrength() {
-        return 0;
-    }
 }

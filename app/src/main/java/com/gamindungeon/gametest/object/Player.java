@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.graphics.Sprite;
+import com.gamindungeon.gametest.manager.TileManager;
 
 public class Player extends GameObject{
     private Sprite sprite;
@@ -20,12 +21,14 @@ public class Player extends GameObject{
     double oldPositionY;
 
     private String lastKnownMove = "";
+    TileManager tm;
 
     public Player(Context context, Bitmap bitMapSprite){
-        super(context, 0, 0);
+        super(context, 176, 176);
         health = 10;
         maxHealth = health;
         strength = 3;
+
 
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
         oldPositionX = 0;
@@ -42,9 +45,10 @@ public class Player extends GameObject{
         int rectBottom = rectTop + rectHeight;
 
         collision = new Rect(rectLeft+20, rectTop, rectRight+20, rectBottom);
+    }
 
-
-
+    public void setTileManager(TileManager tm){
+        this.tm = tm;
     }
 //using sprite
     /*
@@ -73,6 +77,11 @@ public class Player extends GameObject{
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
 
+        Paint paint = new Paint();
+        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
+        paint.setTextSize(50);
+        canvas.drawText("Health: " + health + "/" + maxHealth, 100, 100, paint);
+
         //USED TO SEE THE COLLISION BOX
 /*
         Paint paint = new Paint();
@@ -97,20 +106,57 @@ public class Player extends GameObject{
         oldPositionX = positionX;
         oldPositionY = positionY;
 
+//column
+        int gridXPos = ((int)positionX / 176);
+//row
+        int gridYPos = (((int)positionY / 176));
+
+        System.out.println("################################################################ up tile [" + gridYPos + "] [" + gridXPos + "]");
+
+        int tileUp = tm.mapTileNum[gridXPos][gridYPos-1];
+        int tileDown = tm.mapTileNum[gridXPos][gridYPos+1];
+        int tileLeft = tm.mapTileNum[gridXPos-1][gridYPos];
+        int tileRight = tm.mapTileNum[gridXPos+1][gridYPos];
+
+
         if(direction.equals("up")){
-            setPositionY(getPositionY() - 176);
-            //positionY -= 176;
+            if(!tm.getTiles(tileUp).getCollision()) {
+                setPositionY(getPositionY() - 176);
+                if (getPositionY() < 0) {
+                    setPositionY(0);
+                }
+            }
         }
         if(direction.equals("down")){
-            positionY += 176;
+            if(!tm.getTiles(tileDown).getCollision()) {
+                setPositionY(getPositionY() + 176);
+                if (getPositionY() > 49 * 176) {
+                    setPositionY(49 * 176);
+                }
+            }
         }
         if(direction.equals("right")){
-            positionX += 176;
+            if(!tm.getTiles(tileRight).getCollision()) {
+                setPositionX(getPositionX() + 176);
+                if (getPositionX() > 49 * 176) {
+                    setPositionX((49 * 176));
+                }
+            }
         }
         if(direction.equals("left")){
-            positionX -= 176;
+            if(!tm.getTiles(tileLeft).getCollision()) {
+                setPositionX(getOldPositionX() - 176);
+                if (getPositionX() < 0) {
+                    setPositionX(0);
+                }
+            }
         }
-
+        /*
+        tileUp = tm.mapTileNum[gridXPos][gridYPos];
+        tileDown = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
+        tileLeft = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
+        tileRight = tm.mapTileNum[(int)positionY /176][(int)positionX / 176];
+        */
         lastKnownMove = direction;
     }
 
