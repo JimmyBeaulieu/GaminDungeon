@@ -2,10 +2,10 @@ package com.gamindungeon.gametest.object;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
-import com.gamindungeon.gametest.GameDisplay;
+import com.gamindungeon.gametest.engine.GameDisplay;
 
 public abstract class GameObject {
 
@@ -19,18 +19,22 @@ public abstract class GameObject {
     //protected Bitmap sprite;
     protected Context context;
     protected Bitmap bitMapSprite;
-    boolean inCombat;
+    public boolean inCombat;
+    protected Rect collision;
 
     public GameObject(Context context, double positionX, double positionY){
         this.positionX = positionX;
         this.positionY = positionY;
         this.context = context;
+
         //this.sprite = Bitmap.createScaledBitmap(sprite, 176, 176, false);
+
+
     }
 
 
     public abstract void draw(Canvas canvas, GameDisplay gameDisplay);
-    public abstract void setPosition(String direction);
+    public abstract void move(String direction);
     public  abstract  void update();
     public abstract void afterClash();
 
@@ -41,4 +45,11 @@ public abstract class GameObject {
 
     public abstract double getMaxHealth();
     public abstract double getHealth();
+
+    public abstract Rect getCollision();
+
+    public abstract double getStrength();
+
+    public void setHealth(double health) {
+    }
 }

@@ -1,10 +1,13 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.manager;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 
+import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.object.GameObject;
 
 public class TileManager extends GameObject {
@@ -53,23 +56,17 @@ public class TileManager extends GameObject {
     }
 
     @Override
-    public void setPosition(String direction) {
-
-    }
+    public void move(String direction) { }
 
     @Override
-    public void update() {
-
-    }
+    public void update() {}
 
     @Override
-    public void afterClash() {
-
-    }
+    public void afterClash() {}
 
     @Override
     public Context getContext() {
-        return null;
+        return context;
     }
 
     @Override
@@ -89,6 +86,16 @@ public class TileManager extends GameObject {
 
     @Override
     public double getHealth() {
+        return 0;
+    }
+
+    @Override
+    public Rect getCollision() {
+        return collision;
+    }
+
+    @Override
+    public double getStrength() {
         return 0;
     }
 }

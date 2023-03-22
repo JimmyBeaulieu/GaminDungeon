@@ -5,15 +5,17 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 import androidx.core.content.ContextCompat;
 
-import com.gamindungeon.gametest.GameDisplay;
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.graphics.Sprite;
 
 public class Player extends GameObject{
     private Sprite sprite;
+
 
     public Player(Context context, Bitmap bitMapSprite){
         super(context, 0, 0);
@@ -22,6 +24,22 @@ public class Player extends GameObject{
         strength = 3;
 
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
+
+
+//create a rectangle around the player to check for collision against other GameObject collision
+        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+        int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
+        int rectWidth = 176;
+        int rectHeight = 176;
+        int rectLeft = (screenWidth - rectWidth) / 2;
+        int rectTop = (screenHeight - rectHeight) / 2;
+        int rectRight = rectLeft + rectWidth;
+        int rectBottom = rectTop + rectHeight;
+
+        collision = new Rect(rectLeft+20, rectTop, rectRight+20, rectBottom);
+
+
+
     }
 //using sprite
     /*
@@ -50,6 +68,13 @@ public class Player extends GameObject{
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
 
+        //USED TO SEE THE COLLISION BOX
+/*
+        Paint paint = new Paint();
+        paint.setColor(0xffff0000);
+        canvas.drawRect(collision, paint);
+        */
+
     }
 
 
@@ -68,7 +93,7 @@ public class Player extends GameObject{
         return context;
     }
 
-    public void setPosition(String direction) {
+    public void move(String direction) {
         oldPositionX = positionX;
         oldPositionY = positionY;
         if(direction.equals("up")){
@@ -88,6 +113,17 @@ public class Player extends GameObject{
     public double getHealth(){
         return health;
     }
+
+    @Override
+    public Rect getCollision() {
+        return collision;
+    }
+
+    @Override
+    public double getStrength() {
+        return strength;
+    }
+
     public double getMaxHealth(){
         return  maxHealth;
     }

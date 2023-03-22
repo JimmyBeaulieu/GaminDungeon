@@ -6,8 +6,7 @@ import android.graphics.Paint;
 
 import androidx.core.content.ContextCompat;
 
-import com.gamindungeon.gametest.Game;
-import com.gamindungeon.gametest.GameLoop;
+import com.gamindungeon.gametest.engine.GameLoop;
 import com.gamindungeon.gametest.R;
 
 public class Performance {

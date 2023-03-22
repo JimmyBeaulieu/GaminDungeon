@@ -1,16 +1,14 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.engine;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,15 +16,19 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.manager.Music;
+import com.gamindungeon.gametest.manager.TileManager;
 import com.gamindungeon.gametest.gamepanel.GameOver;
 import com.gamindungeon.gametest.gamepanel.Performance;
 import com.gamindungeon.gametest.graphics.SpriteSheet;
 import com.gamindungeon.gametest.object.Enemy;
+import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 // Game manages all objects in the game and is responsible for updating
 // all states and render all objects oto the screen
@@ -40,7 +42,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private GameOver gameOver;
     private Performance performance;
     private GameDisplay gameDisplay;
-    MediaPlayer mp;
+    private Music music;
     TileManager tileManager;
 
 
@@ -62,6 +64,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //initialize player
         //GameObject(Context, X pos, Y pos, Sprite)
         SpriteSheet spriteSheet = new SpriteSheet(context);
+
+
+
         player = new Player(getContext(), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protag));
         //player = new Player(getContext(), spriteSheet.getPlayerSprite());
         //added player reference so the enemy can know where the player is
@@ -90,22 +95,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         gameDisplay = new GameDisplay(displayMetrics.widthPixels-176, displayMetrics.heightPixels-176, player);
 
         tileManager = new TileManager(context);
-
-        playMusic(context);
+        music = new Music();
+        Random rand = new Random();
+        music.play(context, rand.nextInt(3));
         setFocusable(true);
 
     }
 
-    public void playMusic(Context context){
 
-        mp = MediaPlayer.create(context, R.raw.dungeon1);
-        if (!mp.isPlaying())
-        {
-            mp.start();
-            mp.setLooping(true);
-        }
-
-    }
 
     private double gridPos(int i) {
         return (i-1)*176;
@@ -135,25 +132,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 System.out.println("startX:" + startX + "| startY:" + startY + "| deltaX:" + deltaX + "| deltaY:" + deltaY);
                 if (Math.abs(deltaX) > Math.abs(deltaY)) {
                     if (deltaX > MIN_DISTANCE) {
-                        player.setPosition("right");
+                        player.move("right");
                         System.out.println("right");
                     } else if (deltaX < MIN_DISTANCE * -1) {
-                        player.setPosition("left");
+                        player.move("left");
                         System.out.println("left");
                     }
                 } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
                     if (deltaY > MIN_DISTANCE) {
-                        player.setPosition("down");
+                        player.move("down");
                         System.out.println("down");
                     } else if (deltaY < MIN_DISTANCE * -1) {
-                        player.setPosition("up");
+                        player.move("up");
                         System.out.println("up");
                     }
                 }
                 //enemy.move();
 
                 for(Enemy enemy:enemyList){
-                    enemy.move();
+                    enemy.statusBranch();
                 }
 
                 if(combatTimer == 0) {
@@ -198,6 +195,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
+
         tileManager.draw(canvas, gameDisplay);
 
         player.draw(canvas, gameDisplay);
@@ -208,7 +206,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             enemy.draw(canvas, gameDisplay);
         }
 
-
         //Draw Game Over if (player's hp <= 0)
         if(player.getHealth() <= 0){
             gameOver.draw(canvas);
@@ -217,6 +214,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         performance.draw(canvas);
         drawGrid(canvas);
         drawHealth(canvas);
+
+        //DEBUG PURPOSES, DRAWS COLLISION BOXES
+/*
+        Paint paint = new Paint();
+        paint.setColor(0xffff0000);
+        for(Enemy enemy:enemyList){
+            canvas.drawRect(enemy.getCollision(), paint);
+        }
+        canvas.drawRect(player.getCollision(), paint);
+*/
 
     }
 
@@ -291,9 +298,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         if(player.getHealth() <= 0){
             return;
         }
-
-
-
         //update game state
         player.update();
         //checkCollision();
@@ -308,38 +312,30 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         gameLoop.stopLoop();
     }
 
-    //NEED TO BE FIXED, PROBLEM WITH COLLISIONS
-    /*
+
     private void checkCollision() {
 
         for(Enemy enemy: enemyList){
-            if(isColliding(enemy, player)){
-                System.out.println("Enemy current health: " + enemy.health);
+            if(player.getCollision().intersect(enemy.getCollision())){
+                //System.out.println("Enemy current health: " + enemy.health);
                 combatTimer = 3;
+
                 combat(enemy, player);
 
-                if(enemy.health <= 0){
-
+                if(enemy.getHealth() <= 0)
                     enemyList.remove(enemy);
                 }
             }
         }
-    }
+
 
 
     private void combat(GameObject enemy, GameObject player) {
         enemy.inCombat = false;
-        enemy.health -= player.strength;
-        player.health -= enemy.strength;
+        enemy.setHealth(enemy.getHealth()-player.getStrength());
+        player.setHealth(player.getHealth() -enemy.getStrength());
         enemy.afterClash();
         player.afterClash();
     }
-
-    private boolean isColliding(GameObject obj1, GameObject obj2) {
-        return obj1.positionY == obj2.positionY && obj1.positionX == obj2.positionX;
-    }
-*/
-
-
 
 }

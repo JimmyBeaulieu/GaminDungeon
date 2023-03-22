@@ -1,4 +1,4 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.engine;
 
 import com.gamindungeon.gametest.object.GameObject;
 

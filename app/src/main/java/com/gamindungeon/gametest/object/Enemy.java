@@ -3,8 +3,10 @@ package com.gamindungeon.gametest.object;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.util.Log;
 
-import com.gamindungeon.gametest.GameDisplay;
+import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.gamepanel.HealthBar;
 import com.gamindungeon.gametest.graphics.Sprite;
 
@@ -27,10 +29,25 @@ public class Enemy extends GameObject{
         //this.sprite = sprite;
         this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
         hpBar = new HealthBar(this);
+
+        //collision rectangle calculation:
+        int rectWidth = 100;
+        int rectHeight = 50;
+        int rectLeft = (int)positionX - rectWidth/2;
+        int rectTop = (int)positionY - rectHeight/2;
+        int rectRight = rectLeft + rectWidth;
+        int rectBottom = rectTop + rectHeight;
+
+        collision = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+        Log.d("ENEMY_COLLISION_DETECTION", "Collision created!");
     }
+
+
+
+
+
     //with sprite
     /*
-    WITH SPRITE
         public Enemy(Context context, double positionX, double positionY, Player player, Sprite sprite) {
         super(context, positionX, positionY);
         health = 7;
@@ -54,10 +71,21 @@ public class Enemy extends GameObject{
                 null);
 
         hpBar.draw(canvas, gameDisplay);
+
+        //update collision box
+        int rectWidth = 176;
+        int rectHeight = 176;
+        int rectLeft = (int)gameDisplay.gameToDisplayCoordinatesX(positionX) + 20;
+        int rectTop = (int)gameDisplay.gameToDisplayCoordinatesY(positionY);
+        int rectRight = rectLeft + rectWidth;
+        int rectBottom = rectTop + rectHeight;
+
+        collision = new Rect(rectLeft, rectTop, rectRight, rectBottom);
+
     }
 
     @Override
-    public void setPosition(String direction) {
+    public void move(String direction) {
         oldPositionX = positionX;
         oldPositionY = positionY;
         if(direction.equals("up")) positionY -= 176;
@@ -80,7 +108,7 @@ public class Enemy extends GameObject{
     boolean isFocused;
     boolean isHoming;
     int adhdLevel = 0;
-    public void move() {
+    public void statusBranch() {
 
         if(!inCombat) {
             if (adhdLevel >= 5) {
@@ -155,7 +183,7 @@ public class Enemy extends GameObject{
             if (choice < 0 || choice > 4) {
                 choice = 0;
             }
-            setPosition(movementOptions.get(choice));
+            move(movementOptions.get(choice));
             adhdLevel++;
         }
     }
@@ -189,5 +217,12 @@ public class Enemy extends GameObject{
     @Override
     public double getHealth() {
         return health;
+    }
+    public Rect getCollision(){
+        return collision;
+    }
+    @Override
+    public double getStrength() {
+        return strength;
     }
 }

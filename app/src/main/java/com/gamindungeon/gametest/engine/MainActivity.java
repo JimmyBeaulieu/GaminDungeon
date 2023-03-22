@@ -1,13 +1,10 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.engine;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.Animator;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 public class MainActivity extends AppCompatActivity {
 
