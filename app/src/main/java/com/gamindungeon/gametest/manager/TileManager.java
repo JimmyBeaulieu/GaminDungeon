@@ -36,6 +36,8 @@ public class TileManager extends GameObject {
 
     public void draw(Canvas canvas, GameDisplay gameDisplay){
 
+
+
         canvas.drawBitmap(Bitmap.createScaledBitmap(
                 tiles[0].bitmap, 176, 176, false),
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
@@ -43,13 +45,13 @@ public class TileManager extends GameObject {
                 null);
 
         canvas.drawBitmap(Bitmap.createScaledBitmap(
-                        tiles[1].bitmap, 176, 176, false),
+                tiles[1].bitmap, 176, 176, false),
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY + 176),
                 null);
 
         canvas.drawBitmap(Bitmap.createScaledBitmap(
-                        tiles[2].bitmap, 176, 176, false),
+                tiles[2].bitmap, 176, 176, false),
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX + 176),
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
