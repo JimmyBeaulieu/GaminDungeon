@@ -30,7 +30,7 @@ public class TileManager{
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
         getTileImage();
-        loadMap();
+        loadMap(0);
     }
     public Tile getTiles(int index){
         return tiles[index];
@@ -39,7 +39,7 @@ public class TileManager{
     public void getTileImage(){
 
         try{
-            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.rock), false);
+            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.rock), true);
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.water), true);
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.drawable.wood), false);
         }
@@ -48,9 +48,15 @@ public class TileManager{
         }
     }
 
-    public void loadMap(){
+    public void loadMap(int map){
         try{
-            InputStream is = context.getResources().openRawResource(R.raw.testmap);
+            InputStream is = null;
+            switch(map){
+                case 0:
+                    is = context.getResources().openRawResource(R.raw.testmap);
+                break;
+            }
+
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
             int col = 0;
