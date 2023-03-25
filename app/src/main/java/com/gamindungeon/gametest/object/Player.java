@@ -15,6 +15,9 @@ import com.gamindungeon.gametest.graphics.Sprite;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.TileManager;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Player extends GameObject{
     private Sprite sprite;
 
@@ -264,6 +267,38 @@ public class Player extends GameObject{
 
     public String getLastKnownMove(){
         return lastKnownMove;
+    }
+
+    public void addBonusToPlayer( String bonusStr) {
+        List<String> listOfBonus = Arrays.asList(bonusStr.split("\\s*\n\\s*"));
+
+        for (String str: listOfBonus) {
+            switch (str){
+                case "Prize 1":
+                    this.setMaxHealth( this.getMaxHealth() + 1);
+                    break;
+                case "Prize 2":
+                    this.setMaxHealth( this.getMaxHealth() - 2);
+                    break;
+                case "Prize 3":
+                    this.setMaxHealth( this.getMaxHealth() + 3);
+                    break;
+                case "Prize 4":
+                    this.setStrength( this.getStrength() + 1);
+                    break;
+                case "Prize 5":
+                    this.setStrength( this.getStrength() - 2);
+                    break;
+                case "Prize 6":
+                    this.setStrength( this.getStrength() + 3);
+                    break;
+                case "Prize 7":
+                    this.setMaxHealth( this.getMaxHealth() + 10);
+                    break;
+            }
+
+        }
+
     }
 
 

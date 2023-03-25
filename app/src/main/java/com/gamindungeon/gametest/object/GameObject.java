@@ -15,6 +15,14 @@ public abstract class GameObject {
     protected double positionX;
     protected double positionY;
 
+    public void setStrength(double strength) {
+        this.strength = strength;
+    }
+
+    public void setMaxHealth(double maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
     //protected Bitmap sprite;
     protected Context context;
     protected Bitmap bitMapSprite;

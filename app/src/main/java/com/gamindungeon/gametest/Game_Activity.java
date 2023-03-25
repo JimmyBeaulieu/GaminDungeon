@@ -26,7 +26,8 @@ public class Game_Activity extends AppCompatActivity {
         );
 
         //set content view to game so that objects in the Game class can be rendered on the screen
-        game = new Game(this);
+        String bonusStr = getIntent().getStringExtra("bonus");
+        game = new Game(this, bonusStr);
         setContentView(game);
 
     }

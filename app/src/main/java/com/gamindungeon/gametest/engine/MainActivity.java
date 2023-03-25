@@ -1,62 +1,114 @@
 package com.gamindungeon.gametest.engine;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.gamindungeon.gametest.Bonus_Game_Activity;
+import com.gamindungeon.gametest.Game_Activity;
+import com.gamindungeon.gametest.R;
 
-    private Game game;
+public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
+
+    final int REQUEST_CODE = 1;
+    Button btnPlay, btnBonus, btnOptions;
+
+    String bonusStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initialize();
+        
 
-        //set window to fullscreen
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        Window window = getWindow();
-        window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-        );
+    }
 
-        //set content view to game so that objects in the Game class can be rendered on the screen
-        game = new Game(this);
-        setContentView(game);
+    private void initialize() {
+        btnPlay = findViewById(R.id.btnPlay);
+        btnBonus = findViewById(R.id.btnBonus);
+        btnOptions = findViewById(R.id.btnOptions);
+
+        btnPlay.setOnClickListener(this);
+        btnBonus.setOnClickListener(this);
+        btnOptions.setOnClickListener(this);
 
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public void onClick(View view) {
+
+        int id  = view.getId();
+
+
+        switch (id){
+            case R.id.btnPlay:
+                goToGamePlay();
+                break;
+            case R.id.btnBonus:
+                goToBonusGame();
+                break;
+            case R.id.btnOptions:
+                goToOptions();
+                break;
+        }
+
+
+    }
+
+    private void goToOptions() {
+    }
+
+    private void goToBonusGame() {
+
+        try {
+            //TODO GetNumOfCoinsFromSaveFile !!!
+            int numCoins = 3;
+
+            Intent intent = new Intent(this, Bonus_Game_Activity.class);
+
+            intent.putExtra("coin", numCoins);
+
+            startActivityForResult(intent, REQUEST_CODE);
+
+        }catch (Exception ex){
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void goToGamePlay() {
+        Intent i =  new Intent(this, Game_Activity.class);
+
+        i.putExtra("bonus", bonusStr);
+        this.startActivity(i);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    @Override
-    protected void onPause() {
-        game.pause();
-        super.onPause();
-    }
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK){
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-    
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+            String prize = data.getStringExtra("prize");
 
-    @Override
-    public void onBackPressed() {
-        //commented out to prevent the button to be used to stop unintended actions
-        //super.onBackPressed();
+            int numCoin = data.getIntExtra("coin", -1);
+
+            //TODO SetNumOfCoinsToSaveFile !!!
+            String msg = "Player has " + numCoin + " coins!\n" + prize;
+
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+
+            bonusStr = prize;
+
+        }
+
+
     }
 }

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -29,6 +30,7 @@ import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -52,7 +54,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
 
-    public Game(Context context) {
+    public Game(Context context, String bonusStr) {
         super(context);
 
         //Get surface holder and add callback
@@ -76,6 +78,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         music = new Music(context);
         music.play(context, 2);
         player = new Player(getContext(), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protag), music);
+        //Adding bonus
+        if(!bonusStr.equals("")){
+            player.addBonusToPlayer(bonusStr);
+        }
 
         //using bitmap
         //------------------------------------------col---------row------------------------------------------------------------------------image
@@ -102,6 +108,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable(true);
 
     }
+
 
 
 
@@ -400,5 +407,38 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
         enemy.setIsInCombat(false);
+    }
+
+
+    private void addBonusToPlayer(Player player, String bonusStr) {
+        List<String> listOfBonus = Arrays.asList(bonusStr.split("\\s*\n\\s*"));
+
+        for (String str: listOfBonus) {
+            switch (str){
+                case "Prize 1":
+                    player.setMaxHealth( player.getMaxHealth() + 1);
+                    break;
+                case "Prize 2":
+                    player.setMaxHealth( player.getMaxHealth() - 2);
+                    break;
+                case "Prize 3":
+                    player.setMaxHealth( player.getMaxHealth() + 3);
+                    break;
+                case "Prize 4":
+                    player.setStrength(player.getStrength() + 1);
+                    break;
+                case "Prize 5":
+                    player.setStrength(player.getStrength() - 2);
+                    break;
+                case "Prize 6":
+                    player.setStrength(player.getStrength() + 3);
+                    break;
+                case "Prize 7":
+                    player.setMaxHealth( player.getMaxHealth() + 10);
+                    break;
+            }
+
+        }
+
     }
 }
