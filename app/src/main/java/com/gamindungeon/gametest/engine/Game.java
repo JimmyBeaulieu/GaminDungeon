@@ -408,37 +408,4 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
         enemy.setIsInCombat(false);
     }
-
-
-    private void addBonusToPlayer(Player player, String bonusStr) {
-        List<String> listOfBonus = Arrays.asList(bonusStr.split("\\s*\n\\s*"));
-
-        for (String str: listOfBonus) {
-            switch (str){
-                case "Prize 1":
-                    player.setMaxHealth( player.getMaxHealth() + 1);
-                    break;
-                case "Prize 2":
-                    player.setMaxHealth( player.getMaxHealth() - 2);
-                    break;
-                case "Prize 3":
-                    player.setMaxHealth( player.getMaxHealth() + 3);
-                    break;
-                case "Prize 4":
-                    player.setStrength(player.getStrength() + 1);
-                    break;
-                case "Prize 5":
-                    player.setStrength(player.getStrength() - 2);
-                    break;
-                case "Prize 6":
-                    player.setStrength(player.getStrength() + 3);
-                    break;
-                case "Prize 7":
-                    player.setMaxHealth( player.getMaxHealth() + 10);
-                    break;
-            }
-
-        }
-
-    }
 }
