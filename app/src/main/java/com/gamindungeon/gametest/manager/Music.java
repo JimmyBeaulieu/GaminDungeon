@@ -16,7 +16,7 @@ public class Music {
         this.context = context;
     }
 
-    public void play(Context context, int songNumber){
+    public void play(int songNumber){
 
         switch(songNumber){
             case 0:
@@ -36,6 +36,19 @@ public class Music {
             mp.setLooping(true);
         }
 
+    }
+    public void playSFX(int sfwNumber){
+        switch(sfwNumber){
+            case 0:
+                //pick up coin
+                mp= MediaPlayer.create(context, R.raw.pickupcoin);
+                break;
+            case 1:
+                //fighting
+                mp= MediaPlayer.create(context, R.raw.hithurt);
+                break;
+        }
+        mp.start();
     }
 
     public void pause(){

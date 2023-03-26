@@ -23,6 +23,7 @@ public class TileManager{
     public int mapTileNum[][];
     GameDisplay gameDisplay;
     Player player;
+    int currentLoadedMap;
     public TileManager(Context context, GameDisplay gameDisplay, Player player){
         this.context = context;
         tiles = new Tile[10];
@@ -31,6 +32,7 @@ public class TileManager{
         this.player = player;
         getTileImage();
         loadMap(0);
+        currentLoadedMap = 0;
     }
     public Tile getTiles(int index){
         return tiles[index];
@@ -57,6 +59,7 @@ public class TileManager{
             switch(map){
                 case 0:
                     is = context.getResources().openRawResource(R.raw.testmap);
+                    currentLoadedMap = 0;
                 break;
             }
 
@@ -125,6 +128,9 @@ public class TileManager{
             }
 
         }
+    }
+    public int getCurrentLoadedMap(){
+        return  currentLoadedMap;
     }
 
 
