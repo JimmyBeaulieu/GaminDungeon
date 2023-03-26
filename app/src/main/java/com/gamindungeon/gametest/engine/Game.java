@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -29,6 +30,7 @@ import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -52,7 +54,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
 
-    public Game(Context context) {
+    public Game(Context context, String bonusStr) {
         super(context);
 
         //Get surface holder and add callback
@@ -76,6 +78,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         music = new Music(context);
         music.play(context, 2);
         player = new Player(getContext(), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protag), music);
+        //Adding bonus
+        if(!bonusStr.equals("")){
+            player.addBonusToPlayer(bonusStr);
+        }
 
         //using bitmap
         //------------------------------------------col---------row------------------------------------------------------------------------image
@@ -102,6 +108,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable(true);
 
     }
+
 
 
 
