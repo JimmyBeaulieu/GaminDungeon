@@ -27,16 +27,11 @@ public abstract class GameObject {
     protected Context context;
     protected Bitmap bitMapSprite;
     public boolean inCombat;
-    protected Rect collision;
 
     public GameObject(Context context, double positionX, double positionY){
         this.positionX = positionX;
         this.positionY = positionY;
         this.context = context;
-
-        //this.sprite = Bitmap.createScaledBitmap(sprite, 176, 176, false);
-
-
     }
 
 
@@ -51,7 +46,7 @@ public abstract class GameObject {
     public abstract double getMaxHealth();
     public abstract double getHealth();
 
-    public abstract Rect getCollision();
+    //public abstract Rect getCollision();
 
     public abstract double getStrength();
 

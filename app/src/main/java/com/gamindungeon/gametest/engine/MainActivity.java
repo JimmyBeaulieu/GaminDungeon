@@ -14,17 +14,28 @@ import android.widget.Toast;
 import com.gamindungeon.gametest.Bonus_Game_Activity;
 import com.gamindungeon.gametest.Game_Activity;
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.manager.Music;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
 
     final int REQUEST_CODE = 1;
     Button btnPlay, btnBonus, btnOptions;
+    Music mp;
 
     String bonusStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //set window to fullscreen
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        Window window = getWindow();
+        window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
+
         setContentView(R.layout.activity_main);
         initialize();
         
@@ -40,6 +51,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         btnBonus.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
 
+        //setting up music for menu
+        mp = new Music(this);
+        mp.play(0);
+
     }
 
     @Override
@@ -50,6 +65,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         switch (id){
             case R.id.btnPlay:
+                mp.stop();
                 goToGamePlay();
                 break;
             case R.id.btnBonus:

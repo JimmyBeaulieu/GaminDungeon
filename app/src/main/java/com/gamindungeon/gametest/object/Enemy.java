@@ -2,10 +2,12 @@ package com.gamindungeon.gametest.object;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
+import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.gamepanel.HealthBar;
 import com.gamindungeon.gametest.graphics.Sprite;
@@ -27,25 +29,16 @@ public class Enemy extends GameObject{
     boolean isHoming;
     int adhdLevel = 0;
 
-    public Enemy(Context context, double positionX, double positionY, Bitmap bitMapSprite, Player player, TileManager tm) {
+    public Enemy(Context context, double positionX, double positionY,Player player, TileManager tm) {
         super(context, positionX, positionY);
         health = 7;
         maxHealth = health;
         strength = 2;
         this.player = player;
-        this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
+        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.protagbig), 176, 176, false);
         hpBar = new HealthBar(this);
         this.tm = tm;
 
-        //collision rectangle calculation:
-        int rectWidth = 100;
-        int rectHeight = 50;
-        int rectLeft = (int)positionX - rectWidth/2;
-        int rectTop = (int)positionY - rectHeight/2;
-        int rectRight = rectLeft + rectWidth;
-        int rectBottom = rectTop + rectHeight;
-
-        collision = new Rect(rectLeft, rectTop, rectRight, rectBottom);
     }
 
     @Override
@@ -59,15 +52,6 @@ public class Enemy extends GameObject{
 
         hpBar.draw(canvas, gameDisplay);
 
-        //update collision box
-        int rectWidth = 176;
-        int rectHeight = 176;
-        int rectLeft = (int)gameDisplay.gameToDisplayCoordinatesX(positionX) + 20;
-        int rectTop = (int)gameDisplay.gameToDisplayCoordinatesY(positionY);
-        int rectRight = rectLeft + rectWidth;
-        int rectBottom = rectTop + rectHeight;
-
-        collision = new Rect(rectLeft, rectTop, rectRight, rectBottom);
 
     }
 
@@ -221,9 +205,6 @@ public class Enemy extends GameObject{
     }
     public void setHealth(double health) {
         this.health = health;
-    }
-    public Rect getCollision(){
-        return collision;
     }
     @Override
     public double getStrength() {

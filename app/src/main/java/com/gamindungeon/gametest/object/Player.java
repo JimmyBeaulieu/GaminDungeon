@@ -2,6 +2,7 @@ package com.gamindungeon.gametest.object;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -28,49 +29,28 @@ public class Player extends GameObject{
     TileManager tm;
     Music mp;
 
-    public Player(Context context, Bitmap bitMapSprite, Music music){
+    public Player(Context context, Music music){
         super(context, 176 * 3, 176 * 4);
-        health = 10;
+        health = 1;
         maxHealth = health;
         strength = 3;
         mp=music;
 
-        this.bitMapSprite = Bitmap.createScaledBitmap(bitMapSprite, 176, 176, false);
+        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.protag), 176, 176, false);
         oldPositionX = 0;
         oldPositionY = 0;
-
-//create a rectangle around the player to check for collision against other GameObject collision
-        int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
-        int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
-        int rectWidth = 176;
-        int rectHeight = 176;
-        int rectLeft = (screenWidth - rectWidth) / 2;
-        int rectTop = (screenHeight - rectHeight) / 2;
-        int rectRight = rectLeft + rectWidth;
-        int rectBottom = rectTop + rectHeight;
-
-        collision = new Rect(rectLeft+20, rectTop, rectRight+20, rectBottom);
 
     }
 
     public void setTileManager(TileManager tm){
         this.tm = tm;
     }
-//using sprite
-    /*
-    public Player(Context context, Sprite sprite){
-        super(context, 0, 0);
-        health = 10;
-        maxHealth = health;
-        strength = 3;
-        this.sprite = sprite;
-    }
-     */
+
     public void draw(Canvas canvas, GameDisplay gameDisplay) {
 
         canvas.drawBitmap(
                 bitMapSprite,
-                (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
+                (float)gameDisplay.gameToDisplayCoordinatesX(positionX)+20,
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
 
@@ -78,13 +58,6 @@ public class Player extends GameObject{
         paint.setColor(ContextCompat.getColor(context, R.color.magenta));
         paint.setTextSize(50);
         canvas.drawText("Health: " + health + "/" + maxHealth, 100, 100, paint);
-
-        //USED TO SEE THE COLLISION BOX
-
-        paint = new Paint();
-        paint.setColor(0xffff0000);
-        canvas.drawRect(collision, paint);
-
 
     }
 
@@ -99,9 +72,6 @@ public class Player extends GameObject{
     }
 
     public void move(String direction) {
-
-        oldPositionX = positionX;
-        oldPositionY = positionY;
 
 //row
         int gridXPos = ((int)positionX / 176);
@@ -121,110 +91,46 @@ public class Player extends GameObject{
 
         switch(direction) {
             case "up":
-
                 if (!tm.getTiles(tileUp).getCollision()) {
                     setPositionY(getPositionY() - 176);
-
                     if (getPositionY() < 0) {
                         setPositionY(0);
                     }
                 }
                 break;
             case "down":
-
                 if (!tm.getTiles(tileDown).getCollision()) {
-
+                    //set new position for player
                     setPositionY(getPositionY() + 176);
-
-                    currentTile = tm.mapTileNum[gridXPos][gridYPos];
-                    if (tm.getTiles(currentTile).getType().equals("teleport")) {
-                        System.out.println("On a teleporter!");
-                        if (gridYPos == 17 && gridXPos == 12) {
-                            setPositionX(39 * 176);
-                            setPositionY(24 * 176);
-                        }
-                    }
-
+                    //if out of bounds, brings player back in-bound
                     if (getPositionY() > 49 * 176) {
                         setPositionY(49 * 176);
                     }
                 }
                 break;
             case "left":
-
                 if (!tm.getTiles(tileLeft).getCollision()) {
-
                     setPositionX(getOldPositionX() - 176);
                     if (getPositionX() < 0) {
                         setPositionX(0);
                     }
-                    currentTile = tm.mapTileNum[gridXPos][gridYPos];
-                    if (tm.getTiles(currentTile).getType().equals("teleport")) {
-                        System.out.println("On a teleporter!");
-                        if (gridYPos == 17 && gridXPos == 12) {
-                            setPositionX(39 * 176);
-                            setPositionY(24 * 176);
-                        }
-                    }
                 }
-
                     break;
             case "right":
-
                         if (!tm.getTiles(tileRight).getCollision()) {
-
                             setPositionX(getPositionX() + 176);
-
-                            currentTile = tm.mapTileNum[gridXPos][gridYPos];
-                            if (tm.getTiles(currentTile).getType().equals("teleport")) {
-                                System.out.println("On a teleporter!");
-                                if (gridYPos == 17 && gridXPos == 12) {
-                                    setPositionX(39 * 176);
-                                    setPositionY(24 * 176);
-                                }
-                            }
-
                             if (getPositionX() > 49 * 176) {
                                 setPositionX((49 * 176));
                             }
                         }
-
                         break;
                 }
-        //row
-                gridXPos = ((int)positionX / 176);
-        //column
-                gridYPos = (((int)positionY / 176));
-                currentTile = tm.mapTileNum[gridXPos][gridYPos];
-                if (tm.getTiles(currentTile).getType().equals("teleport")) {
-                    System.out.println("On a teleporter!");
-
-                    if (gridYPos == 17 && gridXPos == 12) {
-                        setPositionX(39 * 176);
-                        setPositionY(24 * 176);
-                        mp.stop();
-                        mp.play(context, 0);
-                    }
-                }
-
-                System.out.println("Is it a teleport? " + tm.getTiles(currentTile).getType().equals("teleport"));
-
-                    if(tm.getTiles(currentTile).getType().equals("teleport")) {
-                        System.out.println("On a teleporter!");
-                    }
-
         lastKnownMove = direction;
     }
 
     public double getHealth(){
         return health;
     }
-
-    @Override
-    public Rect getCollision() {
-        return collision;
-    }
-
     @Override
     public double getStrength() {
         return strength;
@@ -271,7 +177,7 @@ public class Player extends GameObject{
     }
 
     public void addBonusToPlayer( String bonusStr) {
-        List<String> listOfBonus = Arrays.asList(bonusStr.split("\\s*\n\\s*"));
+        String[] listOfBonus = bonusStr.split("\\s*\n\\s*");
 
         for (String str: listOfBonus) {
             switch (str){
@@ -303,4 +209,10 @@ public class Player extends GameObject{
     }
 
 
+    public void setOldX(double positionX) {
+         oldPositionX = positionX;
+    }
+    public void setOldY(double positionY) {
+        oldPositionY = positionY;
+    }
 }
