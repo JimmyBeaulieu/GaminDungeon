@@ -79,14 +79,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //using bitmap
         //------------------------------------------col---------row------------------------------------------------------------------------image
-/*
+
         enemyList.add(new Enemy(getContext(), gridPos(9), gridPos(4), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(17), gridPos(5), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(6), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(23), gridPos(11), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(11), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
         enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(18), BitmapFactory.decodeResource(getContext().getResources(), R.drawable.protagbig), player, tileManager));
-*/
+
         //Initialize game display and center it around the player
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -249,8 +249,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 if(enemyList.get(i).inCombat){
                     combat(enemyList.get(i), player);
+
+                    //reset enemy to their previous location
+                    /*
                     enemyList.get(i).setPositionY(enemyList.get(i).getOldPositionY());
                     enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
+                    */
+
                     Log.d("ENEMY_COMBAT_STATUS", "Enemy #" +i);
                     break;
                 }
