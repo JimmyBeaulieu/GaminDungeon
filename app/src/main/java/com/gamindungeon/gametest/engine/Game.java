@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.graphics.UserInterface;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
@@ -59,6 +60,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     TileManager tileManager;
     Score score;
+    UserInterface ui;
     boolean fading = false;
 
     //TO BE REMOVED
@@ -79,17 +81,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         gameLoop = new GameLoop(this, surfaceHolder);
 
         //initialize game panel
-        gameOver = new GameOver(context);
         performance = new Performance(gameLoop, context);
-
-        //initialize player
-        //GameObject(Context, X pos, Y pos, Sprite)
-
-        //TO BE REMOVED
-        //SpriteSheet spriteSheet = new SpriteSheet(context);
-
         score = new Score(context);
-
+        ui = new UserInterface(getContext(), score);
+        gameOver = new GameOver(context, ui);
         music = new Music(context);
         sfx = new Music(context);
         music.play(2);
@@ -113,13 +108,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         switch (tileManager.getCurrentLoadedMap()){
             case 0:
                 //enemies
+                /*
                 enemyList.add(new Enemy(getContext(), gridPos(9), gridPos(4), player, tileManager));
                 enemyList.add(new Enemy(getContext(), gridPos(17), gridPos(5), player, tileManager));
                 enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(6), player, tileManager));
                 enemyList.add(new Enemy(getContext(), gridPos(23), gridPos(11), player, tileManager));
                 enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(11), player, tileManager));
                 enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(18),  player, tileManager));
-
+*/
                 //coin machines
                 coinMachineList.add(new CoinMachine(context, gridPos(40), gridPos(18)));
 
@@ -150,7 +146,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     float deltaX = 0;
     float deltaY = 0;
     int combatTimer = 0;
-    int gameoverHitCount = 0;
+    int passDialogHitCount = 0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //System.out.println("Touch event");
@@ -167,10 +163,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 startY = event.getY();
 
                 if(gameOver.getGameOverState()) {
-                    gameoverHitCount++;
-                    if (gameoverHitCount == 2) {
+                    passDialogHitCount++;
+                    if (passDialogHitCount == 2) {
+                        passDialogHitCount = 0;
                         Intent i = new Intent(getContext(), MainActivity.class);
                         getContext().startActivity(i);
+                    }
+                }
+                if(ui.isInDialog()){
+                    passDialogHitCount++;
+                    if(passDialogHitCount == 2){
+                        passDialogHitCount = 0;
+                        ui.setInDialog(false);
                     }
                 }
 
@@ -258,7 +262,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-
             tileManager.draw(canvas);
 
             for(CoinMachine machine : coinMachineList){
@@ -280,8 +283,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 gameOver.setGameOverState(true);
                 music.stop();
             }
-            drawGrid(canvas);
-            score.draw(canvas);
+            ui.draw(canvas);
 
             //TODO make it work
             //fadeBlack(canvas);
@@ -289,9 +291,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //******************************************************************************************
             // TO BE DEACTIVATED FOR FULL RELEASE
 
-            //drawDebug(canvas);
+            drawDebug(canvas);
 
             //******************************************************************************************
+
+
 
     }
 
@@ -309,30 +313,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         canvas.drawText("Combat Timer: " + combatTimer, 100, 400, paint);
 
     }
-    private void drawGrid(Canvas canvas) {
-        int screenWidth = canvas.getWidth();
-        int screenHeight = canvas.getHeight();
 
-        int gridSize = 176;
-
-        Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1);
-
-
-    //offset to middle
-    for (int i = 88; i < screenWidth; i += gridSize) {
-        //draws vertical lines X
-        canvas.drawLine(i, 0, i, screenHeight, paint);
-    }
-    for (int i = 100; i < screenHeight; i += gridSize) {
-        //draw horizontal lines Y
-        canvas.drawLine(0, i, screenWidth, i, paint);
-    }
-
-
-    }
     public void update() {
         //Stop updating the game if the player is dead
         if(player.getHealth() <= 0){
@@ -341,14 +322,42 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //update game state
         player.update();
 
-        checkForCollision();
-        checkForTeleport();
-
         if(combatTimer == 0){
             player.setIsInCombat(false);
         }
 
+        checkForCollision();
+        mapEvent(tileManager.getCurrentLoadedMap(), player.getPositionX(), player.getPositionY());
         gameDisplay.update();
+    }
+
+    private void mapEvent(int currentLoadedMap, double x, double y) {
+        switch(currentLoadedMap){
+            case 0:
+                //mapTest
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                //will be used for hardcoded teleporter, basically:
+                //IF player is on specific X and Y, THEN change X and Y position to newX and newY
+
+                //first teleporter sending to second teleporter
+                if(x == gridPos(12) && y == gridPos(17)){ teleport(39, 24); }
+
+                //second teleporter sending to first teleporter
+                if(x == gridPos(38) && y == gridPos(24)){ teleport(13, 17); }
+
+                if(x == gridPos(3) && y == gridPos(4)) {
+                    ui.createDialog("What is this, Minecraft?");
+                }
+                if(x == gridPos(9) && y == gridPos(4)) {
+                    ui.createDialog("I can't believe my eyes! what is this horrible, monster-filled place??");
+                }
+
+
+
+                break;
+        }
+
     }
 
     public void pause() {
@@ -410,13 +419,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         case 6:
                             score.setGold(score.getGold() * 5);
                             break;
-                        case 7:
-                            break;
-                        case 8:
-                            break;
-                        case 9:
-                            break;
-                        case 10:
+                        default:
                             break;
                     }
                 }
@@ -457,7 +460,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             }
         }
     }
-
+/*
     private void checkForTeleport() {
         //X = Col
         //Y = Row
@@ -473,6 +476,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
     }
+
+ */
 
     private void teleport(int x, int y) {
         //fading =true;

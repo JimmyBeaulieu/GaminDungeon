@@ -11,16 +11,22 @@ import androidx.core.content.ContextCompat;
 import com.gamindungeon.gametest.Game_Activity;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.MainActivity;
+import com.gamindungeon.gametest.graphics.UserInterface;
 
 public class GameOver {
     private Context context;
     private boolean isGameOver = false;
+    private UserInterface ui;
 
-    public GameOver(Context context){
+    public GameOver(Context context, UserInterface ui){
         this.context = context;
+        this.ui = ui;
     }
     public void draw(Canvas canvas) {
 
+        if(isGameOver){
+
+        }
         String died = "You Died!";
         String underDied = "Press the screen twice";
         float x = 800;

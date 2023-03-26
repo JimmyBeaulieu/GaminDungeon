@@ -11,4 +11,5 @@
     <color name="yellow">#FFDD00</color>
     <color name="green">#FF4EC110</color>
     <color name="GameOver">#FF1100</color>
+    <color name="dialogBox">#636363</color>
 </resources>
