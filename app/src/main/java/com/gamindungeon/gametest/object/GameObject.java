@@ -55,6 +55,5 @@ public abstract class GameObject {
 
     public abstract double getStrength();
 
-    public void setHealth(double health) {
-    }
+    public abstract void setHealth(double health);
 }

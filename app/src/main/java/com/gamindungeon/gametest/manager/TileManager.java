@@ -51,6 +51,7 @@ public class TileManager{
     }
 
     public void loadMap(int map){
+
         try{
             InputStream is = null;
             switch(map){
@@ -125,5 +126,6 @@ public class TileManager{
 
         }
     }
+
 
 }
