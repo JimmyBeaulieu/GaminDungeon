@@ -249,6 +249,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 if(enemyList.get(i).inCombat){
                     combat(enemyList.get(i), player);
+<<<<<<< Updated upstream
 
                     //reset enemy to their previous location
                     /*
@@ -256,6 +257,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
                     */
 
+=======
+                    /*
+                    enemyList.get(i).setPositionY(enemyList.get(i).getOldPositionY());
+                    enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
+                     */
+>>>>>>> Stashed changes
                     Log.d("ENEMY_COMBAT_STATUS", "Enemy #" +i);
                     break;
                 }
@@ -400,6 +407,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         return flag;
     }
     private void combat(Enemy enemy, Player player) {
+
         enemy.setHealth(enemy.getHealth()-player.getStrength());
         player.setHealth(player.getHealth() -enemy.getStrength());
 

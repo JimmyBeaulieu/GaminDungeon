@@ -8,7 +8,7 @@ public class Tile {
     private boolean collision;
     private String type;
 
-    public Tile(Bitmap bitmap, boolean collision, String type){
+    public Tile(Bitmap bitmap, boolean collision, String type) {
         this.bitmap = bitmap;
         this.collision = collision;
         this.type = type;

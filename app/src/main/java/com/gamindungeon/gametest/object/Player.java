@@ -47,6 +47,7 @@ public class Player extends GameObject{
         int rectBottom = rectTop + rectHeight;
 
         collision = new Rect(rectLeft+20, rectTop, rectRight+20, rectBottom);
+
     }
 
     public void setTileManager(TileManager tm){
@@ -76,11 +77,11 @@ public class Player extends GameObject{
         canvas.drawText("Health: " + health + "/" + maxHealth, 100, 100, paint);
 
         //USED TO SEE THE COLLISION BOX
-/*
-        Paint paint = new Paint();
+
+        paint = new Paint();
         paint.setColor(0xffff0000);
         canvas.drawRect(collision, paint);
-*/
+
 
     }
 
