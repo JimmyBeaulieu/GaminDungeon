@@ -35,6 +35,7 @@ import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
+import com.gamindungeon.gametest.object.Teleporter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +53,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private List<Enemy> enemyList = new ArrayList<Enemy>();
     private List<Coin> coinList = new ArrayList<Coin>();
     private List<CoinMachine> coinMachineList = new ArrayList<CoinMachine>();
+    private List<Teleporter> teleporterList = new ArrayList<Teleporter>();
     private GameOver gameOver;
     private Performance performance;
     private GameDisplay gameDisplay;
@@ -61,14 +63,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     TileManager tileManager;
     Score score;
     UserInterface ui;
+
+    //TODO make the method work
     boolean fading = false;
-
-    //TO BE REMOVED
-    //boolean mapLoaded = false;
-    //TO BE REMOVED
-    //private Enemy enemy;
-
-
 
     public Game(Context context, String bonusStr) {
         super(context);
@@ -105,23 +102,26 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         player.setTileManager(tileManager);
 
         //Map selector
-        switch (tileManager.getCurrentLoadedMap()){
+        loadMap(0);
+        setFocusable(true);
+
+    }
+
+    private void loadMap(int mapIndex){
+        switch (mapIndex){
             case 0:
+
                 //enemies
-                /*
-                enemyList.add(new Enemy(getContext(), gridPos(9), gridPos(4), player, tileManager));
-                enemyList.add(new Enemy(getContext(), gridPos(17), gridPos(5), player, tileManager));
-                enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(6), player, tileManager));
-                enemyList.add(new Enemy(getContext(), gridPos(23), gridPos(11), player, tileManager));
-                enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(11), player, tileManager));
-                enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(18),  player, tileManager));
-*/
-                enemyList = tileManager.getEnemyOnMap();
+                enemyList.addAll(tileManager.getEnemyOnMap());
+
+                //teleporter
+                teleporterList.addAll(tileManager.getTeleporterOnMap());
+
                 //coin machines
-                coinMachineList.add(new CoinMachine(context, gridPos(40), gridPos(18)));
+                coinMachineList.addAll(tileManager.getCoinMachineOnMap());
 
                 //coins
-                coinList.add(new Coin(context, gridPos(12), gridPos(19)));
+                coinList.addAll(tileManager.getCoinOnMap());
 
 
                 break;
@@ -130,13 +130,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 break;
 
         }
-
-        for(Enemy enemy : enemyList){
-            enemy.setTileManager(tileManager);
-        }
-
-        setFocusable(true);
-
     }
     private double gridPos(int i) {
         return (i)*176;
