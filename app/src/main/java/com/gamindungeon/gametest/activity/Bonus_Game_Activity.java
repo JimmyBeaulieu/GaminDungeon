@@ -1,4 +1,4 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.gamindungeon.gametest.R;
 
 public class Bonus_Game_Activity extends AppCompatActivity implements View.OnClickListener {
 
