@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -27,7 +28,18 @@ import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.Teleporter;
 import com.gamindungeon.gametest.object.collectable.Food;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
@@ -35,7 +47,7 @@ import java.util.Random;
 // all states and render all objects oto the screen
 public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
-    //private Enemy enemy;
+    String saveFileName = "SaveFile1";
     private Player player;
     private GameLoop gameLoop;
     private List<Enemy> enemyList = new ArrayList<Enemy>();
@@ -52,6 +64,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     TileManager tileManager;
     Score score;
     UserInterface ui;
+    boolean firstTimePlaying = false;
 
     //TODO make the method work
     boolean fading = false;
@@ -64,65 +77,109 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        gameLoop = new GameLoop(this, surfaceHolder);
+        initialization(surfaceHolder);
 
-        //initialize game panel
-        performance = new Performance(gameLoop, context);
-        score = new Score(context);
-
-        music = new Music(context);
-        sfx = new Music(context);
-        music.play(2);
-
-        player = new Player(getContext(), music);
-        ui = new UserInterface(getContext(), score, player);
-        gameOver = new GameOver(context, ui);
         //Adding bonus
         if(!bonusStr.equals("")){
             player.addBonusToPlayer(bonusStr);
         }
+        player.setTileManager(tileManager);
+
+//#######################################################################################################################################################
+
+        //load();
+
+
+//#######################################################################################################################################################
+        //Map selector
+        //loadMap(0);
+
+        setFocusable(true);
+
+    }
+
+    private void initialization(SurfaceHolder surfaceHolder) {
+
+        //uncomment to delete savefile
+/*
+        File directory = getContext().getFilesDir(); // assuming you want to delete files from app's internal storage
+        File[] files = directory.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.delete()) {
+                    // File deleted successfully
+                } else {
+                    // Failed to delete file
+                }
+            }
+        }
+
+ */
+        gameLoop = new GameLoop(this, surfaceHolder);
+
+        //initialize game panel
+        performance = new Performance(gameLoop, getContext());
+        score = new Score(getContext());
+
+        music = new Music(getContext());
+        sfx = new Music(getContext());
+        music.play(2);
+
+        loadPlayer();
+
+
 
         //Initialize game display and center it around the player
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         gameDisplay = new GameDisplay(displayMetrics.widthPixels-176, displayMetrics.heightPixels-176, player);
 
-        tileManager = new TileManager(context, gameDisplay, player);
-        player.setTileManager(tileManager);
+        tileManager = new TileManager(getContext(), gameDisplay, player);
 
-        //Map selector
-        loadMap(0);
-        setFocusable(true);
+        loadEnemies();
 
-    }
-
-    private void loadMap(int mapIndex){
-        switch (mapIndex){
-            case 0:
-
-                //enemies
-                enemyList.addAll(tileManager.getEnemyOnMap());
-
-                //teleporter
-                teleporterList.addAll(tileManager.getTeleporterOnMap());
-
-                //coin machines
-                coinMachineList.addAll(tileManager.getCoinMachineOnMap());
-
-                //coins
-                coinList.addAll(tileManager.getCoinOnMap());
-
-                //food
-                foodList.addAll(tileManager.getFoodOnMap());
+        ui = new UserInterface(getContext(), score, player);
+        gameOver = new GameOver(getContext(), ui);
 
 
-                break;
-            case 1:
+        if(firstTimePlaying){
+            //loads the first map
+            tileManager.loadMap(0);
 
-                break;
+            //generates entity depending on where they were placed on the map editor
 
+            //enemies
+            enemyList.addAll(tileManager.getEnemyOnMap());
+
+            //teleporter
+            teleporterList.addAll(tileManager.getTeleporterOnMap());
+
+            //coin machines
+            coinMachineList.addAll(tileManager.getCoinMachineOnMap());
+
+            //coins
+            coinList.addAll(tileManager.getCoinOnMap());
+
+            //food
+            foodList.addAll(tileManager.getFoodOnMap());
         }
+
+        //if player was dead when they left last game
+        if(player.getHealth() <= 0){
+            player.setHealth(player.getMaxHealth());
+            player.setPositionX(tileManager.getCurrentMapSpawnX());
+            player.setPositionY(tileManager.getCurrentMapSpawnY());
+            score.setExperience(0);
+            score.setGold(0);
+        }
+
+        tileManager.cleanUp();
+        Log.d("SAVEFILE", "after cleanup!");
+
+
     }
+
+
     private double gridPos(int i) {
         return (i)*176;
     }
@@ -179,18 +236,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     if (Math.abs(deltaX) > Math.abs(deltaY)) {
                         if (deltaX > MIN_DISTANCE) {
                             move = "right";
-                            System.out.println("right");
                         } else if (deltaX < MIN_DISTANCE * -1) {
                             move = "left";
-                            System.out.println("left");
                         }
                     } else if (Math.abs(deltaX) < Math.abs(deltaY)) {
                         if (deltaY > MIN_DISTANCE) {
                             move = "down";
-                            System.out.println("down");
                         } else if (deltaY < MIN_DISTANCE * -1) {
                             move = "up";
-                            System.out.println("up");
                         }
                     }
                 }
@@ -199,14 +252,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 player.setOldY(player.getPositionY());
                 player.move(move);
 
-                    for(Enemy enemy:enemyList){
-                        enemy.statusBranch();
-                    }
+                save();
+
+                for(Enemy enemy:enemyList){
+                    enemy.statusBranch();
+                }
 
                 if (combatTimer > 0) {
                     combatTimer--;
                 }
-                System.out.println("Player X:" + player.getPositionX() + " | Player Y:" + player.getPositionY());
         }
 
 
@@ -297,6 +351,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void update() {
         //Stop updating the game if the player is dead
         if(player.getHealth() <= 0){
+            player.setLastKnownMove("up");
             return;
         }
         //update game state
@@ -416,17 +471,6 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
             }
         }
 
-        /*
-        for(Coin coin : coinList){
-            if (player.getPositionX() == coin.getPositionX() &&
-            player.getPositionY() == coin.getPositionY()) {
-                score.setGold(score.getGold()+1);
-                sfx.playSFX(0);
-                coinList.remove(coin);
-            }
-        }
-         */
-
         for(int i = 0; i<foodList.size();i++){
             if(player.getPositionX() == foodList.get(i).getPositionX() &&
             player.getPositionY() == foodList.get(i).getPositionY()){
@@ -531,5 +575,191 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
     }
 
      */
+
+    public void save(){
+
+        StringBuilder content;
+        Log.d("SAVEFILE", player.getLastKnownMove());
+        content = new StringBuilder(player.toString());
+
+        for(Enemy enemy : enemyList){
+            content.append("enemy|").append(enemy);
+        }
+
+        for(Coin coin : coinList){
+            content.append("coin|").append(coin);
+        }
+
+        for(Food food : foodList){
+            content.append("food|").append(food);
+        }
+
+        content.append(dialogPass);
+
+        //Log.d("SAVEFILE","map#|" + tileManager.getCurrentLoadedMap());
+        content.append(tileManager.getCurrentLoadedMap());
+
+
+
+        try {
+            File directory = getContext().getFilesDir();
+
+            // Create a file object for the desired file name in the app's private storage
+            File file = new File(directory, saveFileName);
+
+            // Open a file output stream for writing to the file
+            FileOutputStream stream = new FileOutputStream(file);
+
+            // Write the content to the file
+            stream.write(String.valueOf(content).getBytes());
+
+            // Close the output stream
+            stream.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving the file.");
+            e.printStackTrace();
+        }
+
+    }
+    public void loadPlayer(){
+        String content;
+        try {
+
+            File file = new File(getContext().getFilesDir(), saveFileName);
+            if(file.exists()) {
+                firstTimePlaying = false;
+                Log.d("SAVEFILE", "Save found!");
+                //found a save file on the system
+
+                FileInputStream fis = getContext().openFileInput(saveFileName);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                content = sb.toString();
+                //takes the whole savefile into a String variables and split it each || character
+                String[] contentArray = content.split("\\|\\|");
+                Log.d("SAVEFILE", contentArray[0]);
+
+//player START
+                String[] playerInfo = contentArray[0].split("\\|");
+
+                player = new Player
+                        (
+                                getContext(),
+                                music,
+                                Double.parseDouble(playerInfo[0]),  //positionX
+                                Double.parseDouble(playerInfo[1]),  //positionY
+                                Double.parseDouble(playerInfo[2]),  //health
+                                Double.parseDouble(playerInfo[3]),  //maxHealth
+                                Double.parseDouble(playerInfo[4]),  //strength
+                                Double.parseDouble(playerInfo[5]),  //hunger
+                                Double.parseDouble(playerInfo[6]),  //oldPositionX
+                                Double.parseDouble(playerInfo[7]),  //oldPositionY
+                                String.valueOf(playerInfo[8])       //lastKnownMove
+                        );
+//player END
+
+
+            }
+            else{
+                //new save file
+
+                //create a new player
+                player = new Player(getContext(), music, gridPos(3), gridPos(4), 100,
+                100, 30, 50, gridPos(3), gridPos(4), "up");
+
+                //sets boolean for first time playing map initialization
+                firstTimePlaying = true;
+
+            }
+
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void loadEnemies(){
+
+        String content;
+
+        try {
+
+            File file = new File(getContext().getFilesDir(), saveFileName);
+            if(file.exists()) {
+                firstTimePlaying = false;
+                Log.d("SAVEFILE", "Save found!");
+                //found a save file on the system
+
+                FileInputStream fis = getContext().openFileInput(saveFileName);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader br = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                content = sb.toString();
+
+                //takes the whole savefile into a String variables and split it each || character
+                String[] contentArray = content.split("\\|\\|");
+               // Log.d("SAVEFILE", contentArray[0]);
+
+                for (int i = 1; i < contentArray.length; i++) {
+
+                    String[] splitStr = contentArray[i].split("\\|");
+
+                    //Enemy(Context context, double positionX, double positionY, Player player, TileManager tm, String type) {
+                    //        super(context, positionX, positionY)
+
+                    if (splitStr[0].equals("enemy")) {
+                        enemyList.add(new Enemy
+                                (
+                                        getContext(),
+                                        Double.parseDouble(splitStr[1]),  //positionX
+                                        Double.parseDouble(splitStr[2]),  //positionY
+                                        player,                             //player
+                                        tileManager,                        //tilemanager
+                                        splitStr[3]                         //type
+                                ));
+                    }
+                    //Log.d("SAVEFILE", "enemyList size = " + enemyList.size());
+
+                    if (splitStr[0].equals("coin")) {
+                        coinList.add(new Coin(
+                                getContext(),
+                                Double.parseDouble(splitStr[1]),
+                                Double.parseDouble(splitStr[2])
+                        ));
+                    }
+                    //Log.d("SAVEFILE", "coinList size = " + coinList.size());
+
+                    if (splitStr[0].equals("food")) {
+                        //Log.d("SAVEFILE_FOOD", splitStr[3]);
+                        foodList.add(new Food(
+                                getContext(),
+                                Double.parseDouble(splitStr[1]),
+                                Double.parseDouble(splitStr[2]),
+                                splitStr[3]
+                        ));
+                    }
+                    //Log.d("SAVEFILE", "foodList size = " + foodList.size());
+                }
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+
+    }
 
 }

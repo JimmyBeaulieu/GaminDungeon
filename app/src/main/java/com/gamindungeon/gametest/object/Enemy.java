@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.gamepanel.HealthBar;
@@ -28,9 +30,11 @@ public class Enemy extends GameObject{
     boolean isFocused;
     boolean isHoming;
     int adhdLevel = 0;
-
+    String type;
     public Enemy(Context context, double positionX, double positionY, Player player, TileManager tm, String type) {
         super(context, positionX, positionY);
+
+        this.type = type;
 
         switch(type){
             case "bat":
@@ -70,10 +74,10 @@ public class Enemy extends GameObject{
         //row
         int gridYPos = (int)positionY / 176;
 
-        int tileUp = tm.mapTileNum[gridXPos][gridYPos-1];
-        int tileDown = tm.mapTileNum[gridXPos][gridYPos+1];
-        int tileLeft = tm.mapTileNum[gridXPos-1][gridYPos];
-        int tileRight = tm.mapTileNum[gridXPos+1][gridYPos];
+        int tileUp = tm.getMapTileNum()[gridXPos][gridYPos-1];
+        int tileDown = tm.getMapTileNum()[gridXPos][gridYPos+1];
+        int tileLeft = tm.getMapTileNum()[gridXPos-1][gridYPos];
+        int tileRight = tm.getMapTileNum()[gridXPos+1][gridYPos];
 
         if(direction.equals("up")){
             if(!tm.getTiles(tileUp).getCollision()) {
@@ -213,6 +217,23 @@ public class Enemy extends GameObject{
     public void setHealth(double health) {
         this.health = health;
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+
+        /*
+        location
+        health
+        maxHealth
+        type
+        oldPositionX = 0;
+        oldPositionY = 0;
+         */
+
+        return positionX + "|" + positionY  + "|" + type + "||";
+    }
+
     @Override
     public double getStrength() {
         return strength;
