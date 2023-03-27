@@ -306,8 +306,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 gameOver.setGameOverState(true);
                 music.stop();
             }
-            ui.draw(canvas);
-
+            if(!gameOver.getGameOverState()) {
+                ui.draw(canvas);
+            }
             //TODO make it work
             //fadeBlack(canvas);
 
