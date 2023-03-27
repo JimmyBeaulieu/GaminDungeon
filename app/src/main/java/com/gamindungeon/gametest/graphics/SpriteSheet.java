@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import com.gamindungeon.gametest.R;
 
 public class SpriteSheet {
-
+/*
     private Bitmap bitmap;
 
     public SpriteSheet(Context context){
@@ -25,4 +25,6 @@ public class SpriteSheet {
     public Bitmap getBitmap() {
         return bitmap;
     }
+
+ */
 }

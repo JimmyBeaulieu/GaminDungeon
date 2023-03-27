@@ -19,20 +19,6 @@ public class Score {
         this.context = context;
     }
 
-    public void draw(Canvas canvas){
-
-        String stringGold = Integer.toString(gold);
-        String stringExp = Integer.toString(experience);
-        Paint paint = new Paint();
-
-        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-        paint.setTextSize(50);
-        canvas.drawText("Gold: " + stringGold, 100, 200, paint);
-
-        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-        paint.setTextSize(50);
-        canvas.drawText("Experience: " +stringExp, 100, 300, paint);
-    }
     public void setGold(int gold){
         this.gold = gold;
     }

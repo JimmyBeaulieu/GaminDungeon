@@ -7,7 +7,7 @@ import android.graphics.Rect;
 import com.gamindungeon.gametest.R;
 
 public class Sprite {
-
+/*
     private final Rect rect;
     private final SpriteSheet spriteSheet;
 
@@ -34,4 +34,6 @@ public class Sprite {
     public int getWidth() {
         return rect.width();
     }
+
+ */
 }
