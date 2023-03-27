@@ -36,7 +36,7 @@ public class Player extends GameObject{
         strength = 3;
         mp=music;
 
-        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.protag), 176, 176, false);
+        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.protag), 176, 176, false);
         oldPositionX = 0;
         oldPositionY = 0;
 

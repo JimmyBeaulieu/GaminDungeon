@@ -116,6 +116,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 enemyList.add(new Enemy(getContext(), gridPos(21), gridPos(11), player, tileManager));
                 enemyList.add(new Enemy(getContext(), gridPos(12), gridPos(18),  player, tileManager));
 */
+                enemyList = tileManager.getEnemyOnMap();
                 //coin machines
                 coinMachineList.add(new CoinMachine(context, gridPos(40), gridPos(18)));
 
@@ -172,7 +173,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
                 if(ui.isInDialog()){
                     passDialogHitCount++;
-                    if(passDialogHitCount == 2){
+                    if(passDialogHitCount == 3){
                         passDialogHitCount = 0;
                         ui.setInDialog(false);
                     }
@@ -183,7 +184,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //user stop touching the screen
             case MotionEvent.ACTION_UP:
                 //!checkCollision() &&
-                if(player.getHealth() > 0) {
+                if(player.getHealth() > 0 && !ui.isInDialog()) {
 
                     //calculates the difference between the point where the user originally touches the screen vs the point where the user stops
                     deltaX = event.getX() - startX;
@@ -330,7 +331,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         mapEvent(tileManager.getCurrentLoadedMap(), player.getPositionX(), player.getPositionY());
         gameDisplay.update();
     }
-
+int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check for an increasing amount of dialogPass, then increase dialogPass by one each time
     private void mapEvent(int currentLoadedMap, double x, double y) {
         switch(currentLoadedMap){
             case 0:
@@ -346,15 +347,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //second teleporter sending to first teleporter
                 if(x == gridPos(38) && y == gridPos(24)){ teleport(13, 17); }
 
-                if(x == gridPos(3) && y == gridPos(4)) {
+                if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
                     ui.createDialog("What is this, Minecraft?");
+                    dialogPass++;
                 }
-                if(x == gridPos(9) && y == gridPos(4)) {
+                if(x == gridPos(9) && y == gridPos(4) && dialogPass < 2) {
                     ui.createDialog("I can't believe my eyes! what is this horrible, monster-filled place??");
+                    dialogPass++;
                 }
-
-
-
                 break;
         }
 

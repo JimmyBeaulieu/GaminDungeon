@@ -35,7 +35,7 @@ public class Enemy extends GameObject{
         maxHealth = health;
         strength = 2;
         this.player = player;
-        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.protagbig), 176, 176, false);
+        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), 176, 176, false);
         hpBar = new HealthBar(this);
         this.tm = tm;
 

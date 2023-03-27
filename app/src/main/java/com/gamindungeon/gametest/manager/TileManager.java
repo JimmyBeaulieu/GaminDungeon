@@ -6,21 +6,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
+import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileManager{
 
     Tile[] tiles;
     Context context;
-    public int mapTileNum[][];
+    public int[][] mapTileNum;
     GameDisplay gameDisplay;
     Player player;
     int currentLoadedMap;
@@ -46,6 +50,8 @@ public class TileManager{
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.c_wood), false, "floor");
             tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.d_coin), false, "coin");
             tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleport");
+            tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.f_coinmachine), false, "coinmachine");
+            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "enemy");
         }
         catch(Exception e){
             e.printStackTrace();
@@ -71,7 +77,7 @@ public class TileManager{
             while(col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()){
 
                 String line = br.readLine();
-                System.out.println(line);
+
                 while(col < gameDisplay.getMaxScreenColumns()){
                     String[] numbers = line.split(" ");
 
@@ -131,6 +137,19 @@ public class TileManager{
     }
     public int getCurrentLoadedMap(){
         return  currentLoadedMap;
+    }
+    public List<Enemy>getEnemyOnMap(){
+        List<Enemy>output = new ArrayList<Enemy>();
+        for(int i = 0; i < mapTileNum.length; i++){
+            for(int j=0; j<mapTileNum[i].length; j++){
+                if(tiles[mapTileNum[i][j]].getType().equals("enemy")){
+                    output.add(new Enemy(context, i*176, j*176, player, this));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                    Log.d("ENEMY_CREATION", "currently looking at tile[" + i + "][" + j + "]");
+                }
+            }
+        }
+        return output;
     }
 
 
