@@ -11,15 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GameTest">
         <activity
-            android:name=".Bonus_Game_Activity"
-            android:exported="false"
-            android:screenOrientation="landscape"/>
+            android:name=".activity.Option_Activity"
+            android:exported="false" />
         <activity
-            android:name=".Game_Activity"
+            android:name=".activity.Bonus_Game_Activity"
             android:exported="false"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
-            android:name=".engine.MainActivity"
+            android:name=".activity.Game_Activity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.MainActivity"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>

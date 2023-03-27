@@ -1,4 +1,4 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

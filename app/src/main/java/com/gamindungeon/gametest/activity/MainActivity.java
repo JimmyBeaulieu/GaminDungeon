@@ -1,4 +1,4 @@
-package com.gamindungeon.gametest.engine;
+package com.gamindungeon.gametest.activity;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,8 +11,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.gamindungeon.gametest.Bonus_Game_Activity;
-import com.gamindungeon.gametest.Game_Activity;
+import com.gamindungeon.gametest.activity.Bonus_Game_Activity;
+import com.gamindungeon.gametest.activity.Game_Activity;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Music;
 
@@ -80,6 +80,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     }
 
     private void goToOptions() {
+        Intent i =  new Intent(this, Option_Activity.class);
+        this.startActivity(i);
     }
 
     private void goToBonusGame() {

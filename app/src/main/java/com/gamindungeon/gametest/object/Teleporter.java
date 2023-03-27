@@ -3,8 +3,10 @@ package com.gamindungeon.gametest.object;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.engine.GameDisplay;
 
 public class Teleporter {
 
@@ -25,5 +27,14 @@ public class Teleporter {
     }
     public double getPositionY(){
         return positionY;
+    }
+
+    public void draw(Canvas canvas, GameDisplay gameDisplay) {
+
+        canvas.drawBitmap(
+                sprite,
+                (float)gameDisplay.gameToDisplayCoordinatesX(positionX)+20,
+                (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
+                null);
     }
 }

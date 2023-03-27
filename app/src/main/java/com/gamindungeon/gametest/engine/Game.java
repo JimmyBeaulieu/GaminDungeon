@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.activity.MainActivity;
 import com.gamindungeon.gametest.graphics.UserInterface;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
@@ -29,17 +30,12 @@ import com.gamindungeon.gametest.object.Teleporter;
 import com.gamindungeon.gametest.object.collectable.Food;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Random;
 
@@ -47,7 +43,7 @@ import java.util.Random;
 // all states and render all objects oto the screen
 public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
-    String saveFileName = "SaveFile1";
+    String saveFileName = "SaveFile";
     private Player player;
     private GameLoop gameLoop;
     private List<Enemy> enemyList = new ArrayList<Enemy>();
@@ -100,21 +96,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     private void initialization(SurfaceHolder surfaceHolder) {
 
-        //uncomment to delete savefile
-/*
-        File directory = getContext().getFilesDir(); // assuming you want to delete files from app's internal storage
-        File[] files = directory.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.delete()) {
-                    // File deleted successfully
-                } else {
-                    // Failed to delete file
-                }
-            }
-        }
-
- */
         gameLoop = new GameLoop(this, surfaceHolder);
 
         //initialize game panel
@@ -141,6 +122,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         ui = new UserInterface(getContext(), score, player);
         gameOver = new GameOver(getContext(), ui);
 
+        //generates entity depending on where they were placed on the map editor
+
+        //Entities that don't change no matter the save
+        //teleporter
+        teleporterList.addAll(tileManager.getTeleporterOnMap());
+
+        //coin machines
+        coinMachineList.addAll(tileManager.getCoinMachineOnMap());
+
 
         if(firstTimePlaying){
             //loads the first map
@@ -148,14 +138,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
             //generates entity depending on where they were placed on the map editor
 
+            //save file dependant entity
             //enemies
             enemyList.addAll(tileManager.getEnemyOnMap());
-
-            //teleporter
-            teleporterList.addAll(tileManager.getTeleporterOnMap());
-
-            //coin machines
-            coinMachineList.addAll(tileManager.getCoinMachineOnMap());
 
             //coins
             coinList.addAll(tileManager.getCoinOnMap());
@@ -294,6 +279,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(canvas);
             tileManager.draw(canvas);
 
+        for(Teleporter teleporter : teleporterList){
+            teleporter.draw(canvas, gameDisplay);
+        }
+
             for(CoinMachine machine : coinMachineList){
                 machine.draw(canvas, gameDisplay);
             }
@@ -302,9 +291,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 coin.draw(canvas, gameDisplay);
             }
 
-        for(Food food : foodList){
-            food.draw(canvas, gameDisplay);
-        }
+            for(Food food : foodList){
+                food.draw(canvas, gameDisplay);
+            }
 
             player.draw(canvas, gameDisplay);
             //enemy.draw(canvas, gameDisplay);
@@ -381,7 +370,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                 //second teleporter sending to first teleporter
                 if(x == gridPos(38) && y == gridPos(24)){ teleport(13, 17); }
 
-                /*
+
                 if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
                     ui.createDialog("What is this, Minecraft?");
                     dialogPass++;
@@ -390,7 +379,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                     ui.createDialog("I can't believe my eyes! what is this horrible, monster-filled place??");
                     dialogPass++;
                 }
-                */
+
                 break;
         }
 
@@ -594,10 +583,10 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
             content.append("food|").append(food);
         }
 
-        content.append(dialogPass);
+        content.append(dialogPass).append("||");
 
         //Log.d("SAVEFILE","map#|" + tileManager.getCurrentLoadedMap());
-        content.append(tileManager.getCurrentLoadedMap());
+        content.append(tileManager.getCurrentLoadedMap()).append("||");
 
 
 
@@ -694,7 +683,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
             File file = new File(getContext().getFilesDir(), saveFileName);
             if(file.exists()) {
                 firstTimePlaying = false;
-                Log.d("SAVEFILE", "Save found!");
+                //Log.d("SAVEFILE", "Save found!");
                 //found a save file on the system
 
                 FileInputStream fis = getContext().openFileInput(saveFileName);
@@ -711,16 +700,15 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
 
                 //takes the whole savefile into a String variables and split it each || character
                 String[] contentArray = content.split("\\|\\|");
-               // Log.d("SAVEFILE", contentArray[0]);
+
+                int index = 0;
 
                 for (int i = 1; i < contentArray.length; i++) {
 
                     String[] splitStr = contentArray[i].split("\\|");
 
-                    //Enemy(Context context, double positionX, double positionY, Player player, TileManager tm, String type) {
-                    //        super(context, positionX, positionY)
-
                     if (splitStr[0].equals("enemy")) {
+                        index++;
                         enemyList.add(new Enemy
                                 (
                                         getContext(),
@@ -731,7 +719,8 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                                         splitStr[3]                         //type
                                 ));
                     }
-                    //Log.d("SAVEFILE", "enemyList size = " + enemyList.size());
+
+                    Log.d("SAVEFILE", String.valueOf(index));
 
                     if (splitStr[0].equals("coin")) {
                         coinList.add(new Coin(
@@ -740,7 +729,6 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                                 Double.parseDouble(splitStr[2])
                         ));
                     }
-                    //Log.d("SAVEFILE", "coinList size = " + coinList.size());
 
                     if (splitStr[0].equals("food")) {
                         //Log.d("SAVEFILE_FOOD", splitStr[3]);
@@ -751,8 +739,9 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                                 splitStr[3]
                         ));
                     }
-                    //Log.d("SAVEFILE", "foodList size = " + foodList.size());
                 }
+                dialogPass = Integer.parseInt(contentArray[contentArray.length - 2]);
+                tileManager.loadMap(Integer.parseInt(contentArray[contentArray.length - 1]));
             }
         }
         catch(IOException e){
