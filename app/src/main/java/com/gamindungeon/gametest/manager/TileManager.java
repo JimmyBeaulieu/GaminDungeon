@@ -1,21 +1,19 @@
 package com.gamindungeon.gametest.manager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.util.Log;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
-import com.gamindungeon.gametest.object.Coin;
+import com.gamindungeon.gametest.object.collectable.Coin;
 import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
-import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.Teleporter;
+import com.gamindungeon.gametest.object.collectable.Food;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -55,6 +53,8 @@ public class TileManager{
             tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleporter");
             tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.f_coinmachine), false, "coinmachine");
             tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
+            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
+            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
         }
         catch(Exception e){
             e.printStackTrace();
@@ -188,6 +188,26 @@ public class TileManager{
                 if(mapTileNum[i][j] ==3){
                     output.add(new Coin(context, i*176, j*176));
                     tiles[mapTileNum[i][j]] = tiles[2];
+                }
+            }
+        }
+        return output;
+    }
+
+    public List<Food>getFoodOnMap(){
+        List<Food>output = new ArrayList<Food>();
+
+        for(int i = 0; i < mapTileNum.length; i++){
+            for(int j = 0; j < mapTileNum.length; j++){
+                switch(mapTileNum[i][j]){
+                    case 8:
+                    //apple
+                        output.add(new Food(context,  i*176, j*176, "apple"));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+                    break;
+                    case 7:
+                        output.add(new Food(context,  i*176, j*176, "turkeyleg"));
+                        tiles[mapTileNum[i][j]] = tiles[2];
                 }
             }
         }

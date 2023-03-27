@@ -22,12 +22,13 @@ import java.util.List;
 public class Player extends GameObject{
     private Sprite sprite;
 
-    double oldPositionX;
-    double oldPositionY;
+    private double oldPositionX;
+    private double oldPositionY;
+    private double hunger;
 
     private String lastKnownMove = "";
-    TileManager tm;
-    Music mp;
+    private TileManager tm;
+    private Music mp;
 
     public Player(Context context, Music music){
         super(context, 176 * 3, 176 * 4);
@@ -35,6 +36,7 @@ public class Player extends GameObject{
         maxHealth = health;
         strength = 20;
         mp=music;
+        hunger = 100;
 
         this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.protag), 176, 176, false);
         oldPositionX = 0;
@@ -78,16 +80,10 @@ public class Player extends GameObject{
 //column
         int gridYPos = (((int)positionY / 176));
 
-        System.out.println("################################################################ up tile y[" + gridYPos + "] x[" + gridXPos + "]");
-        int x =tm.mapTileNum[gridXPos][gridYPos];
-        System.out.println("################################################################ up tile type =" + tm.getTiles(x).getType());
-
         int tileUp = tm.mapTileNum[gridXPos][gridYPos-1];
         int tileDown = tm.mapTileNum[gridXPos][gridYPos+1];
         int tileLeft = tm.mapTileNum[gridXPos-1][gridYPos];
         int tileRight = tm.mapTileNum[gridXPos+1][gridYPos];
-
-        int currentTile = tm.mapTileNum[gridXPos][gridYPos];
 
         switch(direction) {
             case "up":
@@ -124,6 +120,10 @@ public class Player extends GameObject{
                             }
                         }
                         break;
+                }
+                if(health < maxHealth && hunger > 0 && !inCombat){
+                    health+=5;
+                    hunger-=10;
                 }
         lastKnownMove = direction;
     }
@@ -174,6 +174,15 @@ public class Player extends GameObject{
 
     public String getLastKnownMove(){
         return lastKnownMove;
+    }
+    public double getHunger(){
+        return hunger;
+    }
+    public void setHunger(double hunger){
+        this.hunger = hunger;
+        if(hunger > 100){
+            this.hunger = 100;
+        }
     }
 
     public void addBonusToPlayer( String bonusStr) {

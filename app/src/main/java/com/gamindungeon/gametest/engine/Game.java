@@ -1,23 +1,14 @@
 package com.gamindungeon.gametest.engine;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.media.MediaPlayer;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -29,17 +20,14 @@ import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
 import com.gamindungeon.gametest.gamepanel.GameOver;
 import com.gamindungeon.gametest.gamepanel.Performance;
-import com.gamindungeon.gametest.graphics.SpriteSheet;
-import com.gamindungeon.gametest.object.Coin;
+import com.gamindungeon.gametest.object.collectable.Coin;
 import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
-import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.Teleporter;
+import com.gamindungeon.gametest.object.collectable.Food;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -54,6 +42,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private List<Coin> coinList = new ArrayList<Coin>();
     private List<CoinMachine> coinMachineList = new ArrayList<CoinMachine>();
     private List<Teleporter> teleporterList = new ArrayList<Teleporter>();
+    private List<Food> foodList = new ArrayList<Food>();
     private GameOver gameOver;
     private Performance performance;
     private GameDisplay gameDisplay;
@@ -80,14 +69,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //initialize game panel
         performance = new Performance(gameLoop, context);
         score = new Score(context);
-        ui = new UserInterface(getContext(), score);
-        gameOver = new GameOver(context, ui);
+
         music = new Music(context);
         sfx = new Music(context);
         music.play(2);
 
         player = new Player(getContext(), music);
-
+        ui = new UserInterface(getContext(), score, player);
+        gameOver = new GameOver(context, ui);
         //Adding bonus
         if(!bonusStr.equals("")){
             player.addBonusToPlayer(bonusStr);
@@ -122,6 +111,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //coins
                 coinList.addAll(tileManager.getCoinOnMap());
+
+                //food
+                foodList.addAll(tileManager.getFoodOnMap());
 
 
                 break;
@@ -202,7 +194,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         }
                     }
                 }
-                //if(!checkCollision()){
+
                 player.setOldX(player.getPositionX());
                 player.setOldY(player.getPositionY());
                 player.move(move);
@@ -210,17 +202,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     for(Enemy enemy:enemyList){
                         enemy.statusBranch();
                     }
-                //}
 
-                //gradually regenerate health when not in combat
-                if (combatTimer == 0 && player.getHealth() >0) {
-                    if (player.getHealth() < player.getMaxHealth()) {
-                        player.setHealth(player.getHealth() + 1);
-                    }
-                    if (player.getHealth() > player.getMaxHealth()) {
-                        player.setHealth(player.getMaxHealth());
-                    }
-                }
                 if (combatTimer > 0) {
                     combatTimer--;
                 }
@@ -266,6 +248,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 coin.draw(canvas, gameDisplay);
             }
 
+        for(Food food : foodList){
+            food.draw(canvas, gameDisplay);
+        }
+
             player.draw(canvas, gameDisplay);
             //enemy.draw(canvas, gameDisplay);
             for (Enemy enemy : enemyList) {
@@ -304,7 +290,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //DRAWS COMBAT TIMER
         paint.setColor(color);
         paint.setTextSize(50);
-        canvas.drawText("Combat Timer: " + combatTimer, 100, 400, paint);
+        canvas.drawText("Combat Timer: " + combatTimer, 100, 500, paint);
 
     }
 
@@ -340,6 +326,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                 //second teleporter sending to first teleporter
                 if(x == gridPos(38) && y == gridPos(24)){ teleport(13, 17); }
 
+                /*
                 if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
                     ui.createDialog("What is this, Minecraft?");
                     dialogPass++;
@@ -348,6 +335,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                     ui.createDialog("I can't believe my eyes! what is this horrible, monster-filled place??");
                     dialogPass++;
                 }
+                */
                 break;
         }
 
@@ -422,8 +410,29 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
         for (Enemy enemy : enemyList) {
             if (player.getPositionX() == enemy.getPositionX() &&
             player.getPositionY() == enemy.getPositionY()) {
+                player.setIsInCombat(true);
                 combatTimer = 3;
                 combat(enemy, player);
+            }
+        }
+
+        /*
+        for(Coin coin : coinList){
+            if (player.getPositionX() == coin.getPositionX() &&
+            player.getPositionY() == coin.getPositionY()) {
+                score.setGold(score.getGold()+1);
+                sfx.playSFX(0);
+                coinList.remove(coin);
+            }
+        }
+         */
+
+        for(int i = 0; i<foodList.size();i++){
+            if(player.getPositionX() == foodList.get(i).getPositionX() &&
+            player.getPositionY() == foodList.get(i).getPositionY()){
+                player.setHunger(player.getHunger() + foodList.get(i).getHunger());
+                sfx.playSFX(2);
+                foodList.remove(foodList.get(i));
             }
         }
 
@@ -431,8 +440,14 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
             if (enemyList.get(i).getHealth() <= 0) {
                 Random random = new Random();
                 int chance = random.nextInt(10)+1;
-                if(chance >= 5){
+                if(chance >= 8){
                     coinList.add(new Coin(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
+                }
+                if(chance <8 && chance >= 6){
+                    foodList.add(new Food(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY(), "apple"));
+                }
+                if(chance == 5){
+                    foodList.add(new Food(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY(), "turkeyleg"));
                 }
 
                 enemyList.remove(enemyList.get(i));
