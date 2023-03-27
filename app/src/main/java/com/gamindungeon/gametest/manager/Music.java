@@ -47,6 +47,10 @@ public class Music {
                 //fighting
                 mp= MediaPlayer.create(context, R.raw.hithurt);
                 break;
+            case 2:
+                //eat food
+                mp = MediaPlayer.create(context, R.raw.eat);
+                break;
         }
         mp.start();
     }

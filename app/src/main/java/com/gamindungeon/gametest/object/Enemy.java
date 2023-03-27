@@ -53,7 +53,7 @@ public class Enemy extends GameObject{
 
         canvas.drawBitmap(
                 bitMapSprite,
-                (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
+                (float)gameDisplay.gameToDisplayCoordinatesX(positionX)+20,
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
 

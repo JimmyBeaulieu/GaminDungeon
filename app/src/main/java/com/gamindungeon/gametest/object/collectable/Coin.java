@@ -1,4 +1,4 @@
-package com.gamindungeon.gametest.object;
+package com.gamindungeon.gametest.object.collectable;
 
 import android.content.Context;
 import android.graphics.Bitmap;

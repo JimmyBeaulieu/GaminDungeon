@@ -9,36 +9,44 @@ import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Score;
+import com.gamindungeon.gametest.object.Player;
 
 public class UserInterface {
     private Score score;
     private Context context;
     private boolean inDialog = false;
+    private Player player;
     private String dialogText;
-    public UserInterface(Context context,Score score){
+    public UserInterface(Context context,Score score, Player player){
+        this.player = player;
         this.context = context;
         this.score = score;
     }
 
 
     public void draw(Canvas canvas){
-            drawGrid(canvas);
+        drawGrid(canvas);
 
-            String stringGold = Integer.toString(score.getGold());
-            String stringExp = Integer.toString(score.getExperience());
-            Paint paint = new Paint();
+        String stringGold = Integer.toString(score.getGold());
+        String stringExp = Integer.toString(score.getExperience());
+        String stringHunger = Double.toString(player.getHunger());
+        Paint paint = new Paint();
 
-            paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-            paint.setTextSize(50);
-            canvas.drawText("Gold: " + stringGold, 100, 200, paint);
+        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
+        paint.setTextSize(50);
+        canvas.drawText("Gold: " + stringGold, 100, 200, paint);
 
-            paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-            paint.setTextSize(50);
-            canvas.drawText("Experience: " + stringExp, 100, 300, paint);
+        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
+        paint.setTextSize(50);
+        canvas.drawText("Experience: " + stringExp, 100, 300, paint);
 
-            if(inDialog){
-                drawDialog(canvas);
-            }
+        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
+        paint.setTextSize(50);
+        canvas.drawText("Hunger: " + stringHunger, 100, 400, paint);
+
+        if(inDialog){
+            drawDialog(canvas);
+        }
 
 
     }
