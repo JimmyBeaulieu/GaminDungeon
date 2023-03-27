@@ -29,13 +29,20 @@ public class Enemy extends GameObject{
     boolean isHoming;
     int adhdLevel = 0;
 
-    public Enemy(Context context, double positionX, double positionY,Player player, TileManager tm) {
+    public Enemy(Context context, double positionX, double positionY, Player player, TileManager tm, String type) {
         super(context, positionX, positionY);
-        health = 7;
+
+        switch(type){
+            case "bat":
+                health = 70;
+                strength = 20;
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), 176, 176, false);
+                break;
+
+        }
+
         maxHealth = health;
-        strength = 2;
         this.player = player;
-        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), 176, 176, false);
         hpBar = new HealthBar(this);
         this.tm = tm;
 

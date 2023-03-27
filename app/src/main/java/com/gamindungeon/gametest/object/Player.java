@@ -31,9 +31,9 @@ public class Player extends GameObject{
 
     public Player(Context context, Music music){
         super(context, 176 * 3, 176 * 4);
-        health = 1;
+        health = 100;
         maxHealth = health;
-        strength = 3;
+        strength = 20;
         mp=music;
 
         this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.protag), 176, 176, false);

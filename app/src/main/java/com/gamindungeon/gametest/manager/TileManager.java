@@ -10,9 +10,12 @@ import android.util.Log;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
+import com.gamindungeon.gametest.object.Coin;
+import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.GameObject;
 import com.gamindungeon.gametest.object.Player;
+import com.gamindungeon.gametest.object.Teleporter;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -49,9 +52,9 @@ public class TileManager{
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.b_water), true, "wall");
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.c_wood), false, "floor");
             tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.d_coin), false, "coin");
-            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleport");
+            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleporter");
             tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.f_coinmachine), false, "coinmachine");
-            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "enemy");
+            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
         }
         catch(Exception e){
             e.printStackTrace();
@@ -77,7 +80,7 @@ public class TileManager{
             while(col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()){
 
                 String line = br.readLine();
-
+                Log.d("tile", line);
                 while(col < gameDisplay.getMaxScreenColumns()){
                     String[] numbers = line.split(" ");
 
@@ -140,12 +143,24 @@ public class TileManager{
     }
     public List<Enemy>getEnemyOnMap(){
         List<Enemy>output = new ArrayList<Enemy>();
+
+        for(int i = 0; i < mapTileNum.length; i++){
+            for(int j = 0; j < mapTileNum.length; j++){
+                if(mapTileNum[i][j] == 6){
+                    output.add(new Enemy(context, i*176, j*176, player, this, "bat"));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
+            }
+        }
+        return output;
+    }
+    public List<Teleporter>getTeleporterOnMap(){
+        List<Teleporter>output = new ArrayList<Teleporter>();
         for(int i = 0; i < mapTileNum.length; i++){
             for(int j=0; j<mapTileNum[i].length; j++){
-                if(tiles[mapTileNum[i][j]].getType().equals("enemy")){
-                    output.add(new Enemy(context, i*176, j*176, player, this));
+                if(mapTileNum[i][j] ==4){
+                    output.add(new Teleporter(context, i*176, j*176));
                     tiles[mapTileNum[i][j]] = tiles[2];
-                    Log.d("ENEMY_CREATION", "currently looking at tile[" + i + "][" + j + "]");
                 }
             }
         }
@@ -153,4 +168,29 @@ public class TileManager{
     }
 
 
+    public List<CoinMachine> getCoinMachineOnMap() {
+        List<CoinMachine>output = new ArrayList<CoinMachine>();
+        for(int i = 0; i < mapTileNum.length; i++){
+            for(int j=0; j<mapTileNum[i].length; j++){
+                if(mapTileNum[i][j] ==5){
+                    output.add(new CoinMachine(context, i*176, j*176));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
+            }
+        }
+        return output;
+    }
+
+    public List<Coin> getCoinOnMap() {
+        List<Coin>output = new ArrayList<Coin>();
+        for(int i = 0; i < mapTileNum.length; i++){
+            for(int j=0; j<mapTileNum[i].length; j++){
+                if(mapTileNum[i][j] ==3){
+                    output.add(new Coin(context, i*176, j*176));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
+            }
+        }
+        return output;
+    }
 }
