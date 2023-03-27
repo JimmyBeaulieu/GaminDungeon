@@ -21,15 +21,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileManager{
+public class TileManager {
 
     Tile[] tiles;
     Context context;
-    public int[][] mapTileNum;
+    private int[][] mapTileNum;
     GameDisplay gameDisplay;
     Player player;
     int currentLoadedMap;
-    public TileManager(Context context, GameDisplay gameDisplay, Player player){
+
+    public TileManager(Context context, GameDisplay gameDisplay, Player player) {
         this.context = context;
         tiles = new Tile[10];
         this.gameDisplay = gameDisplay;
@@ -39,13 +40,14 @@ public class TileManager{
         loadMap(0);
         currentLoadedMap = 0;
     }
-    public Tile getTiles(int index){
+
+    public Tile getTiles(int index) {
         return tiles[index];
     }
 
-    public void getTileImage(){
+    public void getTileImage() {
 
-        try{
+        try {
             tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.a_rock), true, "wall");
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.b_water), true, "wall");
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.c_wood), false, "floor");
@@ -55,21 +57,20 @@ public class TileManager{
             tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
             tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
             tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void loadMap(int map){
+    public void loadMap(int map) {
 
-        try{
+        try {
             InputStream is = null;
-            switch(map){
+            switch (map) {
                 case 0:
                     is = context.getResources().openRawResource(R.raw.testmap);
                     currentLoadedMap = 0;
-                break;
+                    break;
             }
 
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -77,11 +78,11 @@ public class TileManager{
             int col = 0;
             int row = 0;
 
-            while(col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()){
+            while (col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()) {
 
                 String line = br.readLine();
                 Log.d("tile", line);
-                while(col < gameDisplay.getMaxScreenColumns()){
+                while (col < gameDisplay.getMaxScreenColumns()) {
                     String[] numbers = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
@@ -89,14 +90,14 @@ public class TileManager{
                     mapTileNum[col][row] = num;
                     col++;
                 }
-                if(col == gameDisplay.getMaxScreenColumns()){
+                if (col == gameDisplay.getMaxScreenColumns()) {
                     col = 0;
                     row++;
                 }
             }
             br.close();
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
     }
@@ -114,22 +115,22 @@ public class TileManager{
             int worldX = col * 176;
             int worldY = row * 176;
 
-            if( worldX + 352 > player.getPositionX() - gameDisplay.getDisplayCenterX() &&
-                worldX - 352 < player.getPositionX() + gameDisplay.getDisplayCenterX()&&
-                worldY + 352 > player.getPositionY() - gameDisplay.getDisplayCenterY()&&
-                worldY - 352 < player.getPositionY() + gameDisplay.getDisplayCenterY()){
+            if (worldX + 352 > player.getPositionX() - gameDisplay.getDisplayCenterX() &&
+                    worldX - 352 < player.getPositionX() + gameDisplay.getDisplayCenterX() &&
+                    worldY + 352 > player.getPositionY() - gameDisplay.getDisplayCenterY() &&
+                    worldY - 352 < player.getPositionY() + gameDisplay.getDisplayCenterY()) {
 
                 canvas.drawBitmap(Bitmap.createScaledBitmap(
-                        tiles[tileNum].getBitmap(), 176, 176, false),
-                    (float) gameDisplay.gameToDisplayCoordinatesX(x) + 20,
+                                tiles[tileNum].getBitmap(), 176, 176, false),
+                        (float) gameDisplay.gameToDisplayCoordinatesX(x) + 20,
                         (float) gameDisplay.gameToDisplayCoordinatesY(y),
                         null);
             }
 
 
             col++;
-            x+= 176;
-            if(col == gameDisplay.getMaxScreenColumns()){
+            x += 176;
+            if (col == gameDisplay.getMaxScreenColumns()) {
                 col = 0;
                 x = 0;
                 row++;
@@ -138,28 +139,35 @@ public class TileManager{
 
         }
     }
-    public int getCurrentLoadedMap(){
-        return  currentLoadedMap;
-    }
-    public List<Enemy>getEnemyOnMap(){
-        List<Enemy>output = new ArrayList<Enemy>();
 
-        for(int i = 0; i < mapTileNum.length; i++){
-            for(int j = 0; j < mapTileNum.length; j++){
-                if(mapTileNum[i][j] == 6){
-                    output.add(new Enemy(context, i*176, j*176, player, this, "bat"));
+    public int getCurrentLoadedMap() {
+        return currentLoadedMap;
+    }
+
+    public int[][] getMapTileNum() {
+        return mapTileNum;
+    }
+
+    public List<Enemy> getEnemyOnMap() {
+        List<Enemy> output = new ArrayList<Enemy>();
+
+        for (int i = 0; i < mapTileNum.length; i++) {
+            for (int j = 0; j < mapTileNum.length; j++) {
+                if (mapTileNum[i][j] == 6) {
+                    output.add(new Enemy(context, i * 176, j * 176, player, this, "bat"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
             }
         }
         return output;
     }
-    public List<Teleporter>getTeleporterOnMap(){
-        List<Teleporter>output = new ArrayList<Teleporter>();
-        for(int i = 0; i < mapTileNum.length; i++){
-            for(int j=0; j<mapTileNum[i].length; j++){
-                if(mapTileNum[i][j] ==4){
-                    output.add(new Teleporter(context, i*176, j*176));
+
+    public List<Teleporter> getTeleporterOnMap() {
+        List<Teleporter> output = new ArrayList<Teleporter>();
+        for (int i = 0; i < mapTileNum.length; i++) {
+            for (int j = 0; j < mapTileNum[i].length; j++) {
+                if (mapTileNum[i][j] == 4) {
+                    output.add(new Teleporter(context, i * 176, j * 176));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
             }
@@ -169,11 +177,11 @@ public class TileManager{
 
 
     public List<CoinMachine> getCoinMachineOnMap() {
-        List<CoinMachine>output = new ArrayList<CoinMachine>();
-        for(int i = 0; i < mapTileNum.length; i++){
-            for(int j=0; j<mapTileNum[i].length; j++){
-                if(mapTileNum[i][j] ==5){
-                    output.add(new CoinMachine(context, i*176, j*176));
+        List<CoinMachine> output = new ArrayList<CoinMachine>();
+        for (int i = 0; i < mapTileNum.length; i++) {
+            for (int j = 0; j < mapTileNum[i].length; j++) {
+                if (mapTileNum[i][j] == 5) {
+                    output.add(new CoinMachine(context, i * 176, j * 176));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
             }
@@ -182,11 +190,11 @@ public class TileManager{
     }
 
     public List<Coin> getCoinOnMap() {
-        List<Coin>output = new ArrayList<Coin>();
-        for(int i = 0; i < mapTileNum.length; i++){
-            for(int j=0; j<mapTileNum[i].length; j++){
-                if(mapTileNum[i][j] ==3){
-                    output.add(new Coin(context, i*176, j*176));
+        List<Coin> output = new ArrayList<Coin>();
+        for (int i = 0; i < mapTileNum.length; i++) {
+            for (int j = 0; j < mapTileNum[i].length; j++) {
+                if (mapTileNum[i][j] == 3) {
+                    output.add(new Coin(context, i * 176, j * 176));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
             }
@@ -194,22 +202,58 @@ public class TileManager{
         return output;
     }
 
-    public List<Food>getFoodOnMap(){
-        List<Food>output = new ArrayList<Food>();
+    public List<Food> getFoodOnMap() {
+        List<Food> output = new ArrayList<Food>();
 
-        for(int i = 0; i < mapTileNum.length; i++){
-            for(int j = 0; j < mapTileNum.length; j++){
-                switch(mapTileNum[i][j]){
+        for (int i = 0; i < mapTileNum.length; i++) {
+            for (int j = 0; j < mapTileNum.length; j++) {
+                switch (mapTileNum[i][j]) {
                     case 8:
-                    //apple
-                        output.add(new Food(context,  i*176, j*176, "apple"));
+                        //apple
+                        output.add(new Food(context, i * 176, j * 176, "apple"));
                         tiles[mapTileNum[i][j]] = tiles[2];
-                    break;
+                        break;
                     case 7:
-                        output.add(new Food(context,  i*176, j*176, "turkeyleg"));
+                        output.add(new Food(context, i * 176, j * 176, "turkeyleg"));
                         tiles[mapTileNum[i][j]] = tiles[2];
                 }
             }
+        }
+        return output;
+    }
+
+    public void cleanUp() {
+        for (int i = 0; i < mapTileNum.length; i++) {
+            for (int j = 0; j < mapTileNum.length; j++) {
+                if (mapTileNum[i][j] == 3 ||
+                        mapTileNum[i][j] == 4 ||
+                        mapTileNum[i][j] == 5 ||
+                        mapTileNum[i][j] == 6 ||
+                        mapTileNum[i][j] == 7 ||
+                        mapTileNum[i][j] == 8) {
+                    mapTileNum[i][j] = 2;
+                }
+            }
+
+        }
+    }
+
+    public double getCurrentMapSpawnX() {
+        double output = 0;
+        switch (currentLoadedMap){
+            case 0:
+                output =  4*176;
+                break;
+        }
+        return output;
+    }
+
+    public double getCurrentMapSpawnY() {
+        double output = 0;
+        switch (currentLoadedMap){
+            case 0:
+                output =  4*176;
+                break;
         }
         return output;
     }

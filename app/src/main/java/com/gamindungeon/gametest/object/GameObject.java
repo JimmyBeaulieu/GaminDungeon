@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import androidx.annotation.NonNull;
+
 import com.gamindungeon.gametest.engine.GameDisplay;
 
 public abstract class GameObject {
@@ -51,4 +53,7 @@ public abstract class GameObject {
     public abstract double getStrength();
 
     public abstract void setHealth(double health);
+    @NonNull
+    @Override
+    public abstract  String toString();
 }

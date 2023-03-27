@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
@@ -30,18 +31,21 @@ public class Player extends GameObject{
     private TileManager tm;
     private Music mp;
 
-    public Player(Context context, Music music){
-        super(context, 176 * 3, 176 * 4);
-        health = 100;
-        maxHealth = health;
-        strength = 20;
+    public Player(Context context, Music music, double positionX, double positionY, double health,
+                  double maxHealth, double strength, double hunger, double oldPositionX, double oldPositionY, String lastKnownMove){
+
+        super(context, positionX, positionY);
+        this.health = health;
+        this.maxHealth = maxHealth;
+        this.strength = strength;
+        this.hunger = hunger;
+        this.oldPositionX = oldPositionX;
+        this.oldPositionY = oldPositionY;
+        this.lastKnownMove = lastKnownMove;
+
         mp=music;
-        hunger = 100;
 
         this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.protag), 176, 176, false);
-        oldPositionX = 0;
-        oldPositionY = 0;
-
     }
 
     public void setTileManager(TileManager tm){
@@ -80,10 +84,10 @@ public class Player extends GameObject{
 //column
         int gridYPos = (((int)positionY / 176));
 
-        int tileUp = tm.mapTileNum[gridXPos][gridYPos-1];
-        int tileDown = tm.mapTileNum[gridXPos][gridYPos+1];
-        int tileLeft = tm.mapTileNum[gridXPos-1][gridYPos];
-        int tileRight = tm.mapTileNum[gridXPos+1][gridYPos];
+        int tileUp = tm.getMapTileNum()[gridXPos][gridYPos-1];
+        int tileDown = tm.getMapTileNum()[gridXPos][gridYPos+1];
+        int tileLeft = tm.getMapTileNum()[gridXPos-1][gridYPos];
+        int tileRight = tm.getMapTileNum()[gridXPos+1][gridYPos];
 
         switch(direction) {
             case "up":
@@ -125,7 +129,10 @@ public class Player extends GameObject{
                     health+=5;
                     hunger-=10;
                 }
-        lastKnownMove = direction;
+                if(!direction.equals("")) {
+                    lastKnownMove = direction;
+                }
+
     }
 
     public double getHealth(){
@@ -223,5 +230,27 @@ public class Player extends GameObject{
     }
     public void setOldY(double positionY) {
         oldPositionY = positionY;
+    }
+
+    @NonNull
+    @Override
+    public String toString(){
+        /*
+        location
+        health
+        maxHealth
+        strength
+        hunger
+        oldPositionX = 0;
+        oldPositionY = 0;
+        lastknownmove
+         */
+
+        return positionX + "|" + positionY  + "|" + health  + "|" + maxHealth  + "|" + strength +
+                "|" +hunger + "|" + oldPositionX + "|" +oldPositionY + "|" + lastKnownMove + "||";
+    }
+
+    public void setLastKnownMove(String up) {
+        lastKnownMove = up;
     }
 }
