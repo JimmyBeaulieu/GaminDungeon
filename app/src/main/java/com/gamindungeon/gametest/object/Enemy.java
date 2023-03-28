@@ -37,10 +37,17 @@ public class Enemy extends GameObject{
         this.type = type;
 
         switch(type){
+
             case "bat":
-                health = 70;
-                strength = 20;
+                health = 20;
+                strength = 10;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), 176, 176, false);
+                break;
+
+            case "witch":
+                health = 50;
+                strength = 20;
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.witchanimated), 176, 176, false);
                 break;
 
         }

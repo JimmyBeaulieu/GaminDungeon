@@ -57,6 +57,7 @@ public class TileManager {
             tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
             tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
             tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
+            tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.j_witch), false, "witch");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,7 +82,7 @@ public class TileManager {
             while (col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()) {
 
                 String line = br.readLine();
-                Log.d("tile", line);
+                Log.d("Map", line);
                 while (col < gameDisplay.getMaxScreenColumns()) {
                     String[] numbers = line.split(" ");
 
@@ -111,7 +112,7 @@ public class TileManager {
         while (col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()) {
 
             int tileNum = mapTileNum[col][row];
-
+            Log.d("Map", String.valueOf(tileNum));
             int worldX = col * 176;
             int worldY = row * 176;
 
@@ -157,6 +158,12 @@ public class TileManager {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "bat"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
+
+                if (mapTileNum[i][j] == 9) {
+                    output.add(new Enemy(context, i * 176, j * 176, player, this, "witch"));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
+
             }
         }
         return output;
@@ -230,7 +237,8 @@ public class TileManager {
                         mapTileNum[i][j] == 5 ||
                         mapTileNum[i][j] == 6 ||
                         mapTileNum[i][j] == 7 ||
-                        mapTileNum[i][j] == 8) {
+                        mapTileNum[i][j] == 8 ||
+                        mapTileNum[i][j] == 9) {
                     mapTileNum[i][j] = 2;
                 }
             }
