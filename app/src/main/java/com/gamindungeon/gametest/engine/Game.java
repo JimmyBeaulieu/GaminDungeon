@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.activity.Bonus_Game_Activity;
 import com.gamindungeon.gametest.activity.MainActivity;
 import com.gamindungeon.gametest.graphics.UserInterface;
 import com.gamindungeon.gametest.manager.Music;
@@ -420,6 +421,11 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
         for(CoinMachine machine : coinMachineList){
             if (player.getPositionX() == machine.getPositionX() &&
                     player.getPositionY() == machine.getPositionY()) {
+
+                Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
+                getContext().startActivity(i);
+
+                /*
                 player.setPositionY(player.getOldPositionY());
                 player.setPositionX(player.getOldPositionX());
 
@@ -449,6 +455,8 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                             break;
                     }
                 }
+
+                 */
             }
         }
 
@@ -569,7 +577,8 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
     public void save(){
 
         StringBuilder content;
-        Log.d("SAVEFILE", player.getLastKnownMove());
+        //Log.d("SAVEFILE", player.getLastKnownMove());
+
         content = new StringBuilder(player.toString());
 
         for(Enemy enemy : enemyList){
