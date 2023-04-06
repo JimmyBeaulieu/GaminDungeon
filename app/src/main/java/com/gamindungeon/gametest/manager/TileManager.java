@@ -32,7 +32,7 @@ public class TileManager {
 
     public TileManager(Context context, GameDisplay gameDisplay, Player player) {
         this.context = context;
-        tiles = new Tile[10];
+        tiles = new Tile[20];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
@@ -58,6 +58,13 @@ public class TileManager {
             tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
             tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
             tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.j_witch), false, "witch");
+            //Kamil
+            tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.k_lava), false, "lava");
+            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), false, "spirit" +
+                    "");
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,6 +168,14 @@ public class TileManager {
 
                 if (mapTileNum[i][j] == 9) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "witch"));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
+                if (mapTileNum[i][j] == 10) {
+                    output.add(new Enemy(context, i * 176, j * 176, player, this, "lava"));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
+                if (mapTileNum[i][j] == 11) {
+                    output.add(new Enemy(context, i * 176, j * 176, player, this, "spirit"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
 

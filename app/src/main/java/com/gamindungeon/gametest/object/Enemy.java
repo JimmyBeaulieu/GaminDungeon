@@ -30,6 +30,9 @@ public class Enemy extends GameObject{
     boolean isFocused;
     boolean isHoming;
     int adhdLevel = 0;
+
+    boolean isMovable = false;
+    boolean isRandomMovable = false;
     String type;
     public Enemy(Context context, double positionX, double positionY, Player player, TileManager tm, String type) {
         super(context, positionX, positionY);
@@ -41,13 +44,32 @@ public class Enemy extends GameObject{
             case "bat":
                 health = 20;
                 strength = 10;
+                isMovable = true;
+                isRandomMovable = true;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), 176, 176, false);
                 break;
 
             case "witch":
                 health = 50;
                 strength = 20;
+                isMovable = true;
+                isRandomMovable = true;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.witchanimated), 176, 176, false);
+                break;
+            //Kamil
+            case "lava":
+                health = 50000000;
+                strength = 20000000;
+                isMovable = false;
+                isRandomMovable = false;
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.k_lava), 176, 176, false);
+                break;
+            case "spirit":
+                health = 10;
+                strength = 1;
+                isMovable = true;
+                isRandomMovable = false;
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), 176, 176, false);
                 break;
 
         }
@@ -75,46 +97,48 @@ public class Enemy extends GameObject{
 
     @Override
     public void move(String direction) {
+        if(isMovable == true) {
 
-        //column
-        int gridXPos = (int)positionX / 176;
-        //row
-        int gridYPos = (int)positionY / 176;
+            //column
+            int gridXPos = (int) positionX / 176;
+            //row
+            int gridYPos = (int) positionY / 176;
 
-        int tileUp = tm.getMapTileNum()[gridXPos][gridYPos-1];
-        int tileDown = tm.getMapTileNum()[gridXPos][gridYPos+1];
-        int tileLeft = tm.getMapTileNum()[gridXPos-1][gridYPos];
-        int tileRight = tm.getMapTileNum()[gridXPos+1][gridYPos];
+            int tileUp = tm.getMapTileNum()[gridXPos][gridYPos - 1];
+            int tileDown = tm.getMapTileNum()[gridXPos][gridYPos + 1];
+            int tileLeft = tm.getMapTileNum()[gridXPos - 1][gridYPos];
+            int tileRight = tm.getMapTileNum()[gridXPos + 1][gridYPos];
 
-        if(direction.equals("up")){
-            if(!tm.getTiles(tileUp).getCollision()) {
-                setPositionY(getPositionY() - 176);
-                if (getPositionY() < 0) {
-                    setPositionY(0);
+            if (direction.equals("up")) {
+                if (!tm.getTiles(tileUp).getCollision()) {
+                    setPositionY(getPositionY() - 176);
+                    if (getPositionY() < 0) {
+                        setPositionY(0);
+                    }
                 }
             }
-        }
-        if(direction.equals("down")){
-            if(!tm.getTiles(tileDown).getCollision()) {
-                setPositionY(getPositionY() + 176);
-                if (getPositionY() > 49 * 176) {
-                    setPositionY(49 * 176);
+            if (direction.equals("down")) {
+                if (!tm.getTiles(tileDown).getCollision()) {
+                    setPositionY(getPositionY() + 176);
+                    if (getPositionY() > 49 * 176) {
+                        setPositionY(49 * 176);
+                    }
                 }
             }
-        }
-        if(direction.equals("right")){
-            if(!tm.getTiles(tileRight).getCollision()) {
-                setPositionX(getPositionX() + 176);
-                if (getPositionX() > 49 * 176) {
-                    setPositionX((49 * 176));
+            if (direction.equals("right")) {
+                if (!tm.getTiles(tileRight).getCollision()) {
+                    setPositionX(getPositionX() + 176);
+                    if (getPositionX() > 49 * 176) {
+                        setPositionX((49 * 176));
+                    }
                 }
             }
-        }
-        if(direction.equals("left")){
-            if(!tm.getTiles(tileLeft).getCollision()) {
-                setPositionX(getOldPositionX() - 176);
-                if (getPositionX() < 0) {
-                    setPositionX(0);
+            if (direction.equals("left")) {
+                if (!tm.getTiles(tileLeft).getCollision()) {
+                    setPositionX(getOldPositionX() - 176);
+                    if (getPositionX() < 0) {
+                        setPositionX(0);
+                    }
                 }
             }
         }
@@ -156,27 +180,30 @@ public class Enemy extends GameObject{
     }
 
     private void random() {
-        if(adhdLevel > 0){
-            adhdLevel--;
-        }
-        Random rand = new Random();
-        switch (rand.nextInt(5 )) {
-            case 0:
-                return;
-            case 1:
-                move("down");
-                break;
-            case 2:
-                move("up");
-                break;
-            case 3:
-                move("right");
-                break;
-            case 4:
-                move("left");
-                break;
-        }
+        if(isRandomMovable == true) {
 
+
+            if (adhdLevel > 0) {
+                adhdLevel--;
+            }
+            Random rand = new Random();
+            switch (rand.nextInt(5)) {
+                case 0:
+                    return;
+                case 1:
+                    move("down");
+                    break;
+                case 2:
+                    move("up");
+                    break;
+                case 3:
+                    move("right");
+                    break;
+                case 4:
+                    move("left");
+                    break;
+            }
+        }
     }
 
     private void homing() {
