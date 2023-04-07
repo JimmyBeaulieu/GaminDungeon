@@ -30,9 +30,11 @@ public class Enemy extends GameObject{
     boolean isFocused;
     boolean isHoming;
     int adhdLevel = 0;
-
+    //kamil
     boolean isMovable = false;
     boolean isRandomMovable = false;
+    boolean isRailMovementVertical = false;
+    int countRailMovementVertical = 0;
     String type;
     public Enemy(Context context, double positionX, double positionY, Player player, TileManager tm, String type) {
         super(context, positionX, positionY);
@@ -70,6 +72,14 @@ public class Enemy extends GameObject{
                 isMovable = true;
                 isRandomMovable = false;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), 176, 176, false);
+                break;
+            case "eye":
+                health = 100000;
+                strength = 5;
+                isMovable = true;
+                isRandomMovable = false;
+                isRailMovementVertical = true;
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.m_eye), 176, 176, false);
                 break;
 
         }
@@ -172,11 +182,28 @@ public class Enemy extends GameObject{
                 //random();
                 System.out.println("Enemy is just wandering around");
             }
-
-            if (isHoming) homing();
+            //Kamil
+            if(isRailMovementVertical) patternVertical();
+            else if (isHoming) homing();
             else random();
 
         }
+    }
+    private void patternVertical() {
+
+
+        if(countRailMovementVertical >= 0 && countRailMovementVertical < 3){
+            move("up");
+            countRailMovementVertical ++;
+        } else if(countRailMovementVertical >= 3 && countRailMovementVertical < 6){
+            move("down");
+            countRailMovementVertical ++;
+            if(countRailMovementVertical == 6){
+                countRailMovementVertical = 0;
+            }
+        }
+
+
     }
 
     private void random() {

@@ -60,9 +60,8 @@ public class TileManager {
             tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.j_witch), false, "witch");
             //Kamil
             tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.k_lava), false, "lava");
-            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), false, "spirit" +
-                    "");
-
+            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), false, "spirit");
+            tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.m_eye), false, "eye");
 
 
         } catch (Exception e) {
@@ -178,6 +177,10 @@ public class TileManager {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "spirit"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
+                if (mapTileNum[i][j] == 12) {
+                    output.add(new Enemy(context, i * 176, j * 176, player, this, "eye"));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
 
             }
         }
@@ -253,7 +256,10 @@ public class TileManager {
                         mapTileNum[i][j] == 6 ||
                         mapTileNum[i][j] == 7 ||
                         mapTileNum[i][j] == 8 ||
-                        mapTileNum[i][j] == 9) {
+                        mapTileNum[i][j] == 9 ||
+                        mapTileNum[i][j] == 10 ||
+                        mapTileNum[i][j] == 11 ||
+                        mapTileNum[i][j] == 12 ) {
                     mapTileNum[i][j] = 2;
                 }
             }

@@ -408,7 +408,18 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
     private void checkForCollision() {
 
         //check for coins, if it finds one, pick it up and add it to total coin score
-        for(Coin coin : coinList){
+        //kamil not for each but for loop
+//        for(Coin coin : coinList){
+//            if (player.getPositionX() == coin.getPositionX() &&
+//                    player.getPositionY() == coin.getPositionY()) {
+//                score.setGold(score.getGold()+1);
+//                sfx.playSFX(0);
+//                coinList.remove(coin);
+//            }
+//        }
+        //Kamil
+        for(int i = 0 ; i < coinList.size() ;i++){
+            Coin coin = coinList.get(i);
             if (player.getPositionX() == coin.getPositionX() &&
                     player.getPositionY() == coin.getPositionY()) {
                 score.setGold(score.getGold()+1);
