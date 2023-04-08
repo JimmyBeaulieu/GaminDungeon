@@ -45,7 +45,7 @@ public class Player extends GameObject{
 
         mp=music;
 
-        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.protag), 176, 176, false);
+        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.sprite_2_7), 176, 176, false);
     }
 
     public void setTileManager(TileManager tm){

@@ -135,7 +135,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         if(firstTimePlaying){
             //loads the first map
-            tileManager.loadMap(0);
+            tileManager.loadMap(1);
 
             //generates entity depending on where they were placed on the map editor
 
