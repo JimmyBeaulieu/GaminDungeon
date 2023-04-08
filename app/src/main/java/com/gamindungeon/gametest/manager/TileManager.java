@@ -32,7 +32,7 @@ public class TileManager {
 
     public TileManager(Context context, GameDisplay gameDisplay, Player player) {
         this.context = context;
-        tiles = new Tile[10];
+        tiles = new Tile[40];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
@@ -57,6 +57,45 @@ public class TileManager {
             tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
             tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
             tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
+
+//            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile000), true, "background");
+//            tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile001), true, "wall");
+//            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile002), true, "wall");
+//            tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile003), true, "wall");
+//            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile004), false, "floor");
+//            tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile005), false, "floor");
+//            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile006), false, "floor");
+//            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile007), false, "floor");
+//            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile008), false, "floor");
+//            tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile009), false, "floor");
+//            tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile010), false, "floor");
+//            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile011), false, "floor");
+//            tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile012), false, "floor");
+//            tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile013), false, "floor");
+//            tiles[14] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile014), false, "floor");
+//            tiles[15] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile015), false, "floor");
+//            tiles[16] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile016), false, "floor");
+//            tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile020), false, "floor");
+//            tiles[21] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile021), false, "floor");
+//            tiles[22] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile022), false, "floor");
+//            tiles[23] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile023), false, "floor");
+//            tiles[24] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile024), false, "floor");
+//            tiles[25] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile025), false, "floor");
+//            tiles[26] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile026), false, "floor");
+//            tiles[27] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile027), false, "floor");
+//            tiles[28] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile028), false, "floor");
+//            tiles[29] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile029), false, "floor");
+//            tiles[30] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile030), false, "floor");
+//            tiles[31] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile031), false, "floor");
+//            tiles[32] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile032), false, "floor");
+//            tiles[33] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.pizza), false, "food");
+//            tiles[34] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.drumstick), false, "food");
+
+//            tiles[35] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleporter");
+//            tiles[36] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.f_coinmachine), false, "coinmachine");
+//            tiles[37] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
+//            tiles[38] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
+//            tiles[39] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,6 +109,12 @@ public class TileManager {
                 case 0:
                     is = context.getResources().openRawResource(R.raw.testmap);
                     currentLoadedMap = 0;
+                    break;
+                case 1:
+                    is = context.getResources().openRawResource(R.raw.lvl1_v2);
+                    currentLoadedMap = 1;
+                    player.setPositionX(5 * 176);
+                    player.setPositionY(15 * 176);
                     break;
             }
 
