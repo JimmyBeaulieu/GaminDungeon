@@ -135,7 +135,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         if(firstTimePlaying){
             //loads the first map
-            tileManager.loadMap(0);
+            tileManager.loadMap(1);
 
             //generates entity depending on where they were placed on the map editor
 
@@ -278,47 +278,48 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-            tileManager.draw(canvas);
+
+        tileManager.draw(canvas);
 
         for(Teleporter teleporter : teleporterList){
             teleporter.draw(canvas, gameDisplay);
         }
 
-            for(CoinMachine machine : coinMachineList){
-                machine.draw(canvas, gameDisplay);
-            }
+        for(CoinMachine machine : coinMachineList){
+            machine.draw(canvas, gameDisplay);
+        }
 
-            for(Coin coin : coinList){
-                coin.draw(canvas, gameDisplay);
-            }
+        for(Coin coin : coinList){
+            coin.draw(canvas, gameDisplay);
+        }
 
-            for(Food food : foodList){
-                food.draw(canvas, gameDisplay);
-            }
+        for(Food food : foodList){
+            food.draw(canvas, gameDisplay);
+        }
 
-            player.draw(canvas, gameDisplay);
-            //enemy.draw(canvas, gameDisplay);
-            for (Enemy enemy : enemyList) {
-                enemy.draw(canvas, gameDisplay);
-            }
-            //Draw Game Over if (player's hp <= 0)
-            if (player.getHealth() <= 0) {
-                gameOver.draw(canvas);
-                gameOver.setGameOverState(true);
-                music.stop();
-            }
-            if(!gameOver.getGameOverState()) {
-                ui.draw(canvas);
-            }
-            //TODO make it work
-            //fadeBlack(canvas);
+        player.draw(canvas, gameDisplay);
+        //enemy.draw(canvas, gameDisplay);
+        for (Enemy enemy : enemyList) {
+            enemy.draw(canvas, gameDisplay);
+        }
+        //Draw Game Over if (player's hp <= 0)
+        if (player.getHealth() <= 0) {
+            gameOver.draw(canvas);
+            gameOver.setGameOverState(true);
+            music.stop();
+        }
+        if(!gameOver.getGameOverState()) {
+            ui.draw(canvas);
+        }
+        //TODO make it work
+        //fadeBlack(canvas);
+
+    //******************************************************************************************
+        // TO BE DEACTIVATED FOR FULL RELEASE
+
+        drawDebug(canvas);
 
         //******************************************************************************************
-            // TO BE DEACTIVATED FOR FULL RELEASE
-
-            drawDebug(canvas);
-
-            //******************************************************************************************
 
 
 
@@ -436,7 +437,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                 Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
                 getContext().startActivity(i);
 
-                /*
+/*
                 player.setPositionY(player.getOldPositionY());
                 player.setPositionX(player.getOldPositionX());
 
@@ -466,8 +467,8 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                             break;
                     }
                 }
+*/
 
-                 */
             }
         }
 
@@ -514,7 +515,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                     break;
                 }
                 else if(enemyList.get(i).getPositionX() == enemyList.get(j).getPositionX() &&
-                enemyList.get(i).getPositionY() == enemyList.get(j).getPositionY()){
+                        enemyList.get(i).getPositionY() == enemyList.get(j).getPositionY()){
                     enemyList.get(i).setPositionX(enemyList.get(i).getOldPositionX());
                     enemyList.get(i).setPositionY(enemyList.get(i).getOldPositionY());
                 }
@@ -522,6 +523,7 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
         }
     }
 /*
+
     private void checkForTeleport() {
         //X = Col
         //Y = Row
