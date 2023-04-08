@@ -48,6 +48,7 @@ public class TileManager {
     public void getTileImage() {
 
         try {
+
             tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.a_rock), true, "wall");
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.b_water), true, "wall");
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.c_wood), false, "floor");
@@ -58,6 +59,7 @@ public class TileManager {
             tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
             tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
             tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.j_witch), false, "witch");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
