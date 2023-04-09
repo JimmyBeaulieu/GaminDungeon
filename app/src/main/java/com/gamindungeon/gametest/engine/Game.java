@@ -135,7 +135,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         if(firstTimePlaying){
             //loads the first map
-            tileManager.loadMap(1);
+            tileManager.loadMap(2);
 
             //generates entity depending on where they were placed on the map editor
 
@@ -382,6 +382,15 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                     ui.createDialog("I can't believe my eyes! what is this horrible, monster-filled place??");
                     dialogPass++;
                 }
+
+                break;
+            case 2:
+                if( (x == gridPos(20) && y == gridPos(45) && dialogPass < 1)) {
+                    ui.createDialog("That Lava looks dangerous.");
+                    dialogPass++;
+                }
+                if(x == gridPos(28) && y == gridPos(46)){ teleport(45, 3); }
+                if(x == gridPos(45) && y == gridPos(2)){ teleport(27, 46); }
 
                 break;
         }

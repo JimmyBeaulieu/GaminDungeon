@@ -29,7 +29,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_weight="4"/>
+            android:layout_weight="4">
+
+        </LinearLayout>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,24 +41,47 @@
             android:orientation="horizontal"
             android:layout_weight="1">
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/deleteSaveFileButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="delete save file" />
+                android:orientation="vertical"
+                android:weightSum="15"
+                android:gravity="center">
 
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                <Button
+                    android:id="@+id/btnTutorial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Tutorial"
+                    android:textColor="#15181f"/>
+
+                <Button
+                    android:id="@+id/deleteSaveFileButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="delete save file"
+                    android:textColor="#15181f"/>
+
+                <Button
+                    android:id="@+id/btnReturnToMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="MainMenu"
+                    android:textColor="#15181f"/>
+            </LinearLayout>
+
+
+
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

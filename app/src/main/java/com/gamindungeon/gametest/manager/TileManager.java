@@ -128,6 +128,24 @@ public class TileManager {
                     player.setPositionX(5 * 176);
                     player.setPositionY(15 * 176);
                     break;
+                case 2:
+                    is = context.getResources().openRawResource(R.raw.testmap_k2);
+                    currentLoadedMap = 2;
+                    player.setPositionX(25 * 176);
+                    player.setPositionY(48 * 176);
+                    break;
+                case 3:
+                    is = context.getResources().openRawResource(R.raw.testmap_k3);
+                    currentLoadedMap = 3;
+                    player.setPositionX(3 * 176);
+                    player.setPositionY(7 * 176);
+                    break;
+                case 4:
+                    is = context.getResources().openRawResource(R.raw.testmap_k4);
+                    currentLoadedMap = 4;
+                    player.setPositionX(9 * 176);
+                    player.setPositionY(2 * 176);
+                    break;
             }
 
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
