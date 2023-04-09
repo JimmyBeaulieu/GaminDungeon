@@ -13,27 +13,14 @@ import java.io.Serializable;
 public class Score implements Serializable {
     public static int gold;
     public static int experience;
+    public static int music;
     Context context;
 
     public Score(Context context){
         gold = 0;
         experience = 0;
+        music = 0;
         this.context = context;
     }
-
-    /*
-    public void setGold(int gold){
-        Score.gold = gold;
-    }
-    public int getGold(){
-        return gold;
-    }
-    public void setExperience(int experience){
-        this.experience = experience;
-    }
-    public int getExperience(){
-        return experience;
-    }
-*/
 
 }

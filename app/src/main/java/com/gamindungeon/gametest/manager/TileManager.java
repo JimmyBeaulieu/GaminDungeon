@@ -29,8 +29,9 @@ public class TileManager {
     GameDisplay gameDisplay;
     Player player;
     int currentLoadedMap;
+    Music music;
 
-    public TileManager(Context context, GameDisplay gameDisplay, Player player) {
+    public TileManager(Context context, GameDisplay gameDisplay, Player player, Music mp) {
         this.context = context;
         tiles = new Tile[21];
         this.gameDisplay = gameDisplay;
@@ -39,6 +40,7 @@ public class TileManager {
         getTileImage();
         loadMap(0);
         currentLoadedMap = 0;
+        music = mp;
     }
 
     public Tile getTiles(int index) {
@@ -93,18 +95,22 @@ public class TileManager {
             switch (map) {
                 case 0:
                     is = context.getResources().openRawResource(R.raw.map0);
+                    music.play(0);
                     currentLoadedMap = 0;
                     break;
                 case 1:
                     is = context.getResources().openRawResource(R.raw.map1);
+                    music.play(1);
                     currentLoadedMap = 1;
                     break;
                 case 2:
                     is = context.getResources().openRawResource(R.raw.map2);
+                    music.play(2);
                     currentLoadedMap = 2;
                     break;
                 case 3:
                     is = context.getResources().openRawResource(R.raw.map3);
+                    music.play(3);
                     currentLoadedMap = 3;
                     break;
                 case 4:
@@ -280,20 +286,18 @@ public class TileManager {
         double output = 0;
         switch (currentLoadedMap){
             case 0:
-                output =  4*176;
+                output = 3 * 176;
                 break;
             case 1:
-                output = 25 * 176;
+                output =3 * 176;
                 break;
             case 2:
                 output = 9 * 176;
                 break;
             case 3:
-                output = 24 * 176;
+                output = 25 * 176;
                 break;
-            case 4:
-                output = 9 * 176;
-                break;
+
         }
         return output;
     }
@@ -305,17 +309,15 @@ public class TileManager {
                 output =  4*176;
                 break;
             case 1:
-                output = 32 * 176;
+                output = 7 * 176;
                 break;
             case 2:
-                output = 2 * 176;
+                output = 3 * 176;
                 break;
             case 3:
-                output = 46 * 176;
+                output = 47 * 176;
                 break;
-            case 4:
-                output = 2 * 176;
-                break;
+
         }
         return output;
     }

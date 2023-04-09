@@ -2,18 +2,17 @@ package com.gamindungeon.gametest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.animation.Animator;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.object.Player;
 
@@ -26,6 +25,7 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
     TextView tvCurrentCoin;
     TextView result;
     String resultString = "";
+    Music music;
 
     int spinAngle = 1080;
 
@@ -59,8 +59,9 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
         result = findViewById(R.id.result);
         result.setVisibility(View.INVISIBLE);
 
-        //numCoins = getIntent().getIntExtra("coin", 0);
-        //score = (Score) getIntent().getSerializableExtra("score");
+        music = new Music(this);
+        music.stop();
+        music.play(5);
 
         String coinShow = String.valueOf(Score.gold);
         tvCurrentCoin.setText(coinShow);
@@ -77,15 +78,15 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
                 if( Score.gold > 0){
                     Score.gold =  Score.gold - 1;
                     spinWheel();
-                    tvCurrentCoin.setText(Score.gold + "");
-                    result.setText(resultString);
+
                 }
                 else {
+                    music.play(Score.music);
                     finish();
                 }
                 break;
             case R.id.btnReturn:
-
+                music.play(Score.music);
                 finish();
                 break;
 
@@ -96,7 +97,45 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
     private void spinWheel() {
 
         int angle = getRandomAngle();
-        imgWheel.animate().rotation(spinAngle + angle).setDuration(5000).start();
+
+        imgWheel.animate().rotation(spinAngle + angle).setDuration(5000).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                // Animation started
+                music.play(4);
+                btnSpin.setEnabled(false);
+                btnReturn.setEnabled(false);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // Animation finished
+                // Display result and enable button here
+                btnSpin.setEnabled(true);
+                btnReturn.setEnabled(true);
+                displayResult(angle);
+                String message = Score.gold + "";
+                tvCurrentCoin.setText(message);
+                result.setText(resultString);
+                music.stop();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                // Animation cancelled
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // Animation repeated
+            }
+        }).start();
+    }
+
+    private void displayResult(int angle) {
+
+
+
         spinAngle = spinAngle + 1080;
         int result = findPrize(angle);
         switch(result){
@@ -110,27 +149,26 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
                 resultString = "Your stomach was filled up!!";
                 break;
             case 2:
-                    Player.health -= 10;
+                Player.health -= 10;
                 resultString = "You lost 10 health!";
                 if(Player.health <=0){
                     finish();
                 }
                 break;
             case 3:
-                    Score.gold *= 2;
+                Score.gold *= 2;
                 resultString = "Doubled your gold!!";
                 break;
             case 4:
-                    Score.gold *= 0.5;
+                Score.gold *= 0.5;
                 resultString = "Halved your gold!!";
                 break;
             case 5:
-                    Score.gold += 10;
+                Score.gold += 10;
                 resultString = "You win 10 gold!";
                 break;
 
         }
-
     }
 
     public int getRandomAngle(){

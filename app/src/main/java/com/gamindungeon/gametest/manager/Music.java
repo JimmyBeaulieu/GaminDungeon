@@ -27,6 +27,14 @@ public class Music {
                 break;
             case 2:
                 mp = MediaPlayer.create(context, R.raw.song1);
+            case 3:
+                mp = MediaPlayer.create(context, R.raw.mikmiclea);
+                break;
+            case 4:
+                mp = MediaPlayer.create(context, R.raw.spin);
+                break;
+            case 5:
+                mp = MediaPlayer.create(context, R.raw.spintheme);
                 break;
         }
         if (!mp.isPlaying())

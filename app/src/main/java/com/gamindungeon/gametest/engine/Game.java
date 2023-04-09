@@ -88,15 +88,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         player.setTileManager(tileManager);
 
-//#######################################################################################################################################################
-
-        //load();
-
-
-//#######################################################################################################################################################
-        //Map selector
-        //loadMap(0);
-
         setFocusable(true);
 
     }
@@ -111,7 +102,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         music = new Music(getContext());
         sfx = new Music(getContext());
-        music.play(2);
 
         loadPlayer();
 
@@ -122,7 +112,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         gameDisplay = new GameDisplay(displayMetrics.widthPixels-176, displayMetrics.heightPixels-176, player);
 
-        tileManager = new TileManager(getContext(), gameDisplay, player);
+        tileManager = new TileManager(getContext(), gameDisplay, player, music);
 
 
         loadEnemies();
@@ -355,14 +345,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //go to next map
                 if(x == gridPos(37) && y == gridPos(17)){
                     tileManager.loadMap(1);
-                    player.setPositionY(gridPos(32));
-                    player.setPositionX(gridPos(25));
+                    player.setPositionY(gridPos(7));
+                    player.setPositionX(gridPos(3));
                     reloadMap();
                 }
                 ///////////////////////////////////////////////////////////////////////////////////
 
                 //Spin room
                 if (player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(16)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
                 //will be used for hardcoded teleporter, basically:
@@ -382,7 +373,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     dialogPass++;
                 }
                 if(x == gridPos(9) && y == gridPos(4) && dialogPass < 2) {
-                    ui.createDialog("Now where did Gamin put his famous recipe for     paczki... It took me so long to find this place, I'm  NOT leaving without it no matter what.");
+                    ui.createDialog("Now where did Gamin put his famous recipe for paczki... It took me so long to find this place, I'm NOT leaving without it no matter what.");
                     dialogPass++;
                 }
 
@@ -390,7 +381,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             case 1:
 
                 //go back to previous map
-                if(x == gridPos(24) && y == gridPos(32)){
+                if(x == gridPos(2) && y == gridPos(7)){
                     tileManager.loadMap(0);
                     player.setPositionX(gridPos(38));
                     player.setPositionY(gridPos(17));
@@ -398,10 +389,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
 
                 //go to next map
-                if(x == gridPos(3) && y == gridPos(7)){
+                if(x == gridPos(5) && y == gridPos(34)){
                     tileManager.loadMap(2);
                     player.setPositionX(9);
-                    player.setPositionY(2);
+                    player.setPositionY(3);
                     reloadMap();
                 }
                 ///////////////////////////////////////////////////////////////////////////////////
@@ -410,18 +401,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             case 2:
 
                 //go back to previous map
-                if(x == gridPos(9) && y == gridPos(1)){
+                if(x == gridPos(9) && y == gridPos(2)){
                     tileManager.loadMap(1);
-                    player.setPositionX(9);
-                    player.setPositionY(2);
+                    player.setPositionX(6);
+                    player.setPositionY(34);
                     reloadMap();
                 }
 
                 //go to next map
-                if(x == gridPos(27) && y == gridPos(45)){
+                if(x == gridPos(1) && y == gridPos(46)){
                     tileManager.loadMap(3);
-                    player.setPositionX(46);
-                    player.setPositionY(26);
+                    player.setPositionX(25);
+                    player.setPositionY(47);
                     reloadMap();
                 }
 
@@ -438,10 +429,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             case 3:
 
                 //go back to previous map
-                if(x == gridPos(46) && y == gridPos(27)){
+                if(x == gridPos(25) && y == gridPos(48)){
                     tileManager.loadMap(2);
-                    player.setPositionX(27);
-                    player.setPositionY(44);
+                    player.setPositionX(1);
+                    player.setPositionY(45);
                     reloadMap();
                 }
 
@@ -470,7 +461,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         player.setPositionX(player.getOldPositionX());
         player.setPositionY(player.getOldPositionY());
         if (Score.gold > 0) {
-
+            music.stop();
             Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
             startActivity(getContext(), i, null);
         } else {
@@ -709,7 +700,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 player = new Player
                         (
                                 getContext(),
-                                music,
+                                sfx,
                                 Double.parseDouble(playerInfo[0]),  //positionX
                                 Double.parseDouble(playerInfo[1]),  //positionY
                                 Double.parseDouble(playerInfo[2]),  //health
@@ -727,7 +718,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //new save file
 
                 //create a new player
-                player = new Player(getContext(), music, gridPos(3), gridPos(4), 100,
+                player = new Player(getContext(), sfx, gridPos(3), gridPos(4), 100,
                 100, 30, 50, gridPos(3), gridPos(4), "up", 1);
 
                 //sets boolean for first time playing map initialization
