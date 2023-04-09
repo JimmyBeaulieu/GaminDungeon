@@ -10,7 +10,7 @@ import com.gamindungeon.gametest.R;
 
 import java.io.Serializable;
 
-public class Score implements Serializable {
+public class Score{
     public static int gold;
     public static int experience;
     public static int music;

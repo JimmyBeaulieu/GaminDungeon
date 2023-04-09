@@ -274,7 +274,10 @@ public class TileManager {
                         mapTileNum[i][j] == 13 ||
                         mapTileNum[i][j] == 14 ||
                         mapTileNum[i][j] == 15 ||
-                        mapTileNum[i][j] == 16) {
+                        mapTileNum[i][j] == 16 ||
+                        mapTileNum[i][j] == 17 ||
+                        mapTileNum[i][j] == 18 ||
+                        mapTileNum[i][j] == 19) {
                     mapTileNum[i][j] = 2;
                 }
             }

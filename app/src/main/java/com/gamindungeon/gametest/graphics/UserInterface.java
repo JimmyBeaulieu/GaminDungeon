@@ -96,12 +96,12 @@ public class UserInterface {
             multiLineText = new ArrayList<>();
         }
 
-        if(text.length() > 68){
+        if(text.length() > 54){
             isMultiline = true;
             int index = 0;
             while (index < text.length()) {
-                multiLineText.add(text.substring(index, Math.min(index + 68,text.length())));
-                index += 68;
+                multiLineText.add(text.substring(index, Math.min(index + 54,text.length())));
+                index += 54;
             }
         }
         else {

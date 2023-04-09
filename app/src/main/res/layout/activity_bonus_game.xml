@@ -14,11 +14,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Coins"
+        android:text="Current Gold"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:textColor="#e39950"
-        android:layout_marginRight="150dp"
+        android:layout_marginRight="100dp"
         android:textSize="25sp"/>
 
     <TextView
@@ -37,7 +37,7 @@
         android:id="@+id/btnSpin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Spin"
+        android:text="Spin 5$"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCurrentCoin"
         android:layout_marginRight="120dp"

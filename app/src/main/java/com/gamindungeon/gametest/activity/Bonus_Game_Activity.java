@@ -75,8 +75,10 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
 
         switch (id){
             case R.id.btnSpin:
-                if( Score.gold > 0){
-                    Score.gold =  Score.gold - 1;
+                if( Score.gold > 4){
+                    Score.gold =  Score.gold - 5;
+                    String message = Score.gold + "";
+                    tvCurrentCoin.setText(message);
                     spinWheel();
 
                 }
@@ -114,9 +116,10 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
                 btnSpin.setEnabled(true);
                 btnReturn.setEnabled(true);
                 displayResult(angle);
+
+                result.setText(resultString);
                 String message = Score.gold + "";
                 tvCurrentCoin.setText(message);
-                result.setText(resultString);
                 music.stop();
             }
 

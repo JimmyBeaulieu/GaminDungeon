@@ -38,6 +38,7 @@ public class Game_Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        game.onResume();
     }
 
     @Override

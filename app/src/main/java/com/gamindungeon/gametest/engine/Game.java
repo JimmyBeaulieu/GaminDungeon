@@ -460,10 +460,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private void spinRoom() {
         player.setPositionX(player.getOldPositionX());
         player.setPositionY(player.getOldPositionY());
-        if (Score.gold > 0) {
+        if (Score.gold >= 5) {
             music.stop();
             Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
             startActivity(getContext(), i, null);
+
         } else {
             ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE MONEY!!");
         }
@@ -805,5 +806,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         catch(IOException e){
             e.printStackTrace();
         }
+    }
+
+
+    public void onResume() {
+        music.play(tileManager.getCurrentLoadedMap());
+        tileManager.cleanUp();
     }
 }
