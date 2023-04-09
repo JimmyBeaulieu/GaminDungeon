@@ -16,6 +16,7 @@ import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.gamepanel.HealthBar;
 import com.gamindungeon.gametest.graphics.Sprite;
 import com.gamindungeon.gametest.manager.Music;
+import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
 
 import java.util.Arrays;
@@ -33,8 +34,9 @@ public class Player extends GameObject{
     private Music mp;
     float healthPointPercentage;
     float hungerPointPercentage;
+    private int level;
     public Player(Context context, Music music, double positionX, double positionY, double health,
-                  double maxHealth, double strength, double hunger, double oldPositionX, double oldPositionY, String lastKnownMove){
+                  double maxHealth, double strength, double hunger, double oldPositionX, double oldPositionY, String lastKnownMove, int level){
 
         super(context, positionX, positionY);
         this.health = health;
@@ -44,6 +46,7 @@ public class Player extends GameObject{
         this.oldPositionX = oldPositionX;
         this.oldPositionY = oldPositionY;
         this.lastKnownMove = lastKnownMove;
+        this.level = level;
 
         mp=music;
 
@@ -132,6 +135,11 @@ public class Player extends GameObject{
         hungerPointPercentage = hungerPointPercentage * 380;
        //if(getHunger() == 0 ){hungerPointPercentage = 110;}
 
+        if(Score.experience >= 100){
+            levelUp();
+            Score.experience = 0;
+        }
+
     }
 
     @Override
@@ -196,6 +204,9 @@ public class Player extends GameObject{
                 }
 
     }
+    public void levelUp(){
+
+    }
 
     public double getHealth(){
         return health;
@@ -254,39 +265,6 @@ public class Player extends GameObject{
         }
     }
 
-    public void addBonusToPlayer( String bonusStr) {
-        String[] listOfBonus = bonusStr.split("\\s*\n\\s*");
-
-        for (String str: listOfBonus) {
-            switch (str){
-                case "Prize 1":
-                    this.setMaxHealth( this.getMaxHealth() + 1);
-                    break;
-                case "Prize 2":
-                    this.setMaxHealth( this.getMaxHealth() - 2);
-                    break;
-                case "Prize 3":
-                    this.setMaxHealth( this.getMaxHealth() + 3);
-                    break;
-                case "Prize 4":
-                    this.setStrength( this.getStrength() + 1);
-                    break;
-                case "Prize 5":
-                    this.setStrength( this.getStrength() - 2);
-                    break;
-                case "Prize 6":
-                    this.setStrength( this.getStrength() + 3);
-                    break;
-                case "Prize 7":
-                    this.setMaxHealth( this.getMaxHealth() + 10);
-                    break;
-            }
-
-        }
-
-    }
-
-
     public void setOldX(double positionX) {
          oldPositionX = positionX;
     }
@@ -309,7 +287,7 @@ public class Player extends GameObject{
          */
 
         return positionX + "|" + positionY  + "|" + health  + "|" + maxHealth  + "|" + strength +
-                "|" +hunger + "|" + oldPositionX + "|" +oldPositionY + "|" + lastKnownMove + "||";
+                "|" +hunger + "|" + oldPositionX + "|" +oldPositionY + "|" + lastKnownMove + "|" + level + "||";
     }
 
     public void setLastKnownMove(String up) {

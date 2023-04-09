@@ -281,6 +281,9 @@ public class Enemy extends GameObject{
     public void setHealth(double health) {
         this.health = health;
     }
+    public String getType(){
+        return type;
+    }
 
     @NonNull
     @Override
