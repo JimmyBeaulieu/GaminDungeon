@@ -47,7 +47,7 @@ public class Player extends GameObject{
 
         mp=music;
 
-        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.sprite_2_7), 176, 176, false);
+        this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront), 176, 176, false);
     }
 
     public void setTileManager(TileManager tm){
@@ -56,6 +56,20 @@ public class Player extends GameObject{
 
     public void draw(Canvas canvas, GameDisplay gameDisplay) {
 
+        switch(lastKnownMove){
+            case "up":
+                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback), 176, 176, false);
+                break;
+            case "down":
+                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront), 176, 176, false);
+                break;
+            case "left":
+                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainleft), 176, 176, false);
+                break;
+            case "right":
+                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainright), 176, 176, false);
+                break;
+        }
         canvas.drawBitmap(
                 bitMapSprite,
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX)+20,

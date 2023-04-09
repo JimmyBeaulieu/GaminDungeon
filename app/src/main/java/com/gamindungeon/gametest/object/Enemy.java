@@ -48,7 +48,7 @@ public class Enemy extends GameObject{
                 strength = 10;
                 isMovable = true;
                 isRandomMovable = true;
-                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), 176, 176, false);
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ba_bat), 176, 176, false);
                 break;
 
             case "witch":
@@ -56,7 +56,7 @@ public class Enemy extends GameObject{
                 strength = 20;
                 isMovable = true;
                 isRandomMovable = true;
-                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.witchanimated), 176, 176, false);
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bb_witch), 176, 176, false);
                 break;
             //Kamil
             case "lava":
@@ -64,14 +64,14 @@ public class Enemy extends GameObject{
                 strength = 20000000;
                 isMovable = false;
                 isRandomMovable = false;
-                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.k_lava), 176, 176, false);
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), 176, 176, false);
                 break;
             case "spirit":
                 health = 10;
                 strength = 1;
                 isMovable = true;
                 isRandomMovable = false;
-                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), 176, 176, false);
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bc_spirit), 176, 176, false);
                 break;
             case "eye":
                 health = 100000;
@@ -79,7 +79,7 @@ public class Enemy extends GameObject{
                 isMovable = true;
                 isRandomMovable = false;
                 isRailMovementVertical = true;
-                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.m_eye), 176, 176, false);
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bd_eye), 176, 176, false);
                 break;
 
         }

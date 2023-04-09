@@ -9,7 +9,7 @@ import android.util.Log;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
 import com.gamindungeon.gametest.object.collectable.Coin;
-import com.gamindungeon.gametest.object.CoinMachine;
+//import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.Teleporter;
@@ -49,69 +49,29 @@ public class TileManager {
 
         try {
 
-            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.a_rock), true, "wall");
-            tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.b_water), true, "wall");
-            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.c_wood), false, "floor");
-            tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.d_coin), false, "coin");
-            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleporter");
-            tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.f_coinmachine), false, "coinmachine");
-            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
-            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
-            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
+            //structure
+            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.aa_rock), true);
+            tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ab_water), true);
+            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ac_wood), false);
+            tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ad_teleport), false);
+            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), false);
+            tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.af_stairs), false);
 
+            //characters
+            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ba_bat), false);
+            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bb_witch), false);
+            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bc_spirit), false);
+            tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bd_eye), false);
 
+            //collectables
+            tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), false);
+            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), false);
+            tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), false);
+            tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), false);
+            tiles[14] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), false);
+            tiles[15] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), false);
+            tiles[16] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cg_coin), false);
 
-//            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile000), true, "background");
-//            tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile001), true, "wall");
-//            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile002), true, "wall");
-//            tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile003), true, "wall");
-//            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile004), false, "floor");
-//            tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile005), false, "floor");
-//            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile006), false, "floor");
-//            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile007), false, "floor");
-//            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile008), false, "floor");
-//            tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile009), false, "floor");
-//            tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile010), false, "floor");
-//            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile011), false, "floor");
-//            tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile012), false, "floor");
-//            tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile013), false, "floor");
-//            tiles[14] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile014), false, "floor");
-//            tiles[15] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile015), false, "floor");
-//            tiles[16] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile016), false, "floor");
-//            tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile020), false, "floor");
-//            tiles[21] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile021), false, "floor");
-//            tiles[22] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile022), false, "floor");
-//            tiles[23] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile023), false, "floor");
-//            tiles[24] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile024), false, "floor");
-//            tiles[25] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile025), false, "floor");
-//            tiles[26] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile026), false, "floor");
-//            tiles[27] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile027), false, "floor");
-//            tiles[28] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile028), false, "floor");
-//            tiles[29] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile029), false, "floor");
-//            tiles[30] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile030), false, "floor");
-//            tiles[31] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile031), false, "floor");
-//            tiles[32] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile032), false, "floor");
-//            tiles[33] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.pizza), false, "food");
-//            tiles[34] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.drumstick), false, "food");
-
-//            tiles[35] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), false, "teleporter");
-//            tiles[36] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.f_coinmachine), false, "coinmachine");
-//            tiles[37] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.g_bat), false, "bat");
-//            tiles[38] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), false, "food");
-//            tiles[39] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
-
-            tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.j_witch), false, "witch");
-
-            //Kamil
-            tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.k_lava), false, "lava");
-            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), false, "spirit");
-            tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.m_eye), false, "eye");
-
-            //stairs
-            tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.n_stairs), false, "floor");
-            tiles[15] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.o_door), false, "floor");
-            tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.p_spinsign), true, "wall");
-            tiles[21] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.q_shopsign), true, "wall");
 
 
         } catch (Exception e) {
@@ -125,32 +85,32 @@ public class TileManager {
             InputStream is = null;
             switch (map) {
                 case 0:
-                    is = context.getResources().openRawResource(R.raw.testmap);
+                    is = context.getResources().openRawResource(R.raw.map0);
                     currentLoadedMap = 0;
                     //player.setPositionX(getCurrentMapSpawnX());
                     //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 1:
-                    is = context.getResources().openRawResource(R.raw.lvl1_v2);
+                    is = context.getResources().openRawResource(R.raw.map1);
                     currentLoadedMap = 1;
                     //player.setPositionX(getCurrentMapSpawnX());
                     //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 2:
-                    is = context.getResources().openRawResource(R.raw.testmap_k2);
+                    is = context.getResources().openRawResource(R.raw.map2);
                     currentLoadedMap = 2;
                    //player.setPositionX(getCurrentMapSpawnX());
                     //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 3:
-                    is = context.getResources().openRawResource(R.raw.testmap_k3);
+                    is = context.getResources().openRawResource(R.raw.map3);
                     currentLoadedMap = 3;
                     //player.setPositionX(getCurrentMapSpawnX());
                     //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 4:
-                    is = context.getResources().openRawResource(R.raw.testmap_k4);
-                    currentLoadedMap = 4;
+                    //is = context.getResources().openRawResource(R.raw.map4);
+                    //currentLoadedMap = 4;
                     //player.setPositionX(getCurrentMapSpawnX());
                     //player.setPositionY(getCurrentMapSpawnY());
                     break;
@@ -240,29 +200,31 @@ public class TileManager {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "bat"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
-
-                if (mapTileNum[i][j] == 9) {
+                if (mapTileNum[i][j] == 7) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "witch"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
-                if (mapTileNum[i][j] == 10) {
-                    output.add(new Enemy(context, i * 176, j * 176, player, this, "lava"));
-                    tiles[mapTileNum[i][j]] = tiles[2];
-                }
-                if (mapTileNum[i][j] == 11) {
+                if (mapTileNum[i][j] == 8) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "spirit"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
-                if (mapTileNum[i][j] == 12) {
+                if (mapTileNum[i][j] == 9) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "eye"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
+
+                /*
+                                if (mapTileNum[i][j] == 10) {
+                    output.add(new Enemy(context, i * 176, j * 176, player, this, "lava"));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
+                 */
 
             }
         }
         return output;
     }
-
+/*
     public List<Teleporter> getTeleporterOnMap() {
         List<Teleporter> output = new ArrayList<Teleporter>();
         for (int i = 0; i < mapTileNum.length; i++) {
@@ -289,12 +251,12 @@ public class TileManager {
         }
         return output;
     }
-
+*/
     public List<Coin> getCoinOnMap() {
         List<Coin> output = new ArrayList<Coin>();
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum[i].length; j++) {
-                if (mapTileNum[i][j] == 3) {
+                if (mapTileNum[i][j] == 16) {
                     output.add(new Coin(context, i * 176, j * 176));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
@@ -309,14 +271,27 @@ public class TileManager {
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum.length; j++) {
                 switch (mapTileNum[i][j]) {
-                    case 8:
+                    case 10:
                         //apple
-                        output.add(new Food(context, i * 176, j * 176, "apple"));
+                        output.add(new Food(context, i * 176, j * 176, "burger"));
                         tiles[mapTileNum[i][j]] = tiles[2];
                         break;
-                    case 7:
-                        output.add(new Food(context, i * 176, j * 176, "turkeyleg"));
+                    case 11:
+                        output.add(new Food(context, i * 176, j * 176, "cake"));
                         tiles[mapTileNum[i][j]] = tiles[2];
+                    case 12:
+                        output.add(new Food(context, i * 176, j * 176, "cone"));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+                    case 13:
+                        output.add(new Food(context, i * 176, j * 176, "donut"));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+                    case 14:
+                        output.add(new Food(context, i * 176, j * 176, "drumstick"));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+                    case 15:
+                        output.add(new Food(context, i * 176, j * 176, "potion"));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+
                 }
             }
         }
@@ -326,16 +301,17 @@ public class TileManager {
     public void cleanUp() {
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum.length; j++) {
-                if (mapTileNum[i][j] == 3 ||
-                        mapTileNum[i][j] == 4 ||
-                        mapTileNum[i][j] == 5 ||
-                        mapTileNum[i][j] == 6 ||
+                if (mapTileNum[i][j] == 6 ||
                         mapTileNum[i][j] == 7 ||
                         mapTileNum[i][j] == 8 ||
                         mapTileNum[i][j] == 9 ||
                         mapTileNum[i][j] == 10 ||
                         mapTileNum[i][j] == 11 ||
-                        mapTileNum[i][j] == 12 ) {
+                        mapTileNum[i][j] == 12 ||
+                        mapTileNum[i][j] == 13 ||
+                        mapTileNum[i][j] == 14 ||
+                        mapTileNum[i][j] == 15 ||
+                        mapTileNum[i][j] == 16) {
                     mapTileNum[i][j] = 2;
                 }
             }
