@@ -32,7 +32,7 @@ public class TileManager {
 
     public TileManager(Context context, GameDisplay gameDisplay, Player player) {
         this.context = context;
-        tiles = new Tile[40];
+        tiles = new Tile[20];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
@@ -56,21 +56,24 @@ public class TileManager {
             tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ad_teleport), false);
             tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), false);
             tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.af_stairs), false);
+            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ag_door), false);
+            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ah_spinsign), false);
+            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ai_shopsign), false);
 
             //characters
-            tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ba_bat), false);
-            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bb_witch), false);
-            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bc_spirit), false);
-            tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bd_eye), false);
+            tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ba_bat), false);
+            tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bb_witch), false);
+            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bc_spirit), false);
+            tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.bd_eye), false);
 
             //collectables
-            tiles[10] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), false);
-            tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), false);
-            tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), false);
-            tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), false);
-            tiles[14] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), false);
-            tiles[15] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), false);
-            tiles[16] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cg_coin), false);
+            tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), false);
+            tiles[14] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), false);
+            tiles[15] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), false);
+            tiles[16] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), false);
+            tiles[17] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), false);
+            tiles[18] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), false);
+            tiles[19] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cg_coin), false);
 
 
 
@@ -124,7 +127,7 @@ public class TileManager {
             while (col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()) {
 
                 String line = br.readLine();
-                Log.d("Map", line);
+
                 while (col < gameDisplay.getMaxScreenColumns()) {
                     String[] numbers = line.split(" ");
 
@@ -154,7 +157,6 @@ public class TileManager {
         while (col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()) {
 
             int tileNum = mapTileNum[col][row];
-            //Log.d("Map", String.valueOf(tileNum));
             int worldX = col * 176;
             int worldY = row * 176;
 
@@ -196,67 +198,31 @@ public class TileManager {
 
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum.length; j++) {
-                if (mapTileNum[i][j] == 6) {
+                if (mapTileNum[i][j] == 9) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "bat"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
-                if (mapTileNum[i][j] == 7) {
+                if (mapTileNum[i][j] == 10) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "witch"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
-                if (mapTileNum[i][j] == 8) {
+                if (mapTileNum[i][j] == 11) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "spirit"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
-                if (mapTileNum[i][j] == 9) {
+                if (mapTileNum[i][j] == 12) {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "eye"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
-
-                /*
-                                if (mapTileNum[i][j] == 10) {
-                    output.add(new Enemy(context, i * 176, j * 176, player, this, "lava"));
-                    tiles[mapTileNum[i][j]] = tiles[2];
-                }
-                 */
-
             }
         }
         return output;
     }
-/*
-    public List<Teleporter> getTeleporterOnMap() {
-        List<Teleporter> output = new ArrayList<Teleporter>();
-        for (int i = 0; i < mapTileNum.length; i++) {
-            for (int j = 0; j < mapTileNum[i].length; j++) {
-                if (mapTileNum[i][j] == 4) {
-                    output.add(new Teleporter(context, i * 176, j * 176));
-                    tiles[mapTileNum[i][j]] = tiles[2];
-                }
-            }
-        }
-        return output;
-    }
-
-
-    public List<CoinMachine> getCoinMachineOnMap() {
-        List<CoinMachine> output = new ArrayList<CoinMachine>();
-        for (int i = 0; i < mapTileNum.length; i++) {
-            for (int j = 0; j < mapTileNum[i].length; j++) {
-                if (mapTileNum[i][j] == 5) {
-                    output.add(new CoinMachine(context, i * 176, j * 176));
-                    tiles[mapTileNum[i][j]] = tiles[2];
-                }
-            }
-        }
-        return output;
-    }
-*/
     public List<Coin> getCoinOnMap() {
         List<Coin> output = new ArrayList<Coin>();
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum[i].length; j++) {
-                if (mapTileNum[i][j] == 16) {
+                if (mapTileNum[i][j] == 19) {
                     output.add(new Coin(context, i * 176, j * 176));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
@@ -271,24 +237,24 @@ public class TileManager {
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum.length; j++) {
                 switch (mapTileNum[i][j]) {
-                    case 10:
+                    case 13:
                         //apple
                         output.add(new Food(context, i * 176, j * 176, "burger"));
                         tiles[mapTileNum[i][j]] = tiles[2];
                         break;
-                    case 11:
+                    case 14:
                         output.add(new Food(context, i * 176, j * 176, "cake"));
                         tiles[mapTileNum[i][j]] = tiles[2];
-                    case 12:
+                    case 15:
                         output.add(new Food(context, i * 176, j * 176, "cone"));
                         tiles[mapTileNum[i][j]] = tiles[2];
-                    case 13:
+                    case 16:
                         output.add(new Food(context, i * 176, j * 176, "donut"));
                         tiles[mapTileNum[i][j]] = tiles[2];
-                    case 14:
+                    case 17:
                         output.add(new Food(context, i * 176, j * 176, "drumstick"));
                         tiles[mapTileNum[i][j]] = tiles[2];
-                    case 15:
+                    case 18:
                         output.add(new Food(context, i * 176, j * 176, "potion"));
                         tiles[mapTileNum[i][j]] = tiles[2];
 
@@ -301,10 +267,7 @@ public class TileManager {
     public void cleanUp() {
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum.length; j++) {
-                if (mapTileNum[i][j] == 6 ||
-                        mapTileNum[i][j] == 7 ||
-                        mapTileNum[i][j] == 8 ||
-                        mapTileNum[i][j] == 9 ||
+                if (mapTileNum[i][j] == 9 ||
                         mapTileNum[i][j] == 10 ||
                         mapTileNum[i][j] == 11 ||
                         mapTileNum[i][j] == 12 ||
