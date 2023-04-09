@@ -186,7 +186,7 @@ public class TileManager {
         while (col < gameDisplay.getMaxScreenColumns() && row < gameDisplay.getMaxScreenRows()) {
 
             int tileNum = mapTileNum[col][row];
-            Log.d("Map", String.valueOf(tileNum));
+            //Log.d("Map", String.valueOf(tileNum));
             int worldX = col * 176;
             int worldY = row * 176;
 

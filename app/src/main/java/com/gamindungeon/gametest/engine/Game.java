@@ -481,8 +481,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 player.setPositionX(player.getOldPositionX());
                 player.setPositionY(player.getOldPositionY());
 
-                Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
-                startActivity(getContext(), i, null);
+                if(Score.gold > 0) {
+                    Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
+                    startActivity(getContext(), i, null);
+                }
+                else{
+                    ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE MONEY!!");
+                }
 
             }
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -11,16 +12,22 @@ import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.object.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserInterface {
     private Score score;
     private Context context;
     private boolean inDialog = false;
     private Player player;
-    private String dialogText;
+    private String dialogText="";
+    private boolean isMultiline = false;
+    List<String>multiLineText = new ArrayList<String>();
     public UserInterface(Context context,Score score, Player player){
         this.player = player;
         this.context = context;
         this.score = score;
+
     }
 
 
@@ -52,8 +59,21 @@ public class UserInterface {
     }
 
     public void createDialog(String text){
+
         inDialog = true;
-        dialogText = text;
+
+        if(text.length() > 50){
+            isMultiline = true;
+            int index = 0;
+            while (index < text.length()) {
+                multiLineText.add(text.substring(index, Math.min(index + 50,text.length())));
+                index += 50;
+            }
+        }
+        else {
+            isMultiline = false;
+            dialogText = text;
+        }
     }
     private void drawDialog(Canvas canvas){
         Paint paint = new Paint();
@@ -66,8 +86,20 @@ public class UserInterface {
         paint.setColor(ContextCompat.getColor(context, R.color.black));
         canvas.drawRect(300,700,1800,1000, paint);
 
-        paint.setColor(ContextCompat.getColor(context, R.color.dialogBox));
-        canvas.drawText(this.dialogText, 325, 800, paint);
+        if(isMultiline){
+            int position = 750;
+            for(String sentence : multiLineText){
+                paint.setColor(ContextCompat.getColor(context, R.color.dialogBox));
+                canvas.drawText(sentence, 325, position, paint);
+                position += 50;
+                Log.d("MAP", String.valueOf(position));
+            }
+        }
+        else {
+            paint.setColor(ContextCompat.getColor(context, R.color.dialogBox));
+            //canvas.drawText(this.dialogText, 325, 800, paint);
+            canvas.drawText(this.dialogText, 325, 800, paint);
+        }
     }
 
     private void drawGrid(Canvas canvas) {
