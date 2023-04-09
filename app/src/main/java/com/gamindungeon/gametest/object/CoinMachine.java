@@ -1,3 +1,4 @@
+/*
 package com.gamindungeon.gametest.object;
 
 import android.content.Context;
@@ -38,3 +39,4 @@ public class CoinMachine {
                 null);
     }
 }
+*/

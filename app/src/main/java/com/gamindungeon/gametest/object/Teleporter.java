@@ -19,7 +19,7 @@ public class Teleporter {
         this.positionX = positionX;
         this.positionY = positionY;
         this.context = context;
-        sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.e_teleport), 176, 176, false);
+        sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ad_teleport), 176, 176, false);
     }
 
     public double getPositionX(){

@@ -20,13 +20,25 @@ public class Food {
     public Food(Context context, double positionX, double positionY, String type){
         this.type = type;
         switch(type){
-            case "apple":
-                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), 176, 176, false);
+            case "donut":
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), 176, 176, false);
                 hungerRestoreAmount = 10;
                 break;
-            case "turkeyleg":
-                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.h_turkeyleg), 176, 176, false);
+            case "drumstick":
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), 176, 176, false);
                 hungerRestoreAmount = 50;
+            case "burger":
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), 176, 176, false);
+                hungerRestoreAmount = 25;
+            case "cake":
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), 176, 176, false);
+                hungerRestoreAmount = 60;
+            case "cone":
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), 176, 176, false);
+                hungerRestoreAmount = 50;
+            case "potion":
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), 176, 176, false);
+                hungerRestoreAmount = 100;
         }
         this.positionX = positionX;
         this.positionY=positionY;

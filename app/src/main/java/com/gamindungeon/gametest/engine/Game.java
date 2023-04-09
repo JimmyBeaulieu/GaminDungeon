@@ -37,7 +37,7 @@ import com.gamindungeon.gametest.manager.TileManager;
 import com.gamindungeon.gametest.gamepanel.GameOver;
 import com.gamindungeon.gametest.gamepanel.Performance;
 import com.gamindungeon.gametest.object.collectable.Coin;
-import com.gamindungeon.gametest.object.CoinMachine;
+//import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.Teleporter;
@@ -62,7 +62,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private GameLoop gameLoop;
     private List<Enemy> enemyList = new ArrayList<Enemy>();
     private List<Coin> coinList = new ArrayList<Coin>();
-    private List<CoinMachine> coinMachineList = new ArrayList<CoinMachine>();
+    //private List<CoinMachine> coinMachineList = new ArrayList<CoinMachine>();
     private List<Teleporter> teleporterList = new ArrayList<Teleporter>();
     private List<Food> foodList = new ArrayList<Food>();
     private GameOver gameOver;
@@ -418,7 +418,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //regenerate the array lists so there's no doubles
         teleporterList = new ArrayList<>();
-        coinMachineList = new ArrayList<>();
+        //coinMachineList = new ArrayList<>();
         enemyList = new ArrayList<>();
         coinList = new ArrayList<>();
         foodList = new ArrayList<>();
@@ -426,10 +426,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //generates entity depending on where they were placed on the map editor
         //Entities that don't change no matter the save
         //teleporter
-        teleporterList.addAll(tileManager.getTeleporterOnMap());
+        //teleporterList.addAll(tileManager.getTeleporterOnMap());
 
         //coin machines
-        coinMachineList.addAll(tileManager.getCoinMachineOnMap());
+        //coinMachineList.addAll(tileManager.getCoinMachineOnMap());
 
         //enemies
         enemyList.addAll(tileManager.getEnemyOnMap());
@@ -477,6 +477,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //changed to be in mapEvent()
 
+=======
+/*
+>>>>>>> Stashed changes
         //check for coin machines, if it collides with one, relocate player to old position and start coin minigame if player at least have one coin
         for(CoinMachine machine : coinMachineList){
             if (player.getPositionX() == machine.getPositionX() &&

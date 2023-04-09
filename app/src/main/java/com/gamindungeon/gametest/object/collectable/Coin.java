@@ -17,7 +17,7 @@ public class Coin {
     private double positionY;
 
     public Coin(Context context, double positionX, double positionY){
-        sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.d_coin), 176, 176, false);
+        sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cg_coin), 176, 176, false);
         this.positionX = positionX;
         this.positionY = positionY;
 
