@@ -64,45 +64,59 @@ public class Player extends GameObject{
 
         //health bar
         Paint paint = new Paint();
+
+        paint.setColor(ContextCompat.getColor(context, R.color.white));
+        paint.setTextSize(50);
+        canvas.drawText("Life", 100, 100, paint);
+        //background bar
         paint.setColor(ContextCompat.getColor(context, R.color.gray));
         canvas.drawRect(100, 100, 500, 150, paint);
 
         if(getHealth() > 51) {
             paint.setColor(ContextCompat.getColor(context, R.color.green));
         }
-        if(getHealth() < 51 && getHealth() > 20){
+        if(getHealth() <= 51 && getHealth() >= 20){
             paint.setColor(ContextCompat.getColor(context, R.color.yellow));
         }
         if(getHealth() < 20){
             paint.setColor(ContextCompat.getColor(context, R.color.red));
         }
-        canvas.drawRect(110, 110, healthPointPercentage, 140, paint);
+        //foreground bar
+        canvas.drawRect(110, 110, healthPointPercentage + 110, 140, paint);
 
         //hunger bar
+
+        paint.setColor(ContextCompat.getColor(context, R.color.white));
+        paint.setTextSize(50);
+        canvas.drawText("Hunger", 100, 190, paint);
+
         paint.setColor(ContextCompat.getColor(context, R.color.gray));
+        //background bar
         canvas.drawRect(100, 200, 500, 250, paint);
 
-        if(getHealth() > 51) {
+        if(getHunger() > 51) {
             paint.setColor(ContextCompat.getColor(context, R.color.green));
         }
-        if(getHealth() < 51 && getHealth() > 20){
+        if(getHunger() <= 51 && getHunger() >= 20){
             paint.setColor(ContextCompat.getColor(context, R.color.yellow));
         }
-        if(getHealth() < 20){
+        if(getHunger() < 20){
             paint.setColor(ContextCompat.getColor(context, R.color.red));
         }
-
-        canvas.drawRect(110, 210, 110 + hungerPointPercentage, 240, paint);
+        //foreground bar
+        canvas.drawRect(110, 210, hungerPointPercentage + 110, 240, paint);
     }
 
 
     public void update() {
 
         healthPointPercentage =(float) (getHealth() / getMaxHealth());
-        healthPointPercentage = healthPointPercentage * 490;
+        healthPointPercentage = healthPointPercentage * 380;
+        //if(healthPointPercentage < 110){healthPointPercentage = 110;}
 
         hungerPointPercentage = (float) (getHunger() / 100);
-        hungerPointPercentage = hungerPointPercentage * 490;
+        hungerPointPercentage = hungerPointPercentage * 380;
+       //if(getHunger() == 0 ){hungerPointPercentage = 110;}
 
     }
 

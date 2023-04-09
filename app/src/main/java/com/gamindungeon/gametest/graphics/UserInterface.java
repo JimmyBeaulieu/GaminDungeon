@@ -36,7 +36,6 @@ public class UserInterface {
 
         String stringGold = Integer.toString(score.getGold());
         String stringExp = Integer.toString(score.getExperience());
-        String stringHunger = Double.toString(player.getHunger());
         Paint paint = new Paint();
 
         paint.setColor(ContextCompat.getColor(context, R.color.magenta));
@@ -46,11 +45,7 @@ public class UserInterface {
         paint.setColor(ContextCompat.getColor(context, R.color.magenta));
         paint.setTextSize(50);
         canvas.drawText(stringExp + " exp", 100, 375, paint);
-/*
-        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-        paint.setTextSize(50);
-        canvas.drawText("Hunger: " + stringHunger, 100, 400, paint);
-*/
+
         if(inDialog){
             drawDialog(canvas);
         }
@@ -61,6 +56,10 @@ public class UserInterface {
     public void createDialog(String text){
 
         inDialog = true;
+        dialogText = "";
+        if(multiLineText.size() > 0){
+            multiLineText = new ArrayList<>();
+        }
 
         if(text.length() > 50){
             isMultiline = true;

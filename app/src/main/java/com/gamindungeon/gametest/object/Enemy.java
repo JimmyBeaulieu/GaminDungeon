@@ -101,7 +101,7 @@ public class Enemy extends GameObject{
                 null);
 
         //Kamil
-        if(isMovable == true ) {
+        if(isMovable) {
             hpBar.draw(canvas, gameDisplay);
         }
 
@@ -110,7 +110,7 @@ public class Enemy extends GameObject{
 
     @Override
     public void move(String direction) {
-        if(isMovable == true) {
+        if(isMovable) {
 
             //column
             int gridXPos = (int) positionX / 176;
@@ -210,7 +210,7 @@ public class Enemy extends GameObject{
     }
 
     private void random() {
-        if(isRandomMovable == true) {
+        if(isRandomMovable) {
 
 
             if (adhdLevel > 0) {

@@ -60,6 +60,7 @@ public class TileManager {
             tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.i_apple), false, "food");
 
 
+
 //            tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile000), true, "background");
 //            tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile001), true, "wall");
 //            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.tile002), true, "wall");
@@ -106,6 +107,8 @@ public class TileManager {
             tiles[11] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.l_spirit), false, "spirit");
             tiles[12] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.m_eye), false, "eye");
 
+            //stairs
+            tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.n_stairs), false, "floor");
 
 
         } catch (Exception e) {
@@ -121,30 +124,32 @@ public class TileManager {
                 case 0:
                     is = context.getResources().openRawResource(R.raw.testmap);
                     currentLoadedMap = 0;
+                    //player.setPositionX(getCurrentMapSpawnX());
+                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 1:
                     is = context.getResources().openRawResource(R.raw.lvl1_v2);
                     currentLoadedMap = 1;
-                    player.setPositionX(5 * 176);
-                    player.setPositionY(15 * 176);
+                    //player.setPositionX(getCurrentMapSpawnX());
+                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 2:
                     is = context.getResources().openRawResource(R.raw.testmap_k2);
                     currentLoadedMap = 2;
-                    player.setPositionX(25 * 176);
-                    player.setPositionY(48 * 176);
+                   //player.setPositionX(getCurrentMapSpawnX());
+                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 3:
                     is = context.getResources().openRawResource(R.raw.testmap_k3);
                     currentLoadedMap = 3;
-                    player.setPositionX(3 * 176);
-                    player.setPositionY(7 * 176);
+                    //player.setPositionX(getCurrentMapSpawnX());
+                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 4:
                     is = context.getResources().openRawResource(R.raw.testmap_k4);
                     currentLoadedMap = 4;
-                    player.setPositionX(9 * 176);
-                    player.setPositionY(2 * 176);
+                    //player.setPositionX(getCurrentMapSpawnX());
+                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
             }
 
@@ -341,6 +346,18 @@ public class TileManager {
             case 0:
                 output =  4*176;
                 break;
+            case 1:
+                output = 5 * 176;
+                break;
+            case 2:
+                output = 25 * 176;
+                break;
+            case 3:
+                output = 3 * 176;
+                break;
+            case 4:
+                output = 9 * 176;
+                break;
         }
         return output;
     }
@@ -350,6 +367,18 @@ public class TileManager {
         switch (currentLoadedMap){
             case 0:
                 output =  4*176;
+                break;
+            case 1:
+                output = 15 * 176;
+                break;
+            case 2:
+                output = 48 * 176;
+                break;
+            case 3:
+                output = 7 * 176;
+                break;
+            case 4:
+                output = 2 * 176;
                 break;
         }
         return output;
