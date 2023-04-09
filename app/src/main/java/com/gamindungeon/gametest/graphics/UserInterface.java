@@ -1,6 +1,8 @@
 package com.gamindungeon.gametest.graphics;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +15,7 @@ import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.object.Player;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 
 public class UserInterface {
@@ -23,33 +26,60 @@ public class UserInterface {
     private String dialogText="";
     private boolean isMultiline = false;
     List<String>multiLineText = new ArrayList<String>();
+
+    private Bitmap optionGear;
+    private boolean isMenuOpen = false;
+
     public UserInterface(Context context,Score score, Player player){
         this.player = player;
         this.context = context;
         this.score = score;
-
+        optionGear = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.optiongear), 88, 88, false);
     }
 
 
     public void draw(Canvas canvas){
         drawGrid(canvas);
-
         String stringGold = Integer.toString(score.getGold());
         String stringExp = Integer.toString(score.getExperience());
         Paint paint = new Paint();
 
-        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-        paint.setTextSize(50);
-        canvas.drawText(stringGold + "$", 100, 300, paint);
+        if(isMenuOpen){
+            paint.setColor(ContextCompat.getColor(context, R.color.black));
+            canvas.drawRect(50, 50, 2000, 1000, paint);
 
-        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-        paint.setTextSize(50);
-        canvas.drawText(stringExp + " exp", 100, 375, paint);
+            paint.setColor(ContextCompat.getColor(context, R.color.red));
+            canvas.drawRect(200, 250, 1850, 800, paint);
 
-        if(inDialog){
-            drawDialog(canvas);
+            paint.setColor(ContextCompat.getColor(context, R.color.black));
+            paint.setTextSize(250);
+            canvas.drawText("Quit?", 700, 500, paint);
+
+            paint.setColor(ContextCompat.getColor(context, R.color.black));
+            paint.setTextSize(100);
+            canvas.drawText("Yes", 500, 700, paint);
+
+            paint.setColor(ContextCompat.getColor(context, R.color.black));
+            paint.setTextSize(100);
+            canvas.drawText("No", 1300, 700, paint);
+
+
         }
+        else {
 
+            paint.setColor(ContextCompat.getColor(context, R.color.magenta));
+            paint.setTextSize(50);
+            canvas.drawText(stringGold + "$", 100, 300, paint);
+
+            paint.setColor(ContextCompat.getColor(context, R.color.magenta));
+            paint.setTextSize(50);
+            canvas.drawText(stringExp + " exp", 100, 375, paint);
+
+            if (inDialog) {
+                drawDialog(canvas);
+            }
+            canvas.drawBitmap(optionGear, 1900, 100, null);
+        }
 
     }
 
@@ -130,5 +160,17 @@ public class UserInterface {
     }
     public void setInDialog(boolean inDialog){
         this.inDialog = inDialog;
+    }
+
+    public void displayMenu() {
+        if(isMenuOpen){
+            isMenuOpen = false;
+        }else {
+            isMenuOpen = true;
+        }
+    }
+
+    public boolean isMenuOpen() {
+        return isMenuOpen;
     }
 }

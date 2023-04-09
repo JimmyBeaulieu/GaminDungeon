@@ -19,7 +19,7 @@ import com.gamindungeon.gametest.manager.Music;
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
 
     final int REQUEST_CODE = 1;
-    Button btnPlay, btnBonus, btnOptions;
+    Button btnPlay, btnOptions;
     Music mp;
 
     String bonusStr = "";
@@ -44,11 +44,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     private void initialize() {
         btnPlay = findViewById(R.id.btnPlay);
-        btnBonus = findViewById(R.id.btnBonus);
         btnOptions = findViewById(R.id.btnOptions);
 
         btnPlay.setOnClickListener(this);
-        btnBonus.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
 
         //setting up music for menu
@@ -67,9 +65,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             case R.id.btnPlay:
                 mp.stop();
                 goToGamePlay();
-                break;
-            case R.id.btnBonus:
-                goToBonusGame();
                 break;
             case R.id.btnOptions:
                 goToOptions();

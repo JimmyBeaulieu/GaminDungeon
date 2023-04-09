@@ -1,8 +1,10 @@
-package com.gamindungeon.gametest;
+package com.gamindungeon.gametest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.gamindungeon.gametest.R;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -11,4 +13,7 @@ public class ShopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
     }
+
+    
+
 }

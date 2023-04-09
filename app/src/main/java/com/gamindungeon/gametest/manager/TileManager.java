@@ -109,6 +109,9 @@ public class TileManager {
 
             //stairs
             tiles[13] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.n_stairs), false, "floor");
+            tiles[15] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.o_door), false, "floor");
+            tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.p_spinsign), true, "wall");
+            tiles[21] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.q_shopsign), true, "wall");
 
 
         } catch (Exception e) {
