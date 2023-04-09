@@ -63,6 +63,11 @@ public class UserInterface {
             paint.setTextSize(100);
             canvas.drawText("No", 1300, 700, paint);
 
+            paint.setColor(ContextCompat.getColor(context, R.color.white));
+            paint.setTextSize(50);
+            String stat = "Player stat:               Health Point: " + player.getHealth() + "/" + player.getMaxHealth() + "     Strength: " + player.getStrength() + "     Gold: " + Score.gold;
+            canvas.drawText(stat, 200, 200, paint);
+
 
         }
         else {
@@ -91,12 +96,12 @@ public class UserInterface {
             multiLineText = new ArrayList<>();
         }
 
-        if(text.length() > 50){
+        if(text.length() > 68){
             isMultiline = true;
             int index = 0;
             while (index < text.length()) {
-                multiLineText.add(text.substring(index, Math.min(index + 50,text.length())));
-                index += 50;
+                multiLineText.add(text.substring(index, Math.min(index + 68,text.length())));
+                index += 68;
             }
         }
         else {
@@ -118,13 +123,13 @@ public class UserInterface {
         if(isMultiline){
             int position = 750;
             for(String sentence : multiLineText){
-                paint.setColor(ContextCompat.getColor(context, R.color.dialogBox));
+                paint.setColor(ContextCompat.getColor(context, R.color.white));
                 canvas.drawText(sentence, 325, position, paint);
                 position += 50;
             }
         }
         else {
-            paint.setColor(ContextCompat.getColor(context, R.color.dialogBox));
+            paint.setColor(ContextCompat.getColor(context, R.color.white));
             //canvas.drawText(this.dialogText, 325, 800, paint);
             canvas.drawText(this.dialogText, 325, 800, paint);
         }

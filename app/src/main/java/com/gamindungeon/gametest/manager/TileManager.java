@@ -29,16 +29,18 @@ public class TileManager {
     GameDisplay gameDisplay;
     Player player;
     int currentLoadedMap;
+    Music music;
 
-    public TileManager(Context context, GameDisplay gameDisplay, Player player) {
+    public TileManager(Context context, GameDisplay gameDisplay, Player player, Music mp) {
         this.context = context;
-        tiles = new Tile[20];
+        tiles = new Tile[21];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
         getTileImage();
         loadMap(0);
         currentLoadedMap = 0;
+        music = mp;
     }
 
     public Tile getTiles(int index) {
@@ -76,6 +78,10 @@ public class TileManager {
             tiles[19] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cg_coin), false);
 
 
+            //addition I forgot, sorry I don't want to redo everything again
+            tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.da_downstairs), false);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,33 +95,27 @@ public class TileManager {
             switch (map) {
                 case 0:
                     is = context.getResources().openRawResource(R.raw.map0);
+                    music.play(0);
                     currentLoadedMap = 0;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 1:
                     is = context.getResources().openRawResource(R.raw.map1);
+                    music.play(1);
                     currentLoadedMap = 1;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 2:
                     is = context.getResources().openRawResource(R.raw.map2);
+                    music.play(2);
                     currentLoadedMap = 2;
-                   //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 3:
                     is = context.getResources().openRawResource(R.raw.map3);
+                    music.play(3);
                     currentLoadedMap = 3;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 4:
                     //is = context.getResources().openRawResource(R.raw.map4);
                     //currentLoadedMap = 4;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
             }
 
@@ -286,20 +286,18 @@ public class TileManager {
         double output = 0;
         switch (currentLoadedMap){
             case 0:
-                output =  4*176;
-                break;
-            case 1:
-                output = 5 * 176;
-                break;
-            case 2:
-                output = 25 * 176;
-                break;
-            case 3:
                 output = 3 * 176;
                 break;
-            case 4:
+            case 1:
+                output =3 * 176;
+                break;
+            case 2:
                 output = 9 * 176;
                 break;
+            case 3:
+                output = 25 * 176;
+                break;
+
         }
         return output;
     }
@@ -311,17 +309,15 @@ public class TileManager {
                 output =  4*176;
                 break;
             case 1:
-                output = 15 * 176;
-                break;
-            case 2:
-                output = 48 * 176;
-                break;
-            case 3:
                 output = 7 * 176;
                 break;
-            case 4:
-                output = 2 * 176;
+            case 2:
+                output = 3 * 176;
                 break;
+            case 3:
+                output = 47 * 176;
+                break;
+
         }
         return output;
     }

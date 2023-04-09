@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -27,7 +28,9 @@ public class Player extends GameObject{
 
     private double oldPositionX;
     private double oldPositionY;
-    private double hunger;
+    public static double hunger;
+    public static double health;
+    private int levelUpText=0;
 
     private String lastKnownMove = "";
     private TileManager tm;
@@ -122,6 +125,14 @@ public class Player extends GameObject{
         }
         //foreground bar
         canvas.drawRect(110, 210, hungerPointPercentage + 110, 240, paint);
+
+        if(levelUpText > 0){
+            paint.setColor(ContextCompat.getColor(context, R.color.red));
+            canvas.drawText("Level up!!", 950, 430, paint);
+            paint.setColor(ContextCompat.getColor(context, R.color.red));
+            canvas.drawText("+20 Health Points", 900, 640, paint);
+            canvas.drawText("+5 Strength", 900, 700, paint);
+        }
     }
 
 
@@ -139,6 +150,15 @@ public class Player extends GameObject{
             levelUp();
             Score.experience = 0;
         }
+        if(health > maxHealth){
+            health = maxHealth;
+        }
+        if(hunger > 100){
+            hunger = 100;
+        }
+        if(hunger < 0){
+            hunger = 0;
+        }
 
     }
 
@@ -148,6 +168,10 @@ public class Player extends GameObject{
     }
 
     public void move(String direction) {
+        if(levelUpText >= 1){
+            Log.d("levelup", String.valueOf(levelUpText));
+            levelUpText--;
+        }
 
 //row
         int gridXPos = ((int)positionX / 176);
@@ -196,8 +220,8 @@ public class Player extends GameObject{
                         break;
                 }
                 if(health < maxHealth && hunger > 0 && !inCombat){
-                    health+=5;
-                    hunger-=10;
+                    health+=10;
+                    hunger-=7;
                 }
                 if(!direction.equals("")) {
                     lastKnownMove = direction;
@@ -205,7 +229,10 @@ public class Player extends GameObject{
 
     }
     public void levelUp(){
-
+        maxHealth += 20;
+        strength += 5;
+        mp.playSFX(3);
+        levelUpText = 3;
     }
 
     public double getHealth(){

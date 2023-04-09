@@ -27,6 +27,14 @@ public class Music {
                 break;
             case 2:
                 mp = MediaPlayer.create(context, R.raw.song1);
+            case 3:
+                mp = MediaPlayer.create(context, R.raw.mikmiclea);
+                break;
+            case 4:
+                mp = MediaPlayer.create(context, R.raw.spin);
+                break;
+            case 5:
+                mp = MediaPlayer.create(context, R.raw.spintheme);
                 break;
         }
         if (!mp.isPlaying())
@@ -50,6 +58,10 @@ public class Music {
             case 2:
                 //eat food
                 mp = MediaPlayer.create(context, R.raw.eat);
+                break;
+            case 3:
+                //level up
+                mp = MediaPlayer.create(context, R.raw.levelup);
                 break;
         }
         mp.start();
