@@ -100,7 +100,10 @@ public class Enemy extends GameObject{
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
 
-        hpBar.draw(canvas, gameDisplay);
+        //Kamil
+        if(isMovable == true ) {
+            hpBar.draw(canvas, gameDisplay);
+        }
 
 
     }

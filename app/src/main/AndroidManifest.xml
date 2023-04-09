@@ -11,13 +11,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GameTest">
         <activity
-            android:name=".ShopActivity"
+            android:name=".activity.Tutorial_Activity"
             android:exported="false"
             android:screenOrientation="landscape"/>
         <activity
+            android:name=".ShopActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".activity.Option_Activity"
             android:exported="false"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.Bonus_Game_Activity"
             android:exported="false"
