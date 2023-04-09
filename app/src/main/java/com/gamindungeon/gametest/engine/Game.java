@@ -1,5 +1,9 @@
 package com.gamindungeon.gametest.engine;
 
+import static android.app.Activity.RESULT_OK;
+import static androidx.core.app.ActivityCompat.startActivityForResult;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +14,17 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
@@ -63,8 +76,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     UserInterface ui;
     boolean firstTimePlaying = false;
 
-    //TODO make the method work
-    boolean fading = false;
+    ActivityResultLauncher actResLauncher;
 
     public Game(Context context, String bonusStr) {
         super(context);
@@ -135,7 +147,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         if(firstTimePlaying){
             //loads the first map
-            tileManager.loadMap(2);
+            tileManager.loadMap(0);
 
             //generates entity depending on where they were placed on the map editor
 
@@ -162,6 +174,38 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         tileManager.cleanUp();
         Log.d("SAVEFILE", "after cleanup!");
 
+
+/*
+        actResLauncher = new ActivityResultCallback<ActivityResult>(){
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                int resCode = result.getResultCode();
+                if(resCode == -1){
+                    score.setGold(result.getData().getIntExtra("coin", 0));
+
+                }
+                else{
+                    //Toast.makeText(MainActivity.this, "DDDDDD:", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        }
+
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        int resCode = result.getResultCode();
+                        if(resCode == RESULT_OK){
+                            String newData = result.getData().getStringExtra("schedule");
+                            clickedTV.setText(newData);
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "DDDDDD:", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+*/
 
     }
 
@@ -308,16 +352,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             gameOver.setGameOverState(true);
             music.stop();
         }
+
         if(!gameOver.getGameOverState()) {
             ui.draw(canvas);
         }
-        //TODO make it work
-        //fadeBlack(canvas);
 
     //******************************************************************************************
         // TO BE DEACTIVATED FOR FULL RELEASE
 
-        drawDebug(canvas);
+        //drawDebug(canvas);
 
         //******************************************************************************************
 
@@ -357,7 +400,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         mapEvent(tileManager.getCurrentLoadedMap(), player.getPositionX(), player.getPositionY());
         gameDisplay.update();
     }
-int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check for an increasing amount of dialogPass, then increase dialogPass by one each time
+    int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check for an increasing amount of dialogPass, then increase dialogPass by one each time
     private void mapEvent(int currentLoadedMap, double x, double y) {
         switch(currentLoadedMap){
             case 0:
@@ -374,6 +417,8 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                 if(x == gridPos(38) && y == gridPos(24)){ teleport(13, 17); }
 
 
+
+                //Cool ass dialogue system!
                 if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
                     ui.createDialog("What is this, Minecraft?");
                     dialogPass++;
@@ -410,23 +455,14 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
         enemy.setHealth(enemy.getHealth() - player.getStrength());
         player.setHealth(player.getHealth() - enemy.getStrength());
 
-        System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
+        //System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
 
 
     }
-
     private void checkForCollision() {
 
-        //check for coins, if it finds one, pick it up and add it to total coin score
-        //kamil not for each but for loop
-//        for(Coin coin : coinList){
-//            if (player.getPositionX() == coin.getPositionX() &&
-//                    player.getPositionY() == coin.getPositionY()) {
-//                score.setGold(score.getGold()+1);
-//                sfx.playSFX(0);
-//                coinList.remove(coin);
-//            }
-//        }
+        //TODO make it more optimized!!
+
         //Kamil
         for(int i = 0 ; i < coinList.size() ;i++){
             Coin coin = coinList.get(i);
@@ -442,41 +478,11 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
         for(CoinMachine machine : coinMachineList){
             if (player.getPositionX() == machine.getPositionX() &&
                     player.getPositionY() == machine.getPositionY()) {
+                player.setPositionX(player.getOldPositionX());
+                player.setPositionY(player.getOldPositionY());
 
                 Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
-                getContext().startActivity(i);
-
-/*
-                player.setPositionY(player.getOldPositionY());
-                player.setPositionX(player.getOldPositionX());
-
-                if(score.getGold() > 0){
-                    score.setGold(score.getGold() - 1);
-                    Random rand = new Random();
-                    switch(rand.nextInt(10)+1){
-                        case 1:
-                            score.setGold(score.getGold() + 1);
-                            break;
-                        case 2:
-                            score.setGold(score.getGold() + 3);
-                            break;
-                        case 3:
-                            score.setGold(score.getGold() + 5);
-                            break;
-                        case 4:
-                            score.setGold(score.getGold() * 2);
-                            break;
-                        case 5:
-                            score.setGold(score.getGold() * 3);
-                            break;
-                        case 6:
-                            score.setGold(score.getGold() * 5);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-*/
+                startActivity(getContext(), i, null);
 
             }
         }
@@ -531,25 +537,6 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
             }
         }
     }
-/*
-
-    private void checkForTeleport() {
-        //X = Col
-        //Y = Row
-
-        //will be used for hardcoded teleporter, basically:
-        //IF player is on specific X and Y, THEN change X and Y position to newX and newY
-
-        //first teleporter sending to second teleporter
-        if(player.getPositionX() == gridPos(12) && player.getPositionY() == gridPos(17)){ teleport(39, 24); }
-
-        //second teleporter sending to first teleporter
-        if(player.getPositionX() == gridPos(38) && player.getPositionY() == gridPos(24)){ teleport(13, 17); }
-
-
-    }
-
- */
 
     private void teleport(int x, int y) {
         //fading =true;
@@ -557,44 +544,6 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
         player.setPositionY(gridPos(y));
 
     }
-
-    //TODO
-    //make it work properly
-    /*
-    private void fadeBlack(Canvas canvas){
-        if(fading) {
-            Rect rect = new Rect(0, 0, getWidth(), getHeight());
-            Paint paint = new Paint(Color.BLACK);
-            paint.setStyle(Paint.Style.FILL);
-
-            Handler handler = new Handler(Looper.getMainLooper());
-
-
-            ValueAnimator animator = ValueAnimator.ofInt(0, 255);
-            animator.setDuration(1000); // 1 second duration
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    int alpha = (int) animation.getAnimatedValue();
-                    paint.setAlpha(alpha);
-
-                    canvas.drawRect(rect, paint);
-
-                    invalidate(); // Request a redraw
-                }
-            });
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    animator.start();
-                    fading = false;
-                }
-
-            });
-        }
-    }
-
-     */
 
     public void save(){
 
@@ -616,6 +565,8 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
         }
 
         content.append(dialogPass).append("||");
+        content.append(Score.gold).append("||");
+        content.append(score.getExperience()).append("||");
 
         //Log.d("SAVEFILE","map#|" + tileManager.getCurrentLoadedMap());
         content.append(tileManager.getCurrentLoadedMap()).append("||");
@@ -665,7 +616,9 @@ int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check 
                 content = sb.toString();
                 //takes the whole savefile into a String variables and split it each || character
                 String[] contentArray = content.split("\\|\\|");
-                Log.d("SAVEFILE", contentArray[0]);
+                Score.gold = Integer.parseInt(contentArray[contentArray.length - 3]);
+                Log.d("SAVEFILE", (contentArray[contentArray.length - 2]));
+                score.setExperience(Integer.parseInt(contentArray[contentArray.length - 2]));
 
 //player START
                 String[] playerInfo = contentArray[0].split("\\|");
