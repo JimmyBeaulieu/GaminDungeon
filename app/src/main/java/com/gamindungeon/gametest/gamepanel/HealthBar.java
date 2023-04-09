@@ -69,5 +69,7 @@ public class HealthBar {
                 healthPaint
         );
 
+        canvas.drawText(String.valueOf(user.getHealth()), (float)gameDisplay.gameToDisplayCoordinatesX(borderLeft), (float)gameDisplay.gameToDisplayCoordinatesY(borderTop), healthPaint);
+
     }
 }

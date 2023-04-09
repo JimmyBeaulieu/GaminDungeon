@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Score;
+import com.gamindungeon.gametest.object.Player;
 
 public class Bonus_Game_Activity extends AppCompatActivity implements View.OnClickListener {
 
@@ -105,12 +106,15 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
                 resultString = "Sorry no prize!!";
                 break;
             case 1:
-                    Score.gold += 1;
-                resultString = "1 gold awarded!";
+                Player.hunger = 100;
+                resultString = "Your stomach was filled up!!";
                 break;
             case 2:
-                    Score.gold -=2;
-                resultString = "You lost 2 gold!!";
+                    Player.health -= 10;
+                resultString = "You lost 10 health!";
+                if(Player.health <=0){
+                    finish();
+                }
                 break;
             case 3:
                     Score.gold *= 2;

@@ -32,7 +32,7 @@ public class TileManager {
 
     public TileManager(Context context, GameDisplay gameDisplay, Player player) {
         this.context = context;
-        tiles = new Tile[20];
+        tiles = new Tile[21];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
@@ -76,6 +76,10 @@ public class TileManager {
             tiles[19] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cg_coin), false);
 
 
+            //addition I forgot, sorry I don't want to redo everything again
+            tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.da_downstairs), false);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,32 +94,22 @@ public class TileManager {
                 case 0:
                     is = context.getResources().openRawResource(R.raw.map0);
                     currentLoadedMap = 0;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 1:
                     is = context.getResources().openRawResource(R.raw.map1);
                     currentLoadedMap = 1;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 2:
                     is = context.getResources().openRawResource(R.raw.map2);
                     currentLoadedMap = 2;
-                   //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 3:
                     is = context.getResources().openRawResource(R.raw.map3);
                     currentLoadedMap = 3;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
                 case 4:
                     //is = context.getResources().openRawResource(R.raw.map4);
                     //currentLoadedMap = 4;
-                    //player.setPositionX(getCurrentMapSpawnX());
-                    //player.setPositionY(getCurrentMapSpawnY());
                     break;
             }
 
@@ -289,13 +283,13 @@ public class TileManager {
                 output =  4*176;
                 break;
             case 1:
-                output = 5 * 176;
-                break;
-            case 2:
                 output = 25 * 176;
                 break;
+            case 2:
+                output = 9 * 176;
+                break;
             case 3:
-                output = 3 * 176;
+                output = 24 * 176;
                 break;
             case 4:
                 output = 9 * 176;
@@ -311,13 +305,13 @@ public class TileManager {
                 output =  4*176;
                 break;
             case 1:
-                output = 15 * 176;
+                output = 32 * 176;
                 break;
             case 2:
-                output = 48 * 176;
+                output = 2 * 176;
                 break;
             case 3:
-                output = 7 * 176;
+                output = 46 * 176;
                 break;
             case 4:
                 output = 2 * 176;

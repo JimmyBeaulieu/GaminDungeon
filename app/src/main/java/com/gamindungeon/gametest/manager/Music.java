@@ -51,6 +51,10 @@ public class Music {
                 //eat food
                 mp = MediaPlayer.create(context, R.raw.eat);
                 break;
+            case 3:
+                //level up
+                mp = MediaPlayer.create(context, R.raw.levelup);
+                break;
         }
         mp.start();
     }

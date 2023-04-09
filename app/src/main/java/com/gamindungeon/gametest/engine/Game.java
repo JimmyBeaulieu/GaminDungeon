@@ -124,6 +124,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         tileManager = new TileManager(getContext(), gameDisplay, player);
 
+
         loadEnemies();
 
         ui = new UserInterface(getContext(), score, player);
@@ -349,20 +350,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private void mapEvent(int currentLoadedMap, double x, double y) {
         switch(currentLoadedMap){
             case 0:
-                //mapTest
+                //first map, map0
+
+                //go to next map
+                if(x == gridPos(37) && y == gridPos(17)){
+                    tileManager.loadMap(1);
+                    player.setPositionY(gridPos(32));
+                    player.setPositionX(gridPos(25));
+                    reloadMap();
+                }
                 ///////////////////////////////////////////////////////////////////////////////////
 
                 //Spin room
                 if (player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(16)) {
-                    player.setPositionX(player.getOldPositionX());
-                    player.setPositionY(player.getOldPositionY());
-                    if (Score.gold > 0) {
-
-                        Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
-                        startActivity(getContext(), i, null);
-                    } else {
-                        ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE MONEY!!");
-                    }
+                    spinRoom();
                 }
                 //will be used for hardcoded teleporter, basically:
                 //IF player is on specific X and Y, THEN change X and Y position to newX and newY
@@ -373,25 +374,59 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //second teleporter sending to first teleporter
                 if(x == gridPos(38) && y == gridPos(24)){ teleport(13, 17); }
 
-                if(x == gridPos(37) && y == gridPos(17)){
-                    tileManager.loadMap(2);
-                    player.setPositionY(tileManager.getCurrentMapSpawnY());
-                    player.setPositionX(tileManager.getCurrentMapSpawnX());
-                    reloadMap();
-                }
+
 
                 //Cool ass dialogue system!
                 if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
-                    ui.createDialog("What is this, Minecraft?");
+                    ui.createDialog("Finally I found it! The famous Gamin's Dungeon...");
                     dialogPass++;
                 }
                 if(x == gridPos(9) && y == gridPos(4) && dialogPass < 2) {
-                    ui.createDialog("I can't believe my eyes! what is this horrible, monster-filled place??");
+                    ui.createDialog("Now where did Gamin put his famous recipe for     paczki... It took me so long to find this place, I'm  NOT leaving without it no matter what.");
                     dialogPass++;
                 }
 
                 break;
+            case 1:
+
+                //go back to previous map
+                if(x == gridPos(24) && y == gridPos(32)){
+                    tileManager.loadMap(0);
+                    player.setPositionX(gridPos(38));
+                    player.setPositionY(gridPos(17));
+                    reloadMap();
+                }
+
+                //go to next map
+                if(x == gridPos(3) && y == gridPos(7)){
+                    tileManager.loadMap(2);
+                    player.setPositionX(9);
+                    player.setPositionY(2);
+                    reloadMap();
+                }
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                break;
             case 2:
+
+                //go back to previous map
+                if(x == gridPos(9) && y == gridPos(1)){
+                    tileManager.loadMap(1);
+                    player.setPositionX(9);
+                    player.setPositionY(2);
+                    reloadMap();
+                }
+
+                //go to next map
+                if(x == gridPos(27) && y == gridPos(45)){
+                    tileManager.loadMap(3);
+                    player.setPositionX(46);
+                    player.setPositionY(26);
+                    reloadMap();
+                }
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
                 if( (x == gridPos(20) && y == gridPos(45) && dialogPass < 3)) {
                     ui.createDialog("That Lava looks dangerous.");
                     dialogPass++;
@@ -400,8 +435,47 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 if(x == gridPos(45) && y == gridPos(2)){ teleport(27, 46); }
 
                 break;
+            case 3:
+
+                //go back to previous map
+                if(x == gridPos(46) && y == gridPos(27)){
+                    tileManager.loadMap(2);
+                    player.setPositionX(27);
+                    player.setPositionY(44);
+                    reloadMap();
+                }
+
+                //go to next map
+
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                break;
+            case 4:
+
+                //go back to previous map
+
+
+                //go to next map
+
+
+                ///////////////////////////////////////////////////////////////////////////////////
+
+                break;
         }
 
+    }
+
+    private void spinRoom() {
+        player.setPositionX(player.getOldPositionX());
+        player.setPositionY(player.getOldPositionY());
+        if (Score.gold > 0) {
+
+            Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
+            startActivity(getContext(), i, null);
+        } else {
+            ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE MONEY!!");
+        }
     }
 
     private void reloadMap() {
@@ -648,8 +722,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                 Integer.parseInt(playerInfo[9])       //lastKnownMove
                         );
 //player END
-
-
             }
             else{
                 //new save file
@@ -742,8 +814,5 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         catch(IOException e){
             e.printStackTrace();
         }
-
-
     }
-
 }
