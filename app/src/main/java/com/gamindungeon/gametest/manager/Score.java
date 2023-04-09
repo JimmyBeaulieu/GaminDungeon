@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 public class Score implements Serializable {
     public static int gold;
-    private int experience;
+    public static int experience;
     Context context;
 
     public Score(Context context){
@@ -21,6 +21,7 @@ public class Score implements Serializable {
         this.context = context;
     }
 
+    /*
     public void setGold(int gold){
         Score.gold = gold;
     }
@@ -33,6 +34,6 @@ public class Score implements Serializable {
     public int getExperience(){
         return experience;
     }
-
+*/
 
 }

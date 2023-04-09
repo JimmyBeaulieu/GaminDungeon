@@ -62,8 +62,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private GameLoop gameLoop;
     private List<Enemy> enemyList = new ArrayList<Enemy>();
     private List<Coin> coinList = new ArrayList<Coin>();
-    //private List<CoinMachine> coinMachineList = new ArrayList<CoinMachine>();
-    private List<Teleporter> teleporterList = new ArrayList<Teleporter>();
     private List<Food> foodList = new ArrayList<Food>();
     private GameOver gameOver;
     private Performance performance;
@@ -144,8 +142,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             player.setHealth(player.getMaxHealth());
             player.setPositionX(tileManager.getCurrentMapSpawnX());
             player.setPositionY(tileManager.getCurrentMapSpawnY());
-            score.setExperience(0);
-            score.setGold(0);
+            Score.experience = 0;
+            Score.gold = Score.gold/2;
             reloadMap();
         }
 
@@ -288,14 +286,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         tileManager.draw(canvas);
 
-        for(Teleporter teleporter : teleporterList){
-            teleporter.draw(canvas, gameDisplay);
-        }
-/*
-        for(CoinMachine machine : coinMachineList){
-            machine.draw(canvas, gameDisplay);
-        }
-*/
         for(Coin coin : coinList){
             coin.draw(canvas, gameDisplay);
         }
@@ -402,7 +392,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 break;
             case 2:
-                if( (x == gridPos(20) && y == gridPos(45) && dialogPass < 1)) {
+                if( (x == gridPos(20) && y == gridPos(45) && dialogPass < 3)) {
                     ui.createDialog("That Lava looks dangerous.");
                     dialogPass++;
                 }
@@ -417,19 +407,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private void reloadMap() {
 
         //regenerate the array lists so there's no doubles
-        teleporterList = new ArrayList<>();
-        //coinMachineList = new ArrayList<>();
         enemyList = new ArrayList<>();
         coinList = new ArrayList<>();
         foodList = new ArrayList<>();
 
         //generates entity depending on where they were placed on the map editor
-        //Entities that don't change no matter the save
-        //teleporter
-        //teleporterList.addAll(tileManager.getTeleporterOnMap());
-
-        //coin machines
-        //coinMachineList.addAll(tileManager.getCoinMachineOnMap());
 
         //enemies
         enemyList.addAll(tileManager.getEnemyOnMap());
@@ -465,7 +447,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             Coin coin = coinList.get(i);
             if (player.getPositionX() == coin.getPositionX() &&
                     player.getPositionY() == coin.getPositionY()) {
-                score.setGold(score.getGold()+1);
+                Score.gold = Score.gold +1;
                 sfx.playSFX(0);
                 coinList.remove(coin);
             }
@@ -501,9 +483,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 if(chance <8 && chance >= 5){
                     foodList.add(getRandomFood(enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
                 }
+                switch(enemyList.get(i).getType()){
+                    case "bat":
+                            Score.experience += 5;
+                        break;
+                    case "witch":
+                            Score.experience+=20;
+                        break;
+                    case "spirit":
+                            Score.experience += 10;
+                        break;
+                    case "eye":
+                            Score.experience += 100;
+                        break;
+
+                }
 
                 enemyList.remove(enemyList.get(i));
-                score.setExperience(score.getExperience() + 1);
+
             }
         }
             //checks if two enemies intersects, if so, prevent movement for one enemy for one turn
@@ -578,7 +575,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         content.append(dialogPass).append("||");
         content.append(Score.gold).append("||");
-        content.append(score.getExperience()).append("||");
+        content.append(Score.experience).append("||");
 
         //Log.d("SAVEFILE","map#|" + tileManager.getCurrentLoadedMap());
         content.append(tileManager.getCurrentLoadedMap()).append("||");
@@ -630,7 +627,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 String[] contentArray = content.split("\\|\\|");
                 Score.gold = Integer.parseInt(contentArray[contentArray.length - 3]);
                 Log.d("SAVEFILE", (contentArray[contentArray.length - 2]));
-                score.setExperience(Integer.parseInt(contentArray[contentArray.length - 2]));
+                Score.experience = Integer.parseInt(contentArray[contentArray.length - 2]);
 
 //player START
                 String[] playerInfo = contentArray[0].split("\\|");
@@ -647,7 +644,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                 Double.parseDouble(playerInfo[5]),  //hunger
                                 Double.parseDouble(playerInfo[6]),  //oldPositionX
                                 Double.parseDouble(playerInfo[7]),  //oldPositionY
-                                String.valueOf(playerInfo[8])       //lastKnownMove
+                                String.valueOf(playerInfo[8]),
+                                Integer.parseInt(playerInfo[9])       //lastKnownMove
                         );
 //player END
 
@@ -658,7 +656,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //create a new player
                 player = new Player(getContext(), music, gridPos(3), gridPos(4), 100,
-                100, 30, 50, gridPos(3), gridPos(4), "up");
+                100, 30, 50, gridPos(3), gridPos(4), "up", 1);
 
                 //sets boolean for first time playing map initialization
                 firstTimePlaying = true;

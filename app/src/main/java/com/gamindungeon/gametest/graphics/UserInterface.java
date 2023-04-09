@@ -40,8 +40,8 @@ public class UserInterface {
 
     public void draw(Canvas canvas){
         drawGrid(canvas);
-        String stringGold = Integer.toString(score.getGold());
-        String stringExp = Integer.toString(score.getExperience());
+        String stringGold = Integer.toString(Score.gold);
+        String stringExp = Integer.toString(Score.experience);
         Paint paint = new Paint();
 
         if(isMenuOpen){
@@ -121,7 +121,6 @@ public class UserInterface {
                 paint.setColor(ContextCompat.getColor(context, R.color.dialogBox));
                 canvas.drawText(sentence, 325, position, paint);
                 position += 50;
-                Log.d("MAP", String.valueOf(position));
             }
         }
         else {
