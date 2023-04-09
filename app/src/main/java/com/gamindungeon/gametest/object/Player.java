@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
+import com.gamindungeon.gametest.gamepanel.HealthBar;
 import com.gamindungeon.gametest.graphics.Sprite;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.TileManager;
@@ -30,7 +31,8 @@ public class Player extends GameObject{
     private String lastKnownMove = "";
     private TileManager tm;
     private Music mp;
-
+    float healthPointPercentage;
+    float hungerPointPercentage;
     public Player(Context context, Music music, double positionX, double positionY, double health,
                   double maxHealth, double strength, double hunger, double oldPositionX, double oldPositionY, String lastKnownMove){
 
@@ -60,15 +62,47 @@ public class Player extends GameObject{
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
 
+        //health bar
         Paint paint = new Paint();
-        paint.setColor(ContextCompat.getColor(context, R.color.magenta));
-        paint.setTextSize(50);
-        canvas.drawText("Health: " + health + "/" + maxHealth, 100, 100, paint);
+        paint.setColor(ContextCompat.getColor(context, R.color.gray));
+        canvas.drawRect(100, 100, 500, 150, paint);
 
+        if(getHealth() > 51) {
+            paint.setColor(ContextCompat.getColor(context, R.color.green));
+        }
+        if(getHealth() < 51 && getHealth() > 20){
+            paint.setColor(ContextCompat.getColor(context, R.color.yellow));
+        }
+        if(getHealth() < 20){
+            paint.setColor(ContextCompat.getColor(context, R.color.red));
+        }
+        canvas.drawRect(110, 110, healthPointPercentage, 140, paint);
+
+        //hunger bar
+        paint.setColor(ContextCompat.getColor(context, R.color.gray));
+        canvas.drawRect(100, 200, 500, 250, paint);
+
+        if(getHealth() > 51) {
+            paint.setColor(ContextCompat.getColor(context, R.color.green));
+        }
+        if(getHealth() < 51 && getHealth() > 20){
+            paint.setColor(ContextCompat.getColor(context, R.color.yellow));
+        }
+        if(getHealth() < 20){
+            paint.setColor(ContextCompat.getColor(context, R.color.red));
+        }
+
+        canvas.drawRect(110, 210, 110 + hungerPointPercentage, 240, paint);
     }
 
 
     public void update() {
+
+        healthPointPercentage =(float) (getHealth() / getMaxHealth());
+        healthPointPercentage = healthPointPercentage * 490;
+
+        hungerPointPercentage = (float) (getHunger() / 100);
+        hungerPointPercentage = hungerPointPercentage * 490;
 
     }
 

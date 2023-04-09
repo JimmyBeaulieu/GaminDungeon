@@ -34,16 +34,16 @@ public class UserInterface {
 
         paint.setColor(ContextCompat.getColor(context, R.color.magenta));
         paint.setTextSize(50);
-        canvas.drawText("Gold: " + stringGold, 100, 200, paint);
+        canvas.drawText(stringGold + "$", 100, 300, paint);
 
         paint.setColor(ContextCompat.getColor(context, R.color.magenta));
         paint.setTextSize(50);
-        canvas.drawText("Experience: " + stringExp, 100, 300, paint);
-
+        canvas.drawText(stringExp + " exp", 100, 375, paint);
+/*
         paint.setColor(ContextCompat.getColor(context, R.color.magenta));
         paint.setTextSize(50);
         canvas.drawText("Hunger: " + stringHunger, 100, 400, paint);
-
+*/
         if(inDialog){
             drawDialog(canvas);
         }

@@ -8,8 +8,10 @@ import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
 
-public class Score {
-    private int gold;
+import java.io.Serializable;
+
+public class Score implements Serializable {
+    public static int gold;
     private int experience;
     Context context;
 
@@ -20,7 +22,7 @@ public class Score {
     }
 
     public void setGold(int gold){
-        this.gold = gold;
+        Score.gold = gold;
     }
     public int getGold(){
         return gold;
@@ -31,5 +33,6 @@ public class Score {
     public int getExperience(){
         return experience;
     }
+
 
 }

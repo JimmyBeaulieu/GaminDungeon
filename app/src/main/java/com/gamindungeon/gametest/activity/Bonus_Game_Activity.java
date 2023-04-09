@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.manager.Score;
 
 public class Bonus_Game_Activity extends AppCompatActivity implements View.OnClickListener {
 
@@ -19,17 +23,22 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
     ImageView imgWheel;
 
     TextView tvCurrentCoin;
+    TextView result;
+    String resultString = "";
 
     int spinAngle = 1080;
 
-    String listPrizes = "";
-
-    int numCoins;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Window window = getWindow();
+        window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+        );
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_bonus_game);
         initialize();
     }
@@ -46,56 +55,78 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
         tvCurrentCoin = findViewById(R.id.tvCurrentCoin);;
 
         imgWheel = findViewById(R.id.imgWheel);
+        result = findViewById(R.id.result);
+        result.setVisibility(View.INVISIBLE);
 
-        numCoins = getIntent().getIntExtra("coin", 0);
-        tvCurrentCoin.setText(numCoins + "");
+        //numCoins = getIntent().getIntExtra("coin", 0);
+        //score = (Score) getIntent().getSerializableExtra("score");
+
+        String coinShow = String.valueOf(Score.gold);
+        tvCurrentCoin.setText(coinShow);
 
     }
 
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        result.setVisibility(View.VISIBLE);
 
         switch (id){
             case R.id.btnSpin:
-                if( numCoins > 0){
+                if( Score.gold > 0){
+                    Score.gold =  Score.gold - 1;
                     spinWheel();
-                    numCoins =  numCoins - 1;
-                    tvCurrentCoin.setText(numCoins + "");
+                    tvCurrentCoin.setText(Score.gold + "");
+                    result.setText(resultString);
                 }
                 else {
-                    Toast.makeText(this,"NO COINS!!! SORRY NO SPIN!",Toast.LENGTH_LONG).show();
+                    finish();
                 }
                 break;
             case R.id.btnReturn:
-                finishApp();
+
+                finish();
                 break;
 
         }
 
     }
 
-    private void finishApp() {
-
-        Intent intent = new Intent();
-        intent.putExtra("prize", listPrizes );
-        intent.putExtra("coin", numCoins);
-        setResult( RESULT_OK, intent);
-        finish();
-    }
-
     private void spinWheel() {
-        int angle = getRandomAngle();
-        Toast.makeText(this, "Angle is " + angle, Toast.LENGTH_LONG).show();
 
+        int angle = getRandomAngle();
         imgWheel.animate().rotation(spinAngle + angle).setDuration(5000).start();
         spinAngle = spinAngle + 1080;
+        int result = findPrize(angle);
+        switch(result){
+            case 0:
+            case 6:
+                //nothing happens
+                resultString = "Sorry no prize!!";
+                break;
+            case 1:
+                    Score.gold += 1;
+                resultString = "1 gold awarded!";
+                break;
+            case 2:
+                    Score.gold -=2;
+                resultString = "You lost 2 gold!!";
+                break;
+            case 3:
+                    Score.gold *= 2;
+                resultString = "Doubled your gold!!";
+                break;
+            case 4:
+                    Score.gold *= 0.5;
+                resultString = "Halved your gold!!";
+                break;
+            case 5:
+                    Score.gold += 10;
+                resultString = "You win 10 gold!";
+                break;
 
-        String prize = findPrize(angle);
+        }
 
-        Toast.makeText(this, "Prize is " + prize, Toast.LENGTH_LONG).show();
-
-        listPrizes = listPrizes + prize + "\n";
     }
 
     public int getRandomAngle(){
@@ -106,28 +137,28 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
         return angle;
     }
 
-    public String findPrize(int angle){
-        String prize = "";
+    public int findPrize(int angle){
 
-        if(angle >= 0 && angle < 53){
-            prize = "Prize 1";
-        }else if (angle >= 53 && angle < 105){
-            prize = "Prize 2";
+        int prize = 0;
+
+        //angle 0 to 53 are omitted since they would put prize at 0 anyways
+        if (angle >= 53 && angle < 105){
+            prize = 1;
         }
         else if (angle >= 105 && angle < 157){
-            prize = "Prize 7";
+            prize = 2;
         }
         else if (angle >= 157 && angle < 209){
-            prize = "Prize 6";
+            prize = 3;
         }
         else if (angle >= 209 && angle < 261){
-            prize = "Prize 5";
+            prize = 4;
         }
         else if (angle >= 261 && angle < 312){
-            prize = "Prize 4";
+            prize = 5;
         }
         else if (angle >= 312 && angle < 365){
-            prize = "Prize 3";
+            prize = 6;
         }
 
 
