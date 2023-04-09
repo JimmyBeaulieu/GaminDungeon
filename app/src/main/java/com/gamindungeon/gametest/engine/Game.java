@@ -78,7 +78,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     ActivityResultLauncher actResLauncher;
 
-    public Game(Context context, String bonusStr) {
+    public Game(Context context) {
         super(context);
 
         //Get surface holder and add callback
@@ -88,10 +88,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         initialization(surfaceHolder);
 
-        //Adding bonus
-        if(!bonusStr.equals("")){
-            player.addBonusToPlayer(bonusStr);
-        }
         player.setTileManager(tileManager);
 
 //#######################################################################################################################################################
@@ -135,31 +131,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         ui = new UserInterface(getContext(), score, player);
         gameOver = new GameOver(getContext(), ui);
 
-        //generates entity depending on where they were placed on the map editor
-
-        //Entities that don't change no matter the save
-        //teleporter
-        teleporterList.addAll(tileManager.getTeleporterOnMap());
-
-        //coin machines
-        coinMachineList.addAll(tileManager.getCoinMachineOnMap());
 
 
         if(firstTimePlaying){
             //loads the first map
             tileManager.loadMap(0);
-
-            //generates entity depending on where they were placed on the map editor
-
-            //save file dependant entity
-            //enemies
-            enemyList.addAll(tileManager.getEnemyOnMap());
-
-            //coins
-            coinList.addAll(tileManager.getCoinOnMap());
-
-            //food
-            foodList.addAll(tileManager.getFoodOnMap());
+            reloadMap();
         }
 
         //if player was dead when they left last game
@@ -169,43 +146,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             player.setPositionY(tileManager.getCurrentMapSpawnY());
             score.setExperience(0);
             score.setGold(0);
+            reloadMap();
         }
+
 
         tileManager.cleanUp();
         Log.d("SAVEFILE", "after cleanup!");
 
-
-/*
-        actResLauncher = new ActivityResultCallback<ActivityResult>(){
-            @Override
-            public void onActivityResult(ActivityResult result) {
-                int resCode = result.getResultCode();
-                if(resCode == -1){
-                    score.setGold(result.getData().getIntExtra("coin", 0));
-
-                }
-                else{
-                    //Toast.makeText(MainActivity.this, "DDDDDD:", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        }
-
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        int resCode = result.getResultCode();
-                        if(resCode == RESULT_OK){
-                            String newData = result.getData().getStringExtra("schedule");
-                            clickedTV.setText(newData);
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "DDDDDD:", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-*/
 
     }
 
@@ -222,7 +169,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     int passDialogHitCount = 0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        //System.out.println("Touch event");
+        System.out.println("player health:" + player.getHealth());
+        System.out.println("player hunger:" + player.getHunger());
 
         //handle touch event actions
         final float MIN_DISTANCE = 150f;
@@ -255,14 +203,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //user stop touching the screen
             case MotionEvent.ACTION_UP:
-                //!checkCollision() &&
                 if(player.getHealth() > 0 && !ui.isInDialog()) {
 
                     //calculates the difference between the point where the user originally touches the screen vs the point where the user stops
                     deltaX = event.getX() - startX;
                     deltaY = event.getY() - startY;
 
-                    System.out.println("startX:" + startX + "| startY:" + startY + "| deltaX:" + deltaX + "| deltaY:" + deltaY);
+                    //System.out.println("startX:" + startX + "| startY:" + startY + "| deltaX:" + deltaX + "| deltaY:" + deltaY);
                     if (Math.abs(deltaX) > Math.abs(deltaY)) {
                         if (deltaX > MIN_DISTANCE) {
                             move = "right";
@@ -416,6 +363,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //second teleporter sending to first teleporter
                 if(x == gridPos(38) && y == gridPos(24)){ teleport(13, 17); }
 
+                if(x == gridPos(37) && y == gridPos(17)){
+                    tileManager.loadMap(2);
+                    player.setPositionY(tileManager.getCurrentMapSpawnY());
+                    player.setPositionX(tileManager.getCurrentMapSpawnX());
+                    reloadMap();
+                }
+
 
 
                 //Cool ass dialogue system!
@@ -440,6 +394,33 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 break;
         }
 
+    }
+
+    private void reloadMap() {
+
+        //regenerate the array lists so there's no doubles
+        teleporterList = new ArrayList<>();
+        coinMachineList = new ArrayList<>();
+        enemyList = new ArrayList<>();
+        coinList = new ArrayList<>();
+        foodList = new ArrayList<>();
+
+        //generates entity depending on where they were placed on the map editor
+        //Entities that don't change no matter the save
+        //teleporter
+        teleporterList.addAll(tileManager.getTeleporterOnMap());
+
+        //coin machines
+        coinMachineList.addAll(tileManager.getCoinMachineOnMap());
+
+        //enemies
+        enemyList.addAll(tileManager.getEnemyOnMap());
+
+        //coins
+        coinList.addAll(tileManager.getCoinOnMap());
+
+        //food
+        foodList.addAll(tileManager.getFoodOnMap());
     }
 
     public void pause() {

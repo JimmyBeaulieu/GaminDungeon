@@ -25,9 +25,7 @@ public class Game_Activity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
 
-        //set content view to game so that objects in the Game class can be rendered on the screen
-        String bonusStr = getIntent().getStringExtra("bonus");
-        game = new Game(this, bonusStr);
+        game = new Game(this);
         setContentView(game);
 
     }
