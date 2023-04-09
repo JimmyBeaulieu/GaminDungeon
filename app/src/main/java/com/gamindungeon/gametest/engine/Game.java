@@ -169,8 +169,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     int passDialogHitCount = 0;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        System.out.println("player health:" + player.getHealth());
-        System.out.println("player hunger:" + player.getHunger());
 
         //handle touch event actions
         final float MIN_DISTANCE = 150f;
@@ -182,6 +180,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             case MotionEvent.ACTION_DOWN:
                 startX = event.getX();
                 startY = event.getY();
+
+                Log.d("option", "X : " + startX);
+                Log.d("option", "Y : " + startY);
+
+                //where the gear's at
+                if(startX <= 1988 && startX >= 1900 && startY <= 188 && startY >= 100){
+                    ui.displayMenu();
+                }
+                //press yes
+                if(ui.isMenuOpen() && startX <= 700 && startX >= 450 && startY <= 700 && startY >= 500){
+                    save();
+                    ((Activity) getContext()).finish();
+                }
+                //press no
+                if(ui.isMenuOpen() && startX <= 1500 && startX >= 1250 && startY <= 700 && startY >= 500){
+                    save();
+                    ui.displayMenu();
+                }
 
                 if(gameOver.getGameOverState()) {
                     passDialogHitCount++;
@@ -275,11 +291,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         for(Teleporter teleporter : teleporterList){
             teleporter.draw(canvas, gameDisplay);
         }
-
+/*
         for(CoinMachine machine : coinMachineList){
             machine.draw(canvas, gameDisplay);
         }
-
+*/
         for(Coin coin : coinList){
             coin.draw(canvas, gameDisplay);
         }
@@ -304,15 +320,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             ui.draw(canvas);
         }
 
-    //******************************************************************************************
-        // TO BE DEACTIVATED FOR FULL RELEASE
-
         //drawDebug(canvas);
-
-        //******************************************************************************************
-
-
-
     }
 
     private void drawDebug(Canvas canvas) {
@@ -354,6 +362,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //mapTest
                 ///////////////////////////////////////////////////////////////////////////////////
 
+                //Spin room
+                if (player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(16)) {
+                    player.setPositionX(player.getOldPositionX());
+                    player.setPositionY(player.getOldPositionY());
+                    if (Score.gold > 0) {
+
+                        Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
+                        startActivity(getContext(), i, null);
+                    } else {
+                        ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE MONEY!!");
+                    }
+                }
                 //will be used for hardcoded teleporter, basically:
                 //IF player is on specific X and Y, THEN change X and Y position to newX and newY
 
@@ -369,8 +389,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     player.setPositionX(tileManager.getCurrentMapSpawnX());
                     reloadMap();
                 }
-
-
 
                 //Cool ass dialogue system!
                 if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
@@ -455,6 +473,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             }
         }
 
+        /*
+
+        //changed to be in mapEvent()
+
         //check for coin machines, if it collides with one, relocate player to old position and start coin minigame if player at least have one coin
         for(CoinMachine machine : coinMachineList){
             if (player.getPositionX() == machine.getPositionX() &&
@@ -472,7 +494,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
             }
         }
-
+*/
         for (Enemy enemy : enemyList) {
             if (player.getPositionX() == enemy.getPositionX() &&
             player.getPositionY() == enemy.getPositionY()) {

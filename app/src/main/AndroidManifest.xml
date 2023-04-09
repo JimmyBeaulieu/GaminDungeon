@@ -15,7 +15,7 @@
             android:exported="false"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".ShopActivity"
+            android:name=".activity.ShopActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
