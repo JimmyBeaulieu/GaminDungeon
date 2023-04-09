@@ -454,8 +454,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         enemy.setHealth(enemy.getHealth() - player.getStrength());
         player.setHealth(player.getHealth() - enemy.getStrength());
 
-        //System.out.println("Enemy Health: " + enemy.getHealth() + "//" + enemy.getMaxHealth());
-
 
     }
     private void checkForCollision() {
@@ -473,32 +471,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             }
         }
 
-        /*
-
-        //changed to be in mapEvent()
-
-=======
-/*
->>>>>>> Stashed changes
-        //check for coin machines, if it collides with one, relocate player to old position and start coin minigame if player at least have one coin
-        for(CoinMachine machine : coinMachineList){
-            if (player.getPositionX() == machine.getPositionX() &&
-                    player.getPositionY() == machine.getPositionY()) {
-                player.setPositionX(player.getOldPositionX());
-                player.setPositionY(player.getOldPositionY());
-
-                if(Score.gold > 0) {
-                    Intent i = new Intent(getContext(), Bonus_Game_Activity.class);
-                    startActivity(getContext(), i, null);
-                }
-                else{
-                    ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE MONEY!!");
-                }
-
-            }
-        }
-*/
-        for (Enemy enemy : enemyList) {
+        for (int i = 0 ; i < enemyList.size() ;i++){
+            Enemy enemy = enemyList.get(i);
             if (player.getPositionX() == enemy.getPositionX() &&
             player.getPositionY() == enemy.getPositionY()) {
                 player.setIsInCombat(true);
@@ -508,11 +482,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         for(int i = 0; i<foodList.size();i++){
-            if(player.getPositionX() == foodList.get(i).getPositionX() &&
-            player.getPositionY() == foodList.get(i).getPositionY()){
-                player.setHunger(player.getHunger() + foodList.get(i).getHunger());
+            Food food = foodList.get(i);
+            if(player.getPositionX() == food.getPositionX() &&
+            player.getPositionY() == food.getPositionY()){
+                player.setHunger(player.getHunger() + food.getHunger());
                 sfx.playSFX(2);
-                foodList.remove(foodList.get(i));
+                foodList.remove(food);
             }
         }
 
@@ -523,11 +498,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 if(chance >= 8){
                     coinList.add(new Coin(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
                 }
-                if(chance <8 && chance >= 6){
-                    foodList.add(new Food(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY(), "apple"));
-                }
-                if(chance == 5){
-                    foodList.add(new Food(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY(), "turkeyleg"));
+                if(chance <8 && chance >= 5){
+                    foodList.add(getRandomFood(enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
                 }
 
                 enemyList.remove(enemyList.get(i));
@@ -547,6 +519,35 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
             }
         }
+    }
+
+    private Food getRandomFood(double positionX, double positionY) {
+
+        Random rand = new Random();
+        Food food = new Food(getContext(), positionX, positionY, "donut");;
+        switch(rand.nextInt(7)){
+            case 0:
+                food = new Food(getContext(), positionX, positionY, "donut");
+                break;
+            case 1:
+                food = new Food(getContext(), positionX, positionY, "drumstick");
+                break;
+            case 2:
+                food = new Food(getContext(), positionX, positionY, "burger");
+                break;
+            case 3:
+                food = new Food(getContext(), positionX, positionY, "cake");
+                break;
+            case 4:
+                food = new Food(getContext(), positionX, positionY, "cone");
+                break;
+            case 5:
+                food = new Food(getContext(), positionX, positionY, "potion");
+                break;
+
+
+        }
+        return food;
     }
 
     private void teleport(int x, int y) {
