@@ -391,8 +391,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //go to next map
                 if(x == gridPos(5) && y == gridPos(34)){
                     tileManager.loadMap(2);
-                    player.setPositionX(9);
-                    player.setPositionY(3);
+//                    player.setPositionX(9);
+//                    player.setPositionY(3);
+                    player.setPositionX(gridPos(9));
+                    player.setPositionY(gridPos(3));
                     reloadMap();
                 }
                 ///////////////////////////////////////////////////////////////////////////////////
@@ -403,16 +405,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //go back to previous map
                 if(x == gridPos(9) && y == gridPos(2)){
                     tileManager.loadMap(1);
-                    player.setPositionX(6);
-                    player.setPositionY(34);
+                    player.setPositionX(gridPos(6));
+                    player.setPositionY(gridPos(34));
                     reloadMap();
                 }
 
                 //go to next map
                 if(x == gridPos(1) && y == gridPos(46)){
                     tileManager.loadMap(3);
-                    player.setPositionX(25);
-                    player.setPositionY(47);
+                    player.setPositionX(gridPos(25));
+                    player.setPositionY(gridPos(47));
                     reloadMap();
                 }
 
@@ -431,8 +433,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //go back to previous map
                 if(x == gridPos(25) && y == gridPos(48)){
                     tileManager.loadMap(2);
-                    player.setPositionX(1);
-                    player.setPositionY(45);
+                    player.setPositionX(gridPos(1));
+                    player.setPositionY(gridPos(45));
                     reloadMap();
                 }
 
