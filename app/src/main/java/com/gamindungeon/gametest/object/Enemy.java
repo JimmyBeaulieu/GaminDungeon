@@ -191,11 +191,8 @@ public class Enemy extends GameObject{
 
             //if player is within two tiles of this object use HOMING MOVEMENT AI:
             if (Math.abs(player.positionX - positionX) <= 352 && Math.abs(player.positionY - positionY) <= 352 && isFocused) {
-                System.out.println("Enemy is Focused on you!!!");
+                //System.out.println("Enemy is Focused on you!!!");
                 isHoming = true;
-            } else {
-                //random();
-                System.out.println("Enemy is just wandering around");
             }
             //Kamil
             if(isRailMovementVertical) patternVertical();

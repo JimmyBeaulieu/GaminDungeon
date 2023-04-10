@@ -173,20 +173,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 Log.d("option", "X : " + startX);
                 Log.d("option", "Y : " + startY);
 
-                //where the gear's at
-                if(startX <= 1988 && startX >= 1900 && startY <= 188 && startY >= 100){
-                    ui.displayMenu();
-                }
-                //press yes
-                if(ui.isMenuOpen() && startX <= 700 && startX >= 450 && startY <= 700 && startY >= 500){
-                    save();
-                    ((Activity) getContext()).finish();
-                }
-                //press no
-                if(ui.isMenuOpen() && startX <= 1500 && startX >= 1250 && startY <= 700 && startY >= 500){
-                    save();
-                    ui.displayMenu();
-                }
+                menuShenanigans(startX, startY);
+
 
                 if(gameOver.getGameOverState()) {
                     passDialogHitCount++;
@@ -208,7 +196,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //user stop touching the screen
             case MotionEvent.ACTION_UP:
-                if(player.getHealth() > 0 && !ui.isInDialog()) {
+                if(player.getHealth() > 0 && !ui.isInDialog() && !ui.isMenuOpen()) {
 
                     //calculates the difference between the point where the user originally touches the screen vs the point where the user stops
                     deltaX = event.getX() - startX;
@@ -228,25 +216,43 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                             move = "up";
                         }
                     }
+                    player.setOldX(player.getPositionX());
+                    player.setOldY(player.getPositionY());
+                    player.move(move);
+
+                    save();
+
+                    for(Enemy enemy:enemyList){
+                        enemy.statusBranch();
+                    }
+
+                    if (combatTimer > 0) {
+                        combatTimer--;
+                    }
                 }
 
-                player.setOldX(player.getPositionX());
-                player.setOldY(player.getPositionY());
-                player.move(move);
 
-                save();
-
-                for(Enemy enemy:enemyList){
-                    enemy.statusBranch();
-                }
-
-                if (combatTimer > 0) {
-                    combatTimer--;
-                }
         }
 
 
         return true;
+    }
+
+    private void menuShenanigans(float startX, float startY) {
+        //where the gear's at
+        if(startX <= 1988 && startX >= 1900 && startY <= 188 && startY >= 100){
+            ui.displayMenu();
+        }
+        //press quit
+        if(ui.isMenuOpen() && startX <= 1800 && startX >= 1600 && startY <= 800 && startY >= 600){
+            save();
+            ((Activity) getContext()).finish();
+        }
+        //press no
+        if(ui.isMenuOpen() && startX <= 1500 && startX >= 1250 && startY <= 700 && startY >= 500){
+            save();
+            ui.displayMenu();
+        }
     }
 
     @Override
@@ -534,6 +540,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             if(player.getPositionX() == food.getPositionX() &&
             player.getPositionY() == food.getPositionY()){
                 player.setHunger(player.getHunger() + food.getHunger());
+                Score.caloriesIntake += food.getCalorie();
                 sfx.playSFX(2);
                 foodList.remove(food);
             }
@@ -541,6 +548,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         for (int i = 0; i < enemyList.size(); i++) {
             if (enemyList.get(i).getHealth() <= 0) {
+                String type = enemyList.get(i).getType();
                 Random random = new Random();
                 int chance = random.nextInt(10)+1;
                 if(chance >= 8){
@@ -549,22 +557,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 if(chance <8 && chance >= 5){
                     foodList.add(getRandomFood(enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
                 }
-                switch(enemyList.get(i).getType()){
+                switch(type){
                     case "bat":
                             Score.experience += 5;
+                            Score.batDefeated += 1;
                         break;
                     case "witch":
                             Score.experience+=20;
+                            Score.witchDefeated += 1;
                         break;
                     case "spirit":
                             Score.experience += 10;
+                            Score.spiritDefeated += 1;
                         break;
                     case "eye":
                             Score.experience += 100;
+                            Score.eyeDefeated += 1;
                         break;
 
                 }
-
                 enemyList.remove(enemyList.get(i));
 
             }

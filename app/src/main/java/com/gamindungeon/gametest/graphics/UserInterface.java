@@ -45,29 +45,67 @@ public class UserInterface {
         Paint paint = new Paint();
 
         if(isMenuOpen){
-            paint.setColor(ContextCompat.getColor(context, R.color.black));
+
+            paint.setColor(Color.argb(150, 0,0,0));
             canvas.drawRect(50, 50, 2000, 1000, paint);
 
             paint.setColor(ContextCompat.getColor(context, R.color.red));
-            canvas.drawRect(200, 250, 1850, 800, paint);
+            canvas.drawRect(1590, 600, 1750, 750, paint);
 
             paint.setColor(ContextCompat.getColor(context, R.color.black));
-            paint.setTextSize(250);
-            canvas.drawText("Quit?", 700, 500, paint);
+            paint.setTextSize(75);
+            canvas.drawText("Quit", 1600, 700, paint);
 
-            paint.setColor(ContextCompat.getColor(context, R.color.black));
-            paint.setTextSize(100);
-            canvas.drawText("Yes", 500, 700, paint);
 
-            paint.setColor(ContextCompat.getColor(context, R.color.black));
-            paint.setTextSize(100);
-            canvas.drawText("No", 1300, 700, paint);
 
             paint.setColor(ContextCompat.getColor(context, R.color.white));
             paint.setTextSize(50);
-            String stat = "Player stat:               Health Point: " + player.getHealth() + "/" + player.getMaxHealth() + "     Strength: " + player.getStrength() + "     Gold: " + Score.gold;
-            canvas.drawText(stat, 200, 200, paint);
 
+            //player stats
+            canvas.drawText("Player Stat:", 200, 300, paint);
+
+            String text = "Health Point: " + player.getHealth() + " / " + player.getMaxHealth();
+            canvas.drawText(text, 200, 400, paint);
+
+            text = "Hunger: " + player.getHunger();
+            canvas.drawText(text, 200, 500, paint);
+
+            text = "Strength: " + player.getStrength();
+            canvas.drawText(text, 200, 600, paint);
+
+            text = "Experience: " + Score.experience + " / 100";
+            canvas.drawText(text, 200, 700, paint);
+
+            text = "Money: " + Score.gold + " $";
+            canvas.drawText(text, 200, 800, paint);
+
+            text = "Total Calorie Intake: " + Score.caloriesIntake + " kcal";
+            canvas.drawText(text, 200, 900, paint);
+
+            //Enemy defeated stats
+            canvas.drawText("Enemy Defeated:", 1000, 300, paint);
+
+            Bitmap bat = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ba_bat), 100, 100, false);
+            Bitmap witch = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bb_witch), 100, 100, false);
+            Bitmap spirit = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bc_spirit), 100, 100, false);
+            Bitmap eye = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bd_eye), 100, 100, false);
+
+
+            canvas.drawBitmap(bat, 1200, 325, null);
+            text = " X " + String.valueOf(Score.batDefeated);
+            canvas.drawText(text, 1300, 400, paint);
+
+            canvas.drawBitmap(witch, 1200, 425, null);
+            text = " X " + String.valueOf(Score.witchDefeated);
+            canvas.drawText(text, 1300, 500, paint);
+
+            canvas.drawBitmap(spirit, 1200, 525, null);
+            text = " X " + String.valueOf(Score.spiritDefeated);
+            canvas.drawText(text, 1300, 600, paint);
+
+            canvas.drawBitmap(eye, 1200, 625, null);
+            text = " X " + String.valueOf(Score.eyeDefeated);
+            canvas.drawText(text, 1300, 700, paint);
 
         }
         else {
@@ -83,8 +121,9 @@ public class UserInterface {
             if (inDialog) {
                 drawDialog(canvas);
             }
-            canvas.drawBitmap(optionGear, 1900, 100, null);
+
         }
+        canvas.drawBitmap(optionGear, 1900, 100, null);
 
     }
 
@@ -167,11 +206,7 @@ public class UserInterface {
     }
 
     public void displayMenu() {
-        if(isMenuOpen){
-            isMenuOpen = false;
-        }else {
-            isMenuOpen = true;
-        }
+        isMenuOpen = !isMenuOpen;
     }
 
     public boolean isMenuOpen() {
