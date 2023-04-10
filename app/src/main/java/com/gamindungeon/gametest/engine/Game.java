@@ -180,8 +180,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     passDialogHitCount++;
                     if (passDialogHitCount == 2) {
                         passDialogHitCount = 0;
-                        Intent i = new Intent(getContext(), MainActivity.class);
-                        getContext().startActivity(i);
+                        respawn();
                     }
                 }
                 if(ui.isInDialog()){
@@ -236,6 +235,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
         return true;
+    }
+
+    private void respawn() {
+        player.setPositionX(tileManager.getCurrentMapSpawnX());
+        player.setPositionY(tileManager.getCurrentMapSpawnY());
+        player.setHealth(player.getMaxHealth());
+        Score.gold /=2;
+        Score.experience /=2;
+        gameOver.setGameOverState(false);
+        music.play(tileManager.getCurrentLoadedMap());
     }
 
     private void menuShenanigans(float startX, float startY) {
@@ -299,12 +308,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
         //Draw Game Over if (player's hp <= 0)
         if (player.getHealth() <= 0) {
+            player.setPositionX(tileManager.getCurrentMapSpawnX());
+            player.setPositionY(tileManager.getCurrentMapSpawnY());
             gameOver.draw(canvas);
             gameOver.setGameOverState(true);
             music.stop();
         }
 
         if(!gameOver.getGameOverState()) {
+
             ui.draw(canvas);
         }
 

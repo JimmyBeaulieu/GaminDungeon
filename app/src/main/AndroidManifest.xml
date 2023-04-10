@@ -19,10 +19,6 @@
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activity.Option_Activity"
-            android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
             android:name=".activity.Bonus_Game_Activity"
             android:exported="false"
             android:screenOrientation="landscape" />

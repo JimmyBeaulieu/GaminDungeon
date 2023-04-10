@@ -21,15 +21,15 @@ public class Music {
         if(Option.isMusicOn) {
             switch (songNumber) {
                 case 0:
-                    mp = MediaPlayer.create(context, R.raw.dungeon1);
+                    mp = MediaPlayer.create(context, R.raw.mikmiclea);
                     break;
                 case 1:
-                    mp = MediaPlayer.create(context, R.raw.exploration);
+                    mp = MediaPlayer.create(context, R.raw.dungeon1);
                     break;
                 case 2:
                     mp = MediaPlayer.create(context, R.raw.song1);
                 case 3:
-                    mp = MediaPlayer.create(context, R.raw.mikmiclea);
+                    mp = MediaPlayer.create(context, R.raw.exploration);
                     break;
                 case 4:
                     mp = MediaPlayer.create(context, R.raw.spin);
