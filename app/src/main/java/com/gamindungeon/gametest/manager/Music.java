@@ -75,4 +75,7 @@ public class Music {
     public void stop(){
         mp.stop();
     }
+    public void setVolume(int volume){
+        mp.setVolume(volume, volume);
+    }
 }

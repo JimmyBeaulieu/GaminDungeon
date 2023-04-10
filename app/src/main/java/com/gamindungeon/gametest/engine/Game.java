@@ -245,6 +245,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
         //press quit
         if(ui.isMenuOpen() && startX <= 1800 && startX >= 1600 && startY <= 800 && startY >= 600){
+            music.stop();
             save();
             ((Activity) getContext()).finish();
         }
@@ -833,9 +834,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
     }
 
-
+int x = 0;
     public void onResume() {
-        music.play(tileManager.getCurrentLoadedMap());
+        if(x != 0) {
+            music.play(tileManager.getCurrentLoadedMap());
+        }
+        x++;
         tileManager.cleanUp();
     }
 }
