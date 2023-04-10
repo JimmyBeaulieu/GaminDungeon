@@ -214,6 +214,10 @@ public class TileManager {
                     output.add(new Enemy(context, i * 176, j * 176, player, this, "eye"));
                     tiles[mapTileNum[i][j]] = tiles[2];
                 }
+                if (mapTileNum[i][j] == 4) {
+                    output.add(new Enemy(context, i * 176, j * 176, player, this, "lava"));
+                    tiles[mapTileNum[i][j]] = tiles[2];
+                }
             }
         }
         return output;
