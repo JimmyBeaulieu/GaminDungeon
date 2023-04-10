@@ -50,46 +50,7 @@
                 android:weightSum="15"
                 android:gravity="center">
 
-                <Button
-                    android:id="@+id/btnTutorial"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Tutorial"
-                    android:textColor="#15181f"/>
 
-                <Button
-                    android:id="@+id/deleteSaveFileButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="delete save file"
-                    android:textColor="#15181f"/>
-
-                <Button
-                    android:id="@+id/musicToggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="" />
-
-                <Button
-                    android:id="@+id/sfxToggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="" />
-
-                <Button
-                    android:id="@+id/btnReturnToMenu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Save Options"
-                    android:textColor="#15181f"/>
 
             </LinearLayout>
 

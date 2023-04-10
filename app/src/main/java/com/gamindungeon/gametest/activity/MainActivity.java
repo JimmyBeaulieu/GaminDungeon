@@ -1,11 +1,14 @@
 package com.gamindungeon.gametest.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -15,13 +18,16 @@ import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Option;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
 
     final int REQUEST_CODE = 1;
-    Button btnPlay, btnOptions;
+    Button btnPlay, btnOptions, deleteSaveFileButton, btnTutorial, btnReturnToMenu, musicToggle, sfxToggle;
     Music mp;
 
-    String bonusStr = "";
+    boolean isOptionUp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
-
         setContentView(R.layout.activity_main);
         initialize();
         
@@ -50,6 +55,30 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         //setting up music for menu
         mp = new Music(this);
+
+
+        deleteSaveFileButton = findViewById(R.id.deleteSaveFileButton);
+        deleteSaveFileButton.setOnClickListener(this);
+        deleteSaveFileButton.setVisibility(View.INVISIBLE);
+
+
+        btnTutorial = findViewById(R.id.btnTutorial);
+        btnTutorial.setOnClickListener(this);
+        btnTutorial.setVisibility(View.INVISIBLE);
+
+        btnReturnToMenu = findViewById(R.id.btnReturnToMenu);
+        btnReturnToMenu.setOnClickListener(this);
+        btnReturnToMenu.setVisibility(View.INVISIBLE);
+
+        musicToggle = findViewById(R.id.musicToggle);
+        musicToggle.setOnClickListener(this);
+        musicToggle.setVisibility(View.INVISIBLE);
+
+        sfxToggle = findViewById(R.id.sfxToggle);
+        sfxToggle.setOnClickListener(this);
+        sfxToggle.setVisibility(View.INVISIBLE);
+
+        updateText();
 
 
     }
@@ -68,66 +97,81 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             case R.id.btnOptions:
                 goToOptions();
                 break;
+            case R.id.deleteSaveFileButton:
+                File directory = this.getFilesDir(); // assuming you want to delete files from app's internal storage
+                File[] files = directory.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.delete()) {
+                            // File deleted successfully
+                            Toast.makeText(this, "Save file deleted!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    Toast.makeText(this, "No save file found!", Toast.LENGTH_LONG).show();
+                }
+                break;
+            case R.id.btnTutorial:
+                Intent i =  new Intent(this, Tutorial_Activity.class);
+                this.startActivity(i);
+                break;
+            case R.id.btnReturnToMenu:
+                returnToMenu();
+                break;
+
+            case R.id.musicToggle:
+                Option.isMusicOn = !Option.isMusicOn;
+                updateText();
+                break;
+
+            case R.id.sfxToggle:
+                Option.isSoundOn = !Option.isSoundOn;
+                updateText();
+                break;
         }
 
 
+    }
+
+    private void returnToMenu() {
+        btnPlay.setVisibility(View.VISIBLE);
+        btnOptions.setVisibility(View.VISIBLE);
+        deleteSaveFileButton.setVisibility(View.INVISIBLE);
+        btnTutorial.setVisibility(View.INVISIBLE);
+        btnReturnToMenu.setVisibility(View.INVISIBLE);
+        musicToggle.setVisibility(View.INVISIBLE);
+        sfxToggle.setVisibility(View.INVISIBLE);
     }
 
     private void goToOptions() {
-        Intent i =  new Intent(this, Option_Activity.class);
-        this.startActivity(i);
+
+        btnPlay.setVisibility(View.INVISIBLE);
+        btnOptions.setVisibility(View.INVISIBLE);
+        deleteSaveFileButton.setVisibility(View.VISIBLE);
+        btnTutorial.setVisibility(View.VISIBLE);
+        btnReturnToMenu.setVisibility(View.VISIBLE);
+        musicToggle.setVisibility(View.VISIBLE);
+        sfxToggle.setVisibility(View.VISIBLE);
+
+
     }
 
-    private void goToBonusGame() {
+    private void updateText(){
+        if(Option.isMusicOn){ musicToggle.setText("Music ON"); }
+        else { musicToggle.setText("Music OFF"); }
 
-        try {
-            //TODO GetNumOfCoinsFromSaveFile !!!
-            int numCoins = 3;
-
-            Intent intent = new Intent(this, Bonus_Game_Activity.class);
-
-            intent.putExtra("coin", numCoins);
-
-            startActivityForResult(intent, REQUEST_CODE);
-
-        }catch (Exception ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
+        if(Option.isSoundOn){ sfxToggle.setText("Sound Effects ON"); }
+        else { sfxToggle.setText("Sound Effects OFF"); }
     }
 
     private void goToGamePlay() {
         Intent i =  new Intent(this, Game_Activity.class);
-
-        i.putExtra("bonus", bonusStr);
         this.startActivity(i);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mp.stop();
         if(Option.isMusicOn){ mp.play(1);}
-        else{ mp.stop(); }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK){
-
-            String prize = data.getStringExtra("prize");
-
-            int numCoin = data.getIntExtra("coin", -1);
-
-            //TODO SetNumOfCoinsToSaveFile !!!
-            String msg = "Player has " + numCoin + " coins!\n" + prize;
-
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-
-            bonusStr = prize;
-
-        }
-
-
     }
 }

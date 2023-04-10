@@ -104,6 +104,7 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
             @Override
             public void onAnimationStart(Animator animation) {
                 // Animation started
+                //music.setVolume(1);
                 music.play(4);
                 btnSpin.setEnabled(false);
                 btnReturn.setEnabled(false);
