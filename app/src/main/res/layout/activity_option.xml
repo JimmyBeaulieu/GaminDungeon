@@ -69,13 +69,28 @@
                     android:textColor="#15181f"/>
 
                 <Button
+                    android:id="@+id/musicToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="" />
+
+                <Button
+                    android:id="@+id/sfxToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="" />
+
+                <Button
                     android:id="@+id/btnReturnToMenu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="MainMenu"
+                    android:text="Save Options"
                     android:textColor="#15181f"/>
+
             </LinearLayout>
 
 

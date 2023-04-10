@@ -40,20 +40,32 @@ public class Enemy extends GameObject{
         super(context, positionX, positionY);
 
         this.type = type;
+        double difficultyMultiplier = 1;
+        switch(tm.getCurrentLoadedMap()){
+            case 1:
+                difficultyMultiplier = 1.2;
+                break;
+            case 2:
+                difficultyMultiplier = 1.5;
+                break;
+            case 3:
+                difficultyMultiplier = 1.7;
+                break;
+        }
 
         switch(type){
 
             case "bat":
-                health = 20 * (tm.getCurrentLoadedMap() + 1);
-                strength = 10 * (tm.getCurrentLoadedMap() + 1);
+                health = 20 * difficultyMultiplier;
+                strength = 10 * difficultyMultiplier;
                 isMovable = true;
                 isRandomMovable = true;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ba_bat), 176, 176, false);
                 break;
 
             case "witch":
-                health = 50 * (tm.getCurrentLoadedMap() + 1);
-                strength = 20 * (tm.getCurrentLoadedMap() + 1);
+                health = 50 * difficultyMultiplier;
+                strength = 20 * difficultyMultiplier;
                 isMovable = true;
                 isRandomMovable = true;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bb_witch), 176, 176, false);
@@ -67,8 +79,8 @@ public class Enemy extends GameObject{
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), 176, 176, false);
                 break;
             case "spirit":
-                health = 10 * (tm.getCurrentLoadedMap() + 1);
-                strength = tm.getCurrentLoadedMap() + 1;
+                health = 10 * difficultyMultiplier;
+                strength = 1 * difficultyMultiplier;
                 isMovable = true;
                 isRandomMovable = false;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bc_spirit), 176, 176, false);
