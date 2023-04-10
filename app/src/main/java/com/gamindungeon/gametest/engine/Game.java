@@ -655,8 +655,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         content.append(dialogPass).append("||");
         content.append(Score.gold).append("||");
         content.append(Score.experience).append("||");
+        content.append(Score.caloriesIntake).append("||");
+        content.append(Score.batDefeated).append("||");
+        content.append(Score.witchDefeated).append("||");
+        content.append(Score.spiritDefeated).append("||");
+        content.append(Score.eyeDefeated).append("||");
 
-        //Log.d("SAVEFILE","map#|" + tileManager.getCurrentLoadedMap());
         content.append(tileManager.getCurrentLoadedMap()).append("||");
 
 
@@ -812,7 +816,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         ));
                     }
                 }
-                dialogPass = Integer.parseInt(contentArray[contentArray.length - 2]);
+
+                dialogPass = Integer.parseInt(contentArray[contentArray.length - 9]);
+                Score.gold = Integer.parseInt(contentArray[contentArray.length - 8]);
+                Score.experience = Integer.parseInt(contentArray[contentArray.length - 7]);
+                Score.caloriesIntake = Double.parseDouble(contentArray[contentArray.length - 6]);
+                Score.batDefeated = Integer.parseInt(contentArray[contentArray.length - 5]);
+                Score.witchDefeated = Integer.parseInt(contentArray[contentArray.length - 4]);
+                Score.spiritDefeated = Integer.parseInt(contentArray[contentArray.length - 3]);
+                Score.eyeDefeated = Integer.parseInt(contentArray[contentArray.length - 2]);
                 tileManager.loadMap(Integer.parseInt(contentArray[contentArray.length - 1]));
             }
         }
