@@ -1,7 +1,5 @@
 package com.gamindungeon.gametest.engine;
 
-import static android.app.Activity.RESULT_OK;
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.app.Activity;
@@ -14,22 +12,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.activity.Bonus_Game_Activity;
-import com.gamindungeon.gametest.activity.MainActivity;
 import com.gamindungeon.gametest.graphics.UserInterface;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
@@ -40,7 +29,6 @@ import com.gamindungeon.gametest.object.collectable.Coin;
 //import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
-import com.gamindungeon.gametest.object.Teleporter;
 import com.gamindungeon.gametest.object.collectable.Food;
 
 import java.io.BufferedReader;
@@ -105,8 +93,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         loadPlayer();
 
-
-
         //Initialize game display and center it around the player
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -119,8 +105,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         ui = new UserInterface(getContext(), score, player);
         gameOver = new GameOver(getContext(), ui);
-
-
 
         if(firstTimePlaying){
             //loads the first map
@@ -376,6 +360,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
+
+                //help signs
+                if(player.getPositionX() == gridPos(6) && player.getPositionY() == gridPos(3)){
+                    player.setPositionX(player.getOldPositionX());
+                    player.setPositionY(player.getOldPositionY());
+                    ui.createDialog("If I walk into enemies, I can fight them and get      rewards!");
+                }
+
+                if(player.getPositionX() == gridPos(22) && player.getPositionY() == gridPos(3)){
+                    player.setPositionX(player.getOldPositionX());
+                    player.setPositionY(player.getOldPositionY());
+                    ui.createDialog("Finding food here on the ground is kinda weird but it looks really tasty...");
+                }
+
                 //will be used for hardcoded teleporter, basically:
                 //IF player is on specific X and Y, THEN change X and Y position to newX and newY
 

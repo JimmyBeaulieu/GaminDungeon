@@ -33,7 +33,7 @@ public class TileManager {
 
     public TileManager(Context context, GameDisplay gameDisplay, Player player, Music mp) {
         this.context = context;
-        tiles = new Tile[21];
+        tiles = new Tile[22];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
@@ -59,8 +59,8 @@ public class TileManager {
             tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), false);
             tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.af_stairs), false);
             tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ag_door), false);
-            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ah_spinsign), false);
-            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ai_shopsign), false);
+            tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ah_spinsign), true);
+            tiles[8] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ai_shopsign), true);
 
             //characters
             tiles[9] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ba_bat), false);
@@ -80,6 +80,8 @@ public class TileManager {
 
             //addition I forgot, sorry I don't want to redo everything again
             tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.da_downstairs), false);
+            tiles[21] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.db_help), false);
+
 
 
 
@@ -296,7 +298,7 @@ public class TileManager {
                 output = 3 * 176;
                 break;
             case 1:
-                output =3 * 176;
+                output = 3 * 176;
                 break;
             case 2:
                 output = 9 * 176;
@@ -313,7 +315,7 @@ public class TileManager {
         double output = 0;
         switch (currentLoadedMap){
             case 0:
-                output =  4*176;
+                output = 4 * 176;
                 break;
             case 1:
                 output = 7 * 176;
