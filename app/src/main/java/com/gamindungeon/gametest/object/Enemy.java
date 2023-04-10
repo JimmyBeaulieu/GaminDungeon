@@ -206,9 +206,15 @@ public class Enemy extends GameObject{
 
         if(countRailMovementVertical >= 0 && countRailMovementVertical < 3){
             move("up");
+            if(positionX == oldPosX && positionY == oldPosY){
+                countRailMovementVertical = 3;
+            }
             countRailMovementVertical ++;
         } else if(countRailMovementVertical >= 3 && countRailMovementVertical < 6){
             move("down");
+            if(positionX == oldPosX && positionY == oldPosY){
+                countRailMovementVertical = 0;
+            }
             countRailMovementVertical ++;
             if(countRailMovementVertical == 6){
                 countRailMovementVertical = 0;

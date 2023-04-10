@@ -245,6 +245,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         Score.experience /=2;
         gameOver.setGameOverState(false);
         music.play(tileManager.getCurrentLoadedMap());
+        reloadMap();
     }
 
     private void menuShenanigans(float startX, float startY) {
@@ -387,12 +388,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
                 //Cool ass dialogue system!
+                if(x == gridPos(0) && y == gridPos(4)){
+                    ui.createDialog("It took me ages to find this place, I am not going    back!!");
+                    player.setPositionX(gridPos(1));
+                }
+
                 if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
                     ui.createDialog("Finally I found it! The famous Gamin's Dungeon...");
                     dialogPass++;
                 }
                 if(x == gridPos(9) && y == gridPos(4) && dialogPass < 2) {
-                    ui.createDialog("Now where did Gamin put his famous recipe for paczki... It took me so long to find this place, I'm NOT leaving without it no matter what.");
+                    ui.createDialog("Now where did Gamin put his famous recipe for paczki...");
                     dialogPass++;
                 }
 
@@ -750,7 +756,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //create a new player
                 player = new Player(getContext(), sfx, gridPos(3), gridPos(4), 100,
-                100, 30, 50, gridPos(3), gridPos(4), "up", 1);
+                100, 30, 50, gridPos(3), gridPos(4), "down", 1);
 
                 //sets boolean for first time playing map initialization
                 firstTimePlaying = true;
