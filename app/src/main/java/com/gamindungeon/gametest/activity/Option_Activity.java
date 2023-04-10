@@ -3,6 +3,7 @@ package com.gamindungeon.gametest.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,11 +12,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.manager.Option;
 
 import java.io.File;
 
 public class Option_Activity extends AppCompatActivity implements View.OnClickListener{
-    Button deleteSaveFileButton, btnTutorial, btnReturnToMenu;
+    Button deleteSaveFileButton, btnTutorial, btnReturnToMenu, musicToggle, sfxToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,13 @@ public class Option_Activity extends AppCompatActivity implements View.OnClickLi
         btnReturnToMenu = findViewById(R.id.btnReturnToMenu);
         btnReturnToMenu.setOnClickListener(this);
 
+        musicToggle = findViewById(R.id.musicToggle);
+        musicToggle.setOnClickListener(this);
 
+        sfxToggle = findViewById(R.id.sfxToggle);
+        sfxToggle.setOnClickListener(this);
+
+        updateText();
     }
 
     @Override
@@ -75,8 +83,26 @@ public class Option_Activity extends AppCompatActivity implements View.OnClickLi
             case R.id.btnReturnToMenu:
                 finish();
                 break;
+
+            case R.id.musicToggle:
+                Option.isMusicOn = !Option.isMusicOn;
+                updateText();
+                break;
+
+            case R.id.sfxToggle:
+                Option.isSoundOn = !Option.isSoundOn;
+                updateText();
+                break;
         }
 
 
+    }
+
+    private void updateText(){
+        if(Option.isMusicOn){ musicToggle.setText("Music ON"); }
+        else { musicToggle.setText("Music OFF"); }
+
+        if(Option.isSoundOn){ sfxToggle.setText("Sound Effects ON"); }
+        else { sfxToggle.setText("Sound Effects OFF"); }
     }
 }

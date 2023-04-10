@@ -1,8 +1,5 @@
 package com.gamindungeon.gametest.activity;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +8,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.gamindungeon.gametest.activity.Bonus_Game_Activity;
-import com.gamindungeon.gametest.activity.Game_Activity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Music;
+import com.gamindungeon.gametest.manager.Option;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
 
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         //setting up music for menu
         mp = new Music(this);
-        mp.play(0);
+
 
     }
 
@@ -101,6 +100,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         i.putExtra("bonus", bonusStr);
         this.startActivity(i);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Option.isMusicOn){ mp.play(1);}
+        else{ mp.stop(); }
     }
 
     @Override
