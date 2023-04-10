@@ -61,6 +61,8 @@ public class UserInterface {
             paint.setColor(ContextCompat.getColor(context, R.color.white));
             paint.setTextSize(50);
 
+            canvas.drawText("Return to game ->", 1500, 160, paint);
+
             //player stats
             canvas.drawText("Player Stat:", 200, 300, paint);
 
