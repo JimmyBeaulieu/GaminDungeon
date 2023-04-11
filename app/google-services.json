@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "375834694856",
+    "firebase_url": "https://gamindungeonproject-ko-default-rtdb.firebaseio.com",
+    "project_id": "gamindungeonproject-ko",
+    "storage_bucket": "gamindungeonproject-ko.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375834694856:android:87bf727be447224224c1fd",
+        "android_client_info": {
+          "package_name": "com.gamindungeon.gametest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375834694856-vrrbj75ggv697krg9q0lh5t07rqm091b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBP02lWYnzn2Id7mIyyDKn3EM4eSn8A1DM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375834694856-vrrbj75ggv697krg9q0lh5t07rqm091b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
