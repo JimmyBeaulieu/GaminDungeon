@@ -19,16 +19,15 @@ import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.activity.Bonus_Game_Activity;
+import com.gamindungeon.gametest.gamepanel.GameOver;
+import com.gamindungeon.gametest.gamepanel.Performance;
 import com.gamindungeon.gametest.graphics.UserInterface;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
-import com.gamindungeon.gametest.gamepanel.GameOver;
-import com.gamindungeon.gametest.gamepanel.Performance;
-import com.gamindungeon.gametest.object.collectable.Coin;
-//import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
+import com.gamindungeon.gametest.object.collectable.Coin;
 import com.gamindungeon.gametest.object.collectable.Food;
 
 import java.io.BufferedReader;
@@ -514,10 +513,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         foodList.addAll(tileManager.getFoodOnMap());
     }
 
-    public void pause() {
-        gameLoop.stopLoop();
-    }
-
     private void combat(Enemy enemy, Player player) {
 
         sfx.playSFX(1);
@@ -857,5 +852,9 @@ int x = 0;
         }
         x++;
         tileManager.cleanUp();
+    }
+    public void pause() {
+        gameLoop.stopLoop();
+        music.pause();
     }
 }
