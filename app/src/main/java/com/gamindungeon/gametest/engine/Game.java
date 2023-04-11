@@ -38,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
@@ -62,7 +63,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     UserInterface ui;
     boolean firstTimePlaying = false;
 
-    ActivityResultLauncher actResLauncher;
+    int shadeExpAmount;
+    int shadeGoldAmount;
 
     public Game(Context context) {
         super(context);
@@ -225,11 +227,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         player.setPositionX(tileManager.getCurrentMapSpawnX());
         player.setPositionY(tileManager.getCurrentMapSpawnY());
         player.setHealth(player.getMaxHealth());
-        Score.gold /=2;
-        Score.experience /=2;
         gameOver.setGameOverState(false);
         music.play(tileManager.getCurrentLoadedMap());
         reloadMap();
+        shadeSpawn();
+        Score.gold /=2;
+        Score.experience /=2;
     }
 
     private void menuShenanigans(float startX, float startY) {
@@ -308,6 +311,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //drawDebug(canvas);
     }
 
+    private void shadeSpawn() {
+        enemyList.add(new Enemy(getContext(), player.getOldPositionX(), player.getOldPositionY(), player, tileManager, "shade"));
+        shadeExpAmount = Score.experience / 2;
+        shadeGoldAmount = Score.gold / 2;
+    }
+
     private void drawDebug(Canvas canvas) {
 
         Paint paint = new Paint();
@@ -340,7 +349,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         mapEvent(tileManager.getCurrentLoadedMap(), player.getPositionX(), player.getPositionY());
         gameDisplay.update();
     }
-    int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check for an increasing amount of dialogPass, then increase dialogPass by one each time
+    //int dialogPass = 0; //Used to make sure dialog isn't repeated, basically, check for an increasing amount of dialogPass, then increase dialogPass by one each time
+
+    List<String> dialogPass = new ArrayList<String>();
+
     private void mapEvent(int currentLoadedMap, double x, double y) {
         switch(currentLoadedMap){
             case 0:
@@ -391,13 +403,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     player.setPositionX(gridPos(1));
                 }
 
-                if(x == gridPos(3) && y == gridPos(4) && dialogPass < 1) {
+                if(x == gridPos(3) && y == gridPos(4) && !dialogPass.contains("Finally I found it!")) {
                     ui.createDialog("Finally I found it! The famous Gamin's Dungeon...");
-                    dialogPass++;
+                    dialogPass.add("Finally I found it!");
                 }
-                if(x == gridPos(9) && y == gridPos(4) && dialogPass < 2) {
+                if(x == gridPos(9) && y == gridPos(4) && !dialogPass.contains("Now where did Gamin")) {
                     ui.createDialog("Now where did Gamin put his famous recipe for paczki...");
-                    dialogPass++;
+                    dialogPass.add("Now where did Gamin");
+                }
+                if(x == gridPos(22) && y == gridPos(26) && !dialogPass.contains("Those eyes look dangerous")){
+                    ui.createDialog("Those eyes look dangerous... I really don't want to   get stuck between a wall and one of them...");
+                    dialogPass.add("Those eyes look dangerous");
                 }
 
                 break;
@@ -422,6 +438,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
                 ///////////////////////////////////////////////////////////////////////////////////
 
+                if(x == gridPos(36) && y == gridPos(32)){
+                    ui.createDialog("It's locked... no way for me to open this door...");
+                    player.setPositionY(gridPos(31));
+                }
+                if (player.getPositionX() == gridPos(8) && player.getPositionY() == gridPos(47)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    spinRoom();
+                }
+
+
+
                 break;
             case 2:
 
@@ -442,13 +469,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
 
                 ///////////////////////////////////////////////////////////////////////////////////
-
-                if( (x == gridPos(20) && y == gridPos(45) && dialogPass < 3)) {
-                    ui.createDialog("That Lava looks dangerous.");
-                    dialogPass++;
+                if ((player.getPositionX() == gridPos(1) && player.getPositionY() == gridPos(37)) ||
+                    player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(5)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    spinRoom();
                 }
-                if(x == gridPos(28) && y == gridPos(46)){ teleport(45, 3); }
-                if(x == gridPos(45) && y == gridPos(2)){ teleport(27, 46); }
+
+
+                if( (x == gridPos(20) && y == gridPos(45) && !dialogPass.contains("That Lava looks dangerous."))) {
+                    ui.createDialog("That Lava looks dangerous.");
+                    dialogPass.add("That Lava looks dangerous.");
+                }
+
 
                 break;
             case 3:
@@ -461,23 +493,22 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     reloadMap();
                 }
 
-                //go to next map
+                if ((player.getPositionX() == gridPos(26) && player.getPositionY() == gridPos(15)) ||
+                        player.getPositionX() == gridPos(44) && player.getPositionY() == gridPos(26)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    spinRoom();
+                }
 
 
-                ///////////////////////////////////////////////////////////////////////////////////
+                if(x == gridPos(28) && y == gridPos(46)){ teleport(45, 3); }
+                if(x == gridPos(45) && y == gridPos(2)){ teleport(27, 46); }
 
-                break;
-            case 4:
-
-                //go back to previous map
-
-
-                //go to next map
-
-
-                ///////////////////////////////////////////////////////////////////////////////////
+                if( (x == gridPos(20) && y == gridPos(45))) {
+                    ui.createDialog("For some reason I feel like this is the end for now...  I honestly don't know why but I feel like maybe someday it will be finished if anyone asks for it...");
+                }
 
                 break;
+
         }
 
     }
@@ -498,9 +529,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private void reloadMap() {
 
         //regenerate the array lists so there's no doubles
-        enemyList = new ArrayList<>();
-        coinList = new ArrayList<>();
-        foodList = new ArrayList<>();
+        enemyList = new ArrayList<Enemy>();
+        coinList = new ArrayList<Coin>();
+        foodList = new ArrayList<Food>();
+        tileManager.loadMap(tileManager.getCurrentLoadedMap());
 
         //generates entity depending on where they were placed on the map editor
 
@@ -512,6 +544,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //food
         foodList.addAll(tileManager.getFoodOnMap());
+        Log.d("reload", String.valueOf(enemyList.size()));
+        Log.d("reload", String.valueOf(coinList.size()));
+        Log.d("reload", String.valueOf(foodList.size()));
     }
 
     private void combat(Enemy enemy, Player player) {
@@ -589,6 +624,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                             Score.experience += 100;
                             Score.eyeDefeated += 1;
                         break;
+                    case "shade":
+                        Score.experience += shadeExpAmount;
+                        Score.gold += shadeGoldAmount;
+                        shadeGoldAmount = 0;
+                        shadeExpAmount = 0;
 
                 }
                 enemyList.remove(enemyList.get(i));
@@ -665,7 +705,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             content.append("food|").append(food);
         }
 
-        content.append(dialogPass).append("||");
+        //content.append(dialogPass).append("||");
+
         content.append(Score.gold).append("||");
         content.append(Score.experience).append("||");
         content.append(Score.caloriesIntake).append("||");
@@ -874,8 +915,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                     }
                 }
-
-                dialogPass = Integer.parseInt(contentArray[contentArray.length - 9]);
                 Score.gold = Integer.parseInt(contentArray[contentArray.length - 8]);
                 Score.experience = Integer.parseInt(contentArray[contentArray.length - 7]);
                 Score.caloriesIntake = Double.parseDouble(contentArray[contentArray.length - 6]);

@@ -93,6 +93,12 @@ public class Enemy extends GameObject{
                 isRailMovementVertical = true;
                 this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.bd_eye), 176, 176, false);
                 break;
+            case "shade":
+                health = player.getMaxHealth() - (player.getMaxHealth() * 0.2);
+                strength = player.getStrength() - (player.getStrength() * 0.2);
+                isMovable = true;
+                isRandomMovable = false;
+                this.bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.shade), 176, 176, false);
 
         }
 
