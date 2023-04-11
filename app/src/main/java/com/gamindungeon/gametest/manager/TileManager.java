@@ -33,7 +33,7 @@ public class TileManager {
 
     public TileManager(Context context, GameDisplay gameDisplay, Player player, Music mp) {
         this.context = context;
-        tiles = new Tile[22];
+        tiles = new Tile[40];
         this.gameDisplay = gameDisplay;
         mapTileNum = new int[gameDisplay.getMaxScreenColumns()][gameDisplay.getMaxScreenRows()];
         this.player = player;
@@ -54,7 +54,7 @@ public class TileManager {
             //structure
             tiles[0] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.aa_rock), true);
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ab_water), true);
-            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ac_wood), false);
+            tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ac_floor), false);
             tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ad_teleport), false);
             tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), false);
             tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.af_stairs), false);
@@ -81,6 +81,11 @@ public class TileManager {
             //addition I forgot, sorry I don't want to redo everything again
             tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.da_downstairs), false);
             tiles[21] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.db_help), false);
+
+            tiles[22] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ea_floor), false);
+            tiles[23] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.eb_floor), false);
+            tiles[24] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ec_floor), false);
+            tiles[25] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ed_rock), true);
 
 
 
@@ -244,25 +249,29 @@ public class TileManager {
             for (int j = 0; j < mapTileNum.length; j++) {
                 switch (mapTileNum[i][j]) {
                     case 13:
-                        //apple
-                        output.add(new Food(context, i * 176, j * 176, "burger"));
+                        output.add(new Food(context, i * 176, j * 176, foodType.BURGER));
                         tiles[mapTileNum[i][j]] = tiles[2];
                         break;
                     case 14:
-                        output.add(new Food(context, i * 176, j * 176, "cake"));
+                        output.add(new Food(context, i * 176, j * 176, foodType.CAKE));
                         tiles[mapTileNum[i][j]] = tiles[2];
+                        break;
                     case 15:
-                        output.add(new Food(context, i * 176, j * 176, "cone"));
+                        output.add(new Food(context, i * 176, j * 176, foodType.CONE));
                         tiles[mapTileNum[i][j]] = tiles[2];
+                        break;
                     case 16:
-                        output.add(new Food(context, i * 176, j * 176, "donut"));
+                        output.add(new Food(context, i * 176, j * 176, foodType.DONUT));
                         tiles[mapTileNum[i][j]] = tiles[2];
+                        break;
                     case 17:
-                        output.add(new Food(context, i * 176, j * 176, "drumstick"));
+                        output.add(new Food(context, i * 176, j * 176, foodType.DRUMSTICK));
                         tiles[mapTileNum[i][j]] = tiles[2];
+                        break;
                     case 18:
-                        output.add(new Food(context, i * 176, j * 176, "potion"));
+                        output.add(new Food(context, i * 176, j * 176, foodType.POTION));
                         tiles[mapTileNum[i][j]] = tiles[2];
+                        break;
 
                 }
             }
@@ -275,7 +284,6 @@ public class TileManager {
             for (int j = 0; j < mapTileNum.length; j++) {
                 if (mapTileNum[i][j] == 9 ||
                         mapTileNum[i][j] == 10 ||
-                        mapTileNum[i][j] == 11 ||
                         mapTileNum[i][j] == 12 ||
                         mapTileNum[i][j] == 13 ||
                         mapTileNum[i][j] == 14 ||
@@ -285,6 +293,9 @@ public class TileManager {
                         mapTileNum[i][j] == 18 ||
                         mapTileNum[i][j] == 19) {
                     mapTileNum[i][j] = 2;
+                }
+                if(mapTileNum[i][j] == 11){
+                    mapTileNum[i][j] = 23;
                 }
             }
 

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
+import com.gamindungeon.gametest.manager.foodType;
 
 public class Food {
     double positionX;
@@ -16,36 +17,42 @@ public class Food {
     Bitmap sprite;
     double hungerRestoreAmount;
     double calories;
-    String type;
+    //String type;
+    foodType type;
 
-    public Food(Context context, double positionX, double positionY, String type){
+    public Food(Context context, double positionX, double positionY, foodType type){
         this.type = type;
         switch(type){
-            case "donut":
+            case DONUT:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), 176, 176, false);
                 hungerRestoreAmount = 10;
                 calories = 300;
                 break;
-            case "drumstick":
+            case DRUMSTICK:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), 176, 176, false);
                 hungerRestoreAmount = 50;
                 calories = 150;
-            case "burger":
+                break;
+            case BURGER:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), 176, 176, false);
                 hungerRestoreAmount = 25;
                 calories = 295;
-            case "cake":
+                break;
+            case CAKE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), 176, 176, false);
                 hungerRestoreAmount = 60;
                 calories = 500;
-            case "cone":
+                break;
+            case CONE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), 176, 176, false);
                 hungerRestoreAmount = 50;
                 calories = 417;
-            case "potion":
+                break;
+            case POTION:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), 176, 176, false);
                 hungerRestoreAmount = 100;
                 calories = 10;
+                break;
         }
         this.positionX = positionX;
         this.positionY=positionY;
