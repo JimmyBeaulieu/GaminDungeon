@@ -154,7 +154,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                         }
 
 
-                        if (isUsernameUnique == true && isEmailUnique == true){
+                        if (isUsernameUnique && isEmailUnique){
 
                             User user = new User(username, email, encryptPass, "NoSave");
                             usersDatabase.child(username).setValue(user);

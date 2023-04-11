@@ -675,7 +675,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         content.append(tileManager.getCurrentLoadedMap()).append("||");
 
-
+        Score.saveContent = content.toString();
 
         try {
             File directory = getContext().getFilesDir();
