@@ -25,6 +25,7 @@ import com.gamindungeon.gametest.graphics.UserInterface;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
+import com.gamindungeon.gametest.manager.foodType;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.collectable.Coin;
@@ -612,25 +613,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private Food getRandomFood(double positionX, double positionY) {
 
         Random rand = new Random();
-        Food food = new Food(getContext(), positionX, positionY, "donut");;
+        Food food = new Food(getContext(), positionX, positionY, foodType.DONUT);;
         switch(rand.nextInt(7)){
             case 0:
-                food = new Food(getContext(), positionX, positionY, "donut");
+                food = new Food(getContext(), positionX, positionY, foodType.DONUT);
                 break;
             case 1:
-                food = new Food(getContext(), positionX, positionY, "drumstick");
+                food = new Food(getContext(), positionX, positionY, foodType.DRUMSTICK);
                 break;
             case 2:
-                food = new Food(getContext(), positionX, positionY, "burger");
+                food = new Food(getContext(), positionX, positionY, foodType.BURGER);
                 break;
             case 3:
-                food = new Food(getContext(), positionX, positionY, "cake");
+                food = new Food(getContext(), positionX, positionY, foodType.CAKE);
                 break;
             case 4:
-                food = new Food(getContext(), positionX, positionY, "cone");
+                food = new Food(getContext(), positionX, positionY, foodType.CONE);
                 break;
             case 5:
-                food = new Food(getContext(), positionX, positionY, "potion");
+                food = new Food(getContext(), positionX, positionY, foodType.POTION);
                 break;
 
 
@@ -820,12 +821,57 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                     if (splitStr[0].equals("food")) {
                         //Log.d("SAVEFILE_FOOD", splitStr[3]);
-                        foodList.add(new Food(
-                                getContext(),
-                                Double.parseDouble(splitStr[1]),
-                                Double.parseDouble(splitStr[2]),
-                                splitStr[3]
-                        ));
+
+                        if(splitStr[3].equals("donut")){
+                            foodList.add(new Food(
+                                    getContext(),
+                                    Double.parseDouble(splitStr[1]),
+                                    Double.parseDouble(splitStr[2]),
+                                    foodType.DONUT
+                            ));
+                        }
+                        if(splitStr[3].equals("drumstick")){
+                            foodList.add(new Food(
+                                    getContext(),
+                                    Double.parseDouble(splitStr[1]),
+                                    Double.parseDouble(splitStr[2]),
+                                    foodType.DRUMSTICK
+                            ));
+                        }
+                        if(splitStr[3].equals("burger")){
+                            foodList.add(new Food(
+                                    getContext(),
+                                    Double.parseDouble(splitStr[1]),
+                                    Double.parseDouble(splitStr[2]),
+                                    foodType.BURGER
+                            ));
+                        }
+                        if(splitStr[3].equals("cake")){
+                            foodList.add(new Food(
+                                    getContext(),
+                                    Double.parseDouble(splitStr[1]),
+                                    Double.parseDouble(splitStr[2]),
+                                    foodType.CAKE
+                            ));
+                        }
+                        if(splitStr[3].equals("cone")){
+                            foodList.add(new Food(
+                                    getContext(),
+                                    Double.parseDouble(splitStr[1]),
+                                    Double.parseDouble(splitStr[2]),
+                                    foodType.CONE
+                            ));
+                        }
+                        if(splitStr[3].equals("potion")){
+                            foodList.add(new Food(
+                                    getContext(),
+                                    Double.parseDouble(splitStr[1]),
+                                    Double.parseDouble(splitStr[2]),
+                                    foodType.POTION
+                            ));
+                        }
+
+
                     }
                 }
 
