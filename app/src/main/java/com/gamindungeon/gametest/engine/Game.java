@@ -156,8 +156,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 startX = event.getX();
                 startY = event.getY();
 
-                Log.d("option", "X : " + startX);
-                Log.d("option", "Y : " + startY);
+                //Log.d("option", "X : " + startX);
+                //Log.d("option", "Y : " + startY);
 
                 menuShenanigans(startX, startY);
 
@@ -309,6 +309,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         //drawDebug(canvas);
+
+
     }
 
     private void shadeSpawn() {
@@ -522,7 +524,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             startActivity(getContext(), i, null);
 
         } else {
-            ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE MONEY!!");
+            ui.createDialog("GET OUT OF HERE YOU FILTHY BEGGAR, COME BACK WHEN YOU HAVE AT LEAST 5$!!");
         }
     }
 
@@ -544,9 +546,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //food
         foodList.addAll(tileManager.getFoodOnMap());
-        Log.d("reload", String.valueOf(enemyList.size()));
-        Log.d("reload", String.valueOf(coinList.size()));
-        Log.d("reload", String.valueOf(foodList.size()));
+
+        for(Food food : foodList){
+            Log.d("SAVEFILE_FOOD", food.toString());
+        }
     }
 
     private void combat(Enemy enemy, Player player) {
@@ -558,6 +561,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         enemy.setHealth(enemy.getHealth() - player.getStrength());
         player.setHealth(player.getHealth() - enemy.getStrength());
 
+        if(player.getHealth() <= 0){
+            //music.stop();
+            sfx.play(6);
+            Log.d("gameover", "dead2 eletric boogallo!");
+        }
 
     }
     private void checkForCollision() {
@@ -583,6 +591,46 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 combatTimer = 3;
                 combat(enemy, player);
             }
+            //
+            if (enemyList.get(i).getHealth() <= 0) {
+                String type = enemyList.get(i).getType();
+                Random random = new Random();
+                int chance = random.nextInt(10)+1;
+                if(chance >= 8){
+                    coinList.add(new Coin(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
+                }
+                if(chance <8 && chance >= 5){
+                    foodList.add(getRandomFood(enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
+                }
+                switch(type){
+                    case "bat":
+                        Score.experience += 5;
+                        Score.batDefeated += 1;
+                        break;
+                    case "witch":
+                        Score.experience+=20;
+                        Score.witchDefeated += 1;
+                        break;
+                    case "spirit":
+                        Score.experience += 10;
+                        Score.spiritDefeated += 1;
+                        break;
+                    case "eye":
+                        Score.experience += 100;
+                        Score.eyeDefeated += 1;
+                        break;
+                    case "shade":
+                        Score.experience += shadeExpAmount;
+                        Score.gold += shadeGoldAmount;
+                        shadeGoldAmount = 0;
+                        shadeExpAmount = 0;
+
+                }
+                enemyList.remove(enemyList.get(i));
+
+            }
+            //
+
         }
 
         for(int i = 0; i<foodList.size();i++){
@@ -595,7 +643,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 foodList.remove(food);
             }
         }
-
+/*
         for (int i = 0; i < enemyList.size(); i++) {
             if (enemyList.get(i).getHealth() <= 0) {
                 String type = enemyList.get(i).getType();
@@ -635,6 +683,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
             }
         }
+*/
+
             //checks if two enemies intersects, if so, prevent movement for one enemy for one turn
         for(int i = 0; i<enemyList.size();i++){
             for(int j = 0; j<enemyList.size(); j++){
@@ -648,6 +698,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
             }
         }
+
+
     }
 
     private Food getRandomFood(double positionX, double positionY) {
@@ -680,7 +732,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     private void teleport(int x, int y) {
-        //fading =true;
+        sfx.playSFX(4);
         player.setPositionX(gridPos(x));
         player.setPositionY(gridPos(y));
 
@@ -861,9 +913,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     }
 
                     if (splitStr[0].equals("food")) {
-                        //Log.d("SAVEFILE_FOOD", splitStr[3]);
+                        Log.d("SAVEFILE_FOOD", splitStr[3]);
 
-                        if(splitStr[3].equals("donut")){
+                        if(splitStr[3].equalsIgnoreCase("DONUT")){
                             foodList.add(new Food(
                                     getContext(),
                                     Double.parseDouble(splitStr[1]),
@@ -871,7 +923,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                     foodType.DONUT
                             ));
                         }
-                        if(splitStr[3].equals("drumstick")){
+                        if(splitStr[3].equalsIgnoreCase("DRUMSTICK")){
                             foodList.add(new Food(
                                     getContext(),
                                     Double.parseDouble(splitStr[1]),
@@ -879,7 +931,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                     foodType.DRUMSTICK
                             ));
                         }
-                        if(splitStr[3].equals("burger")){
+                        if(splitStr[3].equalsIgnoreCase("burger")){
                             foodList.add(new Food(
                                     getContext(),
                                     Double.parseDouble(splitStr[1]),
@@ -887,7 +939,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                     foodType.BURGER
                             ));
                         }
-                        if(splitStr[3].equals("cake")){
+                        if(splitStr[3].equalsIgnoreCase("cake")){
                             foodList.add(new Food(
                                     getContext(),
                                     Double.parseDouble(splitStr[1]),
@@ -895,7 +947,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                     foodType.CAKE
                             ));
                         }
-                        if(splitStr[3].equals("cone")){
+                        if(splitStr[3].equalsIgnoreCase("cone")){
                             foodList.add(new Food(
                                     getContext(),
                                     Double.parseDouble(splitStr[1]),
@@ -903,7 +955,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                     foodType.CONE
                             ));
                         }
-                        if(splitStr[3].equals("potion")){
+                        if(splitStr[3].equalsIgnoreCase("potion")){
                             foodList.add(new Food(
                                     getContext(),
                                     Double.parseDouble(splitStr[1]),

@@ -37,6 +37,9 @@ public class Music {
                 case 5:
                     mp = MediaPlayer.create(context, R.raw.spintheme);
                     break;
+                case 6:
+                    mp = MediaPlayer.create(context, R.raw.gameover);
+                    break;
             }
             if (!mp.isPlaying()) {
                 mp.start();
@@ -46,6 +49,7 @@ public class Music {
         }
     }
     public void playSFX(int sfwNumber){
+
         if(Option.isSoundOn) {
             switch (sfwNumber) {
                 case 0:
@@ -64,6 +68,9 @@ public class Music {
                     //level up
                     mp = MediaPlayer.create(context, R.raw.levelup);
                     break;
+                case 4:
+                    mp = MediaPlayer.create(context, R.raw.teleport);
+                    break;
             }
             mp.start();
         }
@@ -74,8 +81,5 @@ public class Music {
     }
     public void stop(){
         mp.stop();
-    }
-    public void setVolume(int volume){
-        mp.setVolume(volume, volume);
     }
 }

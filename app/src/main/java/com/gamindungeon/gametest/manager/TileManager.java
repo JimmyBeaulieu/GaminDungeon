@@ -56,7 +56,7 @@ public class TileManager {
             tiles[1] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ab_water), true);
             tiles[2] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ac_floor), false);
             tiles[3] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ad_teleport), false);
-            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), false);
+            tiles[4] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ae_lava), true);
             tiles[5] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.af_stairs), false);
             tiles[6] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ag_door), false);
             tiles[7] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ah_spinsign), true);
@@ -78,7 +78,7 @@ public class TileManager {
             tiles[19] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.cg_coin), false);
 
 
-            //addition I forgot, sorry I don't want to redo everything again
+            //addition I forgot, I'm so sorry I didn't want to redo everything again, I'm so, so sorry, please forgive me :((((
             tiles[20] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.da_downstairs), false);
             tiles[21] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.db_help), false);
 
@@ -86,6 +86,10 @@ public class TileManager {
             tiles[23] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.eb_floor), false);
             tiles[24] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ec_floor), false);
             tiles[25] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ed_rock), true);
+            tiles[26] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ee_floor), false);
+            tiles[27] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ef_floor), false);
+            tiles[28] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.eg_floor), false);
+            tiles[29] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.eh_floor), false);
 
 
 
@@ -274,6 +278,7 @@ public class TileManager {
                         break;
 
                 }
+
             }
         }
         return output;
