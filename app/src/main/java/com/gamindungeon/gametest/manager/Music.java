@@ -71,6 +71,9 @@ public class Music {
                 case 4:
                     mp = MediaPlayer.create(context, R.raw.teleport);
                     break;
+                case 5:
+                    //entering the shop
+                    mp = MediaPlayer.create(context, R.raw.shopenter);
             }
             mp.start();
         }
