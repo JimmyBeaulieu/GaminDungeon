@@ -27,31 +27,37 @@ public class Food {
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), 176, 176, false);
                 hungerRestoreAmount = 10;
                 calories = 300;
+                shopValue = 5;
                 break;
             case DRUMSTICK:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), 176, 176, false);
                 hungerRestoreAmount = 50;
                 calories = 150;
+                shopValue = 20;
                 break;
             case BURGER:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), 176, 176, false);
                 hungerRestoreAmount = 25;
                 calories = 295;
+                shopValue = 10;
                 break;
             case CAKE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), 176, 176, false);
                 hungerRestoreAmount = 60;
                 calories = 500;
+                shopValue = 15;
                 break;
             case CONE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), 176, 176, false);
                 hungerRestoreAmount = 50;
                 calories = 417;
+                shopValue = 10;
                 break;
             case POTION:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), 176, 176, false);
                 hungerRestoreAmount = 100;
                 calories = 10;
+                shopValue = 30;
                 break;
         }
         this.positionX = positionX;
@@ -66,6 +72,9 @@ public class Food {
                 (float)gameDisplay.gameToDisplayCoordinatesX(positionX),
                 (float)gameDisplay.gameToDisplayCoordinatesY(positionY),
                 null);
+    }
+    public Bitmap getSprite(){
+        return sprite;
     }
 
     public double getPositionX() {
@@ -87,6 +96,34 @@ public class Food {
 
     public double getCalorie() {
         return calories;
+    }
+    public void setValue(int value){
+        this.shopValue = value;
+    }
+    public int getShopValue(){ return shopValue; }
+    public String getName(){
+        String output = "";
+        switch(type){
+            case DONUT:
+                output = "Donut";
+                break;
+            case DRUMSTICK:
+                output = "Drumstick";
+                break;
+            case BURGER:
+                output = "Burger";
+                break;
+            case CAKE:
+                output = "Cake";
+                break;
+            case CONE:
+                output = "Cone";
+                break;
+            case POTION:
+                output = "Potion";
+                break;
+        }
+        return output;
     }
 
 }

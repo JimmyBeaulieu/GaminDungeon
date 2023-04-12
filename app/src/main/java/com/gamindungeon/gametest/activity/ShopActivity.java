@@ -11,11 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gamindungeon.gametest.R;
+import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
+import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.collectable.Food;
 import com.gamindungeon.gametest.object.collectable.foodType;
 
 import org.w3c.dom.Text;
+
+import java.util.Random;
 
 public class ShopActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -25,8 +29,11 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     private TextView[] textSlot;
     private TextView[] priceSlot;
     Food[] foodList;
+    int[] price;
 
     private int coins;
+    Music music;
+    Music sfx;
 
     //S
     @Override
@@ -44,6 +51,8 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initialize() {
+
+        price = new int[3];
 
         tvGold = findViewById(R.id.tvGold);
 
@@ -98,8 +107,6 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 new Food(this, 0,0, foodType.CONE),
                 new Food(this, 0,0, foodType.POTION)
         };
-
-
         String gold = String.valueOf(Score.gold);
         tvGold.setText(gold);
 
@@ -107,7 +114,19 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void randomSelection() {
-        //for();
+
+        for(int i = 0; i<3 ;i++){
+
+            Random rand = new Random();
+            int choice = rand.nextInt(6);
+
+            imageSlot[i].setImageBitmap(foodList[choice].getSprite());
+            textSlot[i].setText(foodList[choice].getName());
+            priceSlot[i].setText(String.valueOf(foodList[choice].getShopValue()));
+            price[i] = foodList[choice].getShopValue();
+
+        }
+
     }
 
 
@@ -161,6 +180,12 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 buyButtonSlot[1].setVisibility(View.INVISIBLE);
 
                 break;
+
+            case R.id.buySlot0:
+                if(Score.gold > foodList[0].getShopValue()){
+                    Score.gold -= foodList[0].getShopValue();
+                    Player.hunger += foodList[0].getHunger();
+                }
         }
     }
 }
