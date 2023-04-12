@@ -19,15 +19,16 @@
         android:textColor="#e39950"
         android:textSize="35sp"/>
 
-    <ImageView
-        android:id="@+id/imCone"
+    <TextView
+        android:id="@+id/tvGold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="68dp"
-        app:layout_constraintLeft_toRightOf="@id/imDonut"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:srcCompat="@drawable/cone" />
+        app:layout_constraintBaseline_toBaselineOf="@id/tvTitle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20sp"
+        android:textColor="#e39950"
+        android:text="Available coins: "
+        android:textSize="20sp"/>
 
     <ImageView
         android:id="@+id/imDonut"
@@ -39,6 +40,86 @@
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:srcCompat="@drawable/donut" />
 
+    <TextView
+        android:id="@+id/tvDonut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\t\t\tDonut"
+        app:layout_constraintStart_toStartOf="@id/imDonut"
+        app:layout_constraintTop_toBottomOf="@id/imDonut"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:textColor="#e39950"
+        />
+
+    <TextView
+        android:id="@+id/tvPrice1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price: 25 Coins"
+        android:textSize="20sp"
+        android:textColor="#e39950"
+        app:layout_constraintStart_toStartOf="@id/tvDonut"
+        app:layout_constraintTop_toBottomOf="@id/tvDonut"
+        android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/btnItem1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/imDonut"
+        app:layout_constraintTop_toBottomOf="@id/tvPrice1"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:text="Buy" />
+
+    <ImageView
+        android:id="@+id/imCone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="68dp"
+        app:layout_constraintLeft_toRightOf="@id/imDonut"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:srcCompat="@drawable/cone" />
+
+    <TextView
+        android:id="@+id/tvCone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\t\t\tCone"
+        app:layout_constraintStart_toStartOf="@id/imCone"
+        app:layout_constraintTop_toBottomOf="@id/imCone"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvDonut"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:textColor="#e39950"
+        />
+
+    <TextView
+        android:id="@+id/tvPrice2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price: 20 Coins"
+        android:textSize="20sp"
+        android:textColor="#e39950"
+        app:layout_constraintStart_toStartOf="@id/tvCone"
+        app:layout_constraintTop_toBottomOf="@id/tvCone"
+        android:layout_marginTop="15dp"/>
+
+    <Button
+        android:id="@+id/btnItem2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/imCone"
+        app:layout_constraintTop_toBottomOf="@id/tvPrice2"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:text="Buy" />
+
+
     <ImageView
         android:id="@+id/imPotion"
         android:layout_width="wrap_content"
@@ -48,5 +129,39 @@
         app:layout_constraintLeft_toRightOf="@id/imCone"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:srcCompat="@drawable/potion" />
+
+    <TextView
+        android:id="@+id/tvPotion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\t\t\tPotion:"
+        app:layout_constraintStart_toStartOf="@id/imPotion"
+        app:layout_constraintTop_toBottomOf="@id/imPotion"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvDonut"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:textColor="#e39950"/>
+
+    <Button
+        android:id="@+id/btnItem3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/imPotion"
+        app:layout_constraintTop_toBottomOf="@id/tvPrice3"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:text="Buy" />
+
+    <TextView
+        android:id="@+id/tvPrice3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price: 40 Coins"
+        android:textSize="20sp"
+        android:textColor="#e39950"
+        app:layout_constraintStart_toStartOf="@id/tvPotion"
+        app:layout_constraintTop_toBottomOf="@id/tvPotion"
+        android:layout_marginTop="15dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

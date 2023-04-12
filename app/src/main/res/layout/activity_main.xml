@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/title" />
 
@@ -72,7 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text=""
+        android:text="placeholder"
         app:layout_constraintTop_toBottomOf="@id/deleteSaveFileButton"
         app:layout_constraintStart_toStartOf="@id/deleteSaveFileButton"
         />
@@ -82,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text=""
+        android:text="placeholder"
         app:layout_constraintTop_toBottomOf="@id/musicToggle"
         app:layout_constraintStart_toStartOf="@id/deleteSaveFileButton"/>
 
