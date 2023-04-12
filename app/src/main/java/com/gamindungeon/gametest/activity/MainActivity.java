@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     final int REQUEST_CODE = 1;
     Button btnPlay, btnOptions, deleteSaveFileButton, btnTutorial, btnReturnToMenu, musicToggle, sfxToggle, btnAccount;
+    Button shopButton;
     Music mp;
 
     boolean isOptionUp;
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         updateText();
 
+        shopButton = findViewById(R.id.shopTest);
+        shopButton.setOnClickListener(this);
+
 
     }
 
@@ -132,6 +136,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             case R.id.btnAccount:
                 goToAccount();
                 break;
+            case R.id.shopTest:
+                i =  new Intent(this, ShopActivity.class);
+                this.startActivity(i);
         }
 
 

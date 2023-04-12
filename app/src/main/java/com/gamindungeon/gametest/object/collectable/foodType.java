@@ -1,4 +1,4 @@
-package com.gamindungeon.gametest.manager;
+package com.gamindungeon.gametest.object.collectable;
 
 public enum foodType {
     DONUT,

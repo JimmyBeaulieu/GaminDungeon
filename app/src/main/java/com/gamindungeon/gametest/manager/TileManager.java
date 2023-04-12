@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
@@ -12,8 +11,8 @@ import com.gamindungeon.gametest.object.collectable.Coin;
 //import com.gamindungeon.gametest.object.CoinMachine;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
-import com.gamindungeon.gametest.object.Teleporter;
 import com.gamindungeon.gametest.object.collectable.Food;
+import com.gamindungeon.gametest.object.collectable.foodType;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

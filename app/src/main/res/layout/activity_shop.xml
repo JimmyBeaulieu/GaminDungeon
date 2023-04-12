@@ -31,7 +31,7 @@
         android:textSize="20sp"/>
 
     <ImageView
-        android:id="@+id/imDonut"
+        android:id="@+id/imageSlot0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="36dp"
@@ -41,12 +41,12 @@
         app:srcCompat="@drawable/donut" />
 
     <TextView
-        android:id="@+id/tvDonut"
+        android:id="@+id/textSlot0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\t\t\tDonut"
-        app:layout_constraintStart_toStartOf="@id/imDonut"
-        app:layout_constraintTop_toBottomOf="@id/imDonut"
+        app:layout_constraintStart_toStartOf="@id/imageSlot0"
+        app:layout_constraintTop_toBottomOf="@id/imageSlot0"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="25dp"
         android:textSize="20sp"
@@ -54,44 +54,46 @@
         />
 
     <TextView
-        android:id="@+id/tvPrice1"
+        android:id="@+id/priceSlot0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Price: 25 Coins"
         android:textSize="20sp"
         android:textColor="#e39950"
-        app:layout_constraintStart_toStartOf="@id/tvDonut"
-        app:layout_constraintTop_toBottomOf="@id/tvDonut"
+        app:layout_constraintStart_toStartOf="@id/textSlot0"
+        app:layout_constraintTop_toBottomOf="@id/textSlot0"
         android:layout_marginTop="15dp" />
 
     <Button
-        android:id="@+id/btnItem1"
+        android:id="@+id/buySlot0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/imDonut"
-        app:layout_constraintTop_toBottomOf="@id/tvPrice1"
+        app:layout_constraintStart_toStartOf="@id/imageSlot0"
+        app:layout_constraintTop_toBottomOf="@id/priceSlot0"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:text="Buy" />
 
+
+
     <ImageView
-        android:id="@+id/imCone"
+        android:id="@+id/imageSlot1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="120dp"
         android:layout_marginTop="68dp"
-        app:layout_constraintLeft_toRightOf="@id/imDonut"
+        app:layout_constraintLeft_toRightOf="@id/imageSlot0"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:srcCompat="@drawable/cone" />
 
     <TextView
-        android:id="@+id/tvCone"
+        android:id="@+id/textSlot1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\t\t\tCone"
-        app:layout_constraintStart_toStartOf="@id/imCone"
-        app:layout_constraintTop_toBottomOf="@id/imCone"
-        app:layout_constraintBaseline_toBaselineOf="@id/tvDonut"
+        app:layout_constraintStart_toStartOf="@id/imageSlot1"
+        app:layout_constraintTop_toBottomOf="@id/imageSlot1"
+        app:layout_constraintBaseline_toBaselineOf="@id/textSlot0"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="25dp"
         android:textSize="20sp"
@@ -99,69 +101,69 @@
         />
 
     <TextView
-        android:id="@+id/tvPrice2"
+        android:id="@+id/priceSlot1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Price: 20 Coins"
         android:textSize="20sp"
         android:textColor="#e39950"
-        app:layout_constraintStart_toStartOf="@id/tvCone"
-        app:layout_constraintTop_toBottomOf="@id/tvCone"
+        app:layout_constraintStart_toStartOf="@id/textSlot1"
+        app:layout_constraintTop_toBottomOf="@id/textSlot1"
         android:layout_marginTop="15dp"/>
 
     <Button
-        android:id="@+id/btnItem2"
+        android:id="@+id/buySlot1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/imCone"
-        app:layout_constraintTop_toBottomOf="@id/tvPrice2"
+        app:layout_constraintStart_toStartOf="@id/imageSlot1"
+        app:layout_constraintTop_toBottomOf="@id/priceSlot1"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:text="Buy" />
 
 
     <ImageView
-        android:id="@+id/imPotion"
+        android:id="@+id/imageSlot2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="120dp"
         android:layout_marginTop="56dp"
-        app:layout_constraintLeft_toRightOf="@id/imCone"
+        app:layout_constraintLeft_toRightOf="@id/imageSlot1"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:srcCompat="@drawable/potion" />
 
     <TextView
-        android:id="@+id/tvPotion"
+        android:id="@+id/textSlot2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="\t\t\tPotion:"
-        app:layout_constraintStart_toStartOf="@id/imPotion"
-        app:layout_constraintTop_toBottomOf="@id/imPotion"
-        app:layout_constraintBaseline_toBaselineOf="@id/tvDonut"
+        app:layout_constraintStart_toStartOf="@id/imageSlot2"
+        app:layout_constraintTop_toBottomOf="@id/imageSlot2"
+        app:layout_constraintBaseline_toBaselineOf="@id/textSlot1"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="25dp"
         android:textSize="20sp"
         android:textColor="#e39950"/>
 
     <Button
-        android:id="@+id/btnItem3"
+        android:id="@+id/buySlot2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/imPotion"
-        app:layout_constraintTop_toBottomOf="@id/tvPrice3"
+        app:layout_constraintStart_toStartOf="@id/imageSlot2"
+        app:layout_constraintBottom_toBottomOf="@id/buySlot1"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
         android:text="Buy" />
 
     <TextView
-        android:id="@+id/tvPrice3"
+        android:id="@+id/priceSlot2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Price: 40 Coins"
         android:textSize="20sp"
         android:textColor="#e39950"
-        app:layout_constraintStart_toStartOf="@id/tvPotion"
-        app:layout_constraintTop_toBottomOf="@id/tvPotion"
+        app:layout_constraintStart_toStartOf="@id/textSlot2"
+        app:layout_constraintTop_toBottomOf="@id/textSlot2"
         android:layout_marginTop="15dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

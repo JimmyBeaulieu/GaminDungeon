@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
-import com.gamindungeon.gametest.manager.foodType;
 
 public class Food {
     double positionX;

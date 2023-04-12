@@ -13,7 +13,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -25,7 +24,7 @@ import com.gamindungeon.gametest.graphics.UserInterface;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
-import com.gamindungeon.gametest.manager.foodType;
+import com.gamindungeon.gametest.object.collectable.foodType;
 import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.collectable.Coin;
@@ -38,7 +37,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
