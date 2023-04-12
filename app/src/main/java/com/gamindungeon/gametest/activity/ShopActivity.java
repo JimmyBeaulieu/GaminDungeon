@@ -107,7 +107,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void randomSelection() {
-        for()
+        //for();
     }
 
 
