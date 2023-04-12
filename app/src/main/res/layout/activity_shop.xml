@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".activity.ShopActivity"
     android:background="#242424"
-    android:screenOrientation="landscape">
+    android:screenOrientation="landscape"
+    android:theme="@style/ImageHoverStyle">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -17,7 +18,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textColor="#e39950"
-        android:textSize="35sp"/>
+        android:textSize="35sp" />
 
     <TextView
         android:id="@+id/tvGold"
@@ -28,7 +29,8 @@
         android:layout_marginLeft="20sp"
         android:textColor="#e39950"
         android:text="Available coins: "
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        />
 
     <ImageView
         android:id="@+id/imageSlot0"

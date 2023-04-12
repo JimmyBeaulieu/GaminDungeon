@@ -114,6 +114,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void randomSelection() {
+
         for(int i = 0; i<3 ;i++){
 
             Random rand = new Random();
@@ -125,6 +126,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
             price[i] = foodList[choice].getShopValue();
 
         }
+
     }
 
 
