@@ -15,7 +15,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvGold;
     private Button btnItem1, btnItem2, btnItem3;
     private int coins;
-
+ //S
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
