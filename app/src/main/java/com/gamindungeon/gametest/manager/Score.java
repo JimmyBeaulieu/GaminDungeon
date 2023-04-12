@@ -21,6 +21,7 @@ public class Score{
     public static int spiritDefeated;
     public static int eyeDefeated;
     public static String saveContent;
+    public static int hunger;
     Context context;
 
     public Score(Context context){
@@ -32,6 +33,7 @@ public class Score{
         witchDefeated = 0;
         spiritDefeated = 0;
         eyeDefeated = 0;
+        hunger = 0;
         this.context = context;
     }
 
