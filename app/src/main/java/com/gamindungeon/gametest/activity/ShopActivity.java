@@ -2,6 +2,7 @@ package com.gamindungeon.gametest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -52,7 +53,8 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initialize() {
         music = new Music(this);
-        music.playSFX(5);
+        sfx = new Music(this);
+        sfx.playSFX(5);
 
         price = new int[3];
 
@@ -123,7 +125,8 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
             imageSlot[i].setImageBitmap(foodList[choice].getSprite());
             textSlot[i].setText(foodList[choice].getName());
-            priceSlot[i].setText(String.valueOf(foodList[choice].getShopValue()));
+            String text = String.valueOf(foodList[choice].getShopValue()) + " $";
+            priceSlot[i].setText(text);
             price[i] = foodList[choice].getShopValue();
 
         }
@@ -139,6 +142,9 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 //set the appropriate button visible
                 textSlot[0].setVisibility(View.VISIBLE);
                 priceSlot[0].setVisibility(View.VISIBLE);
+
+                priceSlot[0].setTextColor(Color.parseColor("#e39950"));
+
                 buyButtonSlot[0].setVisibility(View.VISIBLE);
 
                 //set all the other button invisible
@@ -154,6 +160,9 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 //set the appropriate button visible
                 textSlot[1].setVisibility(View.VISIBLE);
                 priceSlot[1].setVisibility(View.VISIBLE);
+
+                priceSlot[1].setTextColor(Color.parseColor("#e39950"));
+
                 buyButtonSlot[1].setVisibility(View.VISIBLE);
 
                 //set all the other button invisible
@@ -169,6 +178,9 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 //set the appropriate button visible
                 textSlot[2].setVisibility(View.VISIBLE);
                 priceSlot[2].setVisibility(View.VISIBLE);
+
+                priceSlot[2].setTextColor(Color.parseColor("#e39950"));
+
                 buyButtonSlot[2].setVisibility(View.VISIBLE);
 
                 //set all the other button invisible
@@ -186,6 +198,34 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                     Score.gold -= foodList[0].getShopValue();
                     Player.hunger += foodList[0].getHunger();
                 }
+                else{
+                    music.playSFX(6);
+                    priceSlot[0].setTextColor(Color.RED);
+                }
+
+                break;
+            case R.id.buySlot1:
+                if(Score.gold > foodList[1].getShopValue()){
+                    Score.gold -= foodList[1].getShopValue();
+                    Player.hunger += foodList[1].getHunger();
+                }
+                else{
+                    music.playSFX(6);
+                    priceSlot[1].setTextColor(Color.RED);
+                }
+
+                break;
+            case R.id.buySlot2:
+                if(Score.gold > foodList[2].getShopValue()){
+                    Score.gold -= foodList[2].getShopValue();
+                    Player.hunger += foodList[2].getHunger();
+                }
+                else{
+                    music.playSFX(6);
+                    priceSlot[2].setTextColor(Color.RED);
+                }
+
+                break;
         }
     }
 }
