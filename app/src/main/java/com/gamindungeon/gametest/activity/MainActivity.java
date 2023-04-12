@@ -23,7 +23,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
 
     final int REQUEST_CODE = 1;
-    Button btnPlay, btnOptions, deleteSaveFileButton, btnTutorial, btnReturnToMenu, musicToggle, sfxToggle;
+    Button btnPlay, btnOptions, deleteSaveFileButton, btnTutorial, btnReturnToMenu, musicToggle, sfxToggle, btnAccount;
     Music mp;
 
     boolean isOptionUp;
@@ -49,9 +49,11 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private void initialize() {
         btnPlay = findViewById(R.id.btnPlay);
         btnOptions = findViewById(R.id.btnOptions);
+        btnAccount = findViewById(R.id.btnAccount);
 
         btnPlay.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
+        btnAccount.setOnClickListener(this);
 
         //setting up music for menu
         mp = new Music(this);
@@ -127,9 +129,17 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 Option.isSoundOn = !Option.isSoundOn;
                 updateText();
                 break;
+            case R.id.btnAccount:
+                goToAccount();
+                break;
         }
 
 
+    }
+
+    private void goToAccount() {
+        Intent i =  new Intent(this, Account_Activity.class);
+        this.startActivity(i);
     }
 
     private void returnToMenu() {

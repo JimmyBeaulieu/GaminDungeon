@@ -20,6 +20,7 @@ public class Score{
     public static int witchDefeated;
     public static int spiritDefeated;
     public static int eyeDefeated;
+    public static String saveContent;
     Context context;
 
     public Score(Context context){

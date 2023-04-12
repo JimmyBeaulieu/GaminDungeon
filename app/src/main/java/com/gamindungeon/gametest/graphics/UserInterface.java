@@ -112,6 +112,11 @@ public class UserInterface {
         }
         else {
 
+            paint.setColor(ContextCompat.getColor(context, R.color.black));
+            paint.setAlpha(200);
+            canvas.drawRect(100, 250, 300, 400, paint);
+            paint.setAlpha(255);
+
             paint.setColor(ContextCompat.getColor(context, R.color.magenta));
             paint.setTextSize(50);
             canvas.drawText(stringGold + "$", 100, 300, paint);
@@ -183,7 +188,7 @@ public class UserInterface {
         int gridSize = 176;
 
         Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(1);
 
