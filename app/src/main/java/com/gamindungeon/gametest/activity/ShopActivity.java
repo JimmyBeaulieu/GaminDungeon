@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.object.collectable.Food;
+import com.gamindungeon.gametest.object.collectable.foodType;
 
 import org.w3c.dom.Text;
 
@@ -89,9 +90,24 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
             text.setVisibility(View.INVISIBLE);
         }
 
+        foodList = new Food[]{
+                new Food(this, 0, 0, foodType.DONUT),
+                new Food(this, 0,0,foodType.DRUMSTICK),
+                new Food(this, 0,0, foodType.BURGER),
+                new Food(this, 0,0, foodType.CAKE),
+                new Food(this, 0,0, foodType.CONE),
+                new Food(this, 0,0, foodType.POTION)
+        };
+
 
         String gold = String.valueOf(Score.gold);
         tvGold.setText(gold);
+
+        randomSelection();
+    }
+
+    private void randomSelection() {
+        for()
     }
 
 

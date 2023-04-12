@@ -18,6 +18,7 @@ public class Food {
     double calories;
     //String type;
     foodType type;
+    int shopValue;
 
     public Food(Context context, double positionX, double positionY, foodType type){
         this.type = type;
@@ -87,4 +88,5 @@ public class Food {
     public double getCalorie() {
         return calories;
     }
+
 }
