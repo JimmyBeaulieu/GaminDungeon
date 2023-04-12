@@ -74,6 +74,10 @@ public class Music {
                 case 5:
                     //entering the shop
                     mp = MediaPlayer.create(context, R.raw.shopenter);
+                    break;
+                case 6:
+                    //trying to buy something too expensive
+                    mp = MediaPlayer.create(context, R.raw.deny);
             }
             mp.start();
         }
