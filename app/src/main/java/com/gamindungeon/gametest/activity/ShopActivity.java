@@ -51,6 +51,8 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initialize() {
+        music = new Music(this);
+        music.playSFX(5);
 
         price = new int[3];
 
