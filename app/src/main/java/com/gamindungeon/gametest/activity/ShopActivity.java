@@ -2,8 +2,11 @@ package com.gamindungeon.gametest.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,6 +29,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
     private TextView tvGold;
     Button[] buyButtonSlot = new Button[3];
+    Button leaveButton;
     private ImageView[] imageSlot;
     private TextView[] textSlot;
     private TextView[] priceSlot;
@@ -40,6 +44,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //set window to fullscreen
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         Window window = getWindow();
@@ -47,6 +52,8 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
         );
+
+
         setContentView(R.layout.activity_shop);
         initialize();
     }
@@ -55,6 +62,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
         music = new Music(this);
         sfx = new Music(this);
         sfx.playSFX(5);
+        music.play(7);
 
         price = new int[3];
 
@@ -111,10 +119,18 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 new Food(this, 0,0, foodType.CONE),
                 new Food(this, 0,0, foodType.POTION)
         };
-        String gold = String.valueOf(Score.gold);
-        tvGold.setText(gold);
+
+
+        updateText();
+        leaveButton = findViewById(R.id.leaveButton);
+        leaveButton.setOnClickListener(this);
 
         randomSelection();
+    }
+
+    private void updateText(){
+        String gold = String.valueOf(Score.gold);
+        tvGold.setText(gold);
     }
 
     private void randomSelection() {
@@ -196,9 +212,20 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.buySlot0:
-                if(Score.gold > foodList[0].getShopValue()){
+                Log.d("shop", "[Score.gold] ="  + String.valueOf(Score.gold) + " | [foodList[0].getShopValue()] =" + String.valueOf(foodList[0].getShopValue()));
+                if(Score.gold >= foodList[0].getShopValue()){
+                    sfx.playSFX(7);
                     Score.gold -= foodList[0].getShopValue();
                     Player.hunger += foodList[0].getHunger();
+
+
+                    imageSlot[0].setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.raw.sold), 176, 176, false));
+                    textSlot[0].setVisibility(View.INVISIBLE);
+                    priceSlot[0].setVisibility(View.INVISIBLE);
+                    buyButtonSlot[0].setVisibility(View.INVISIBLE);
+                    updateText();
+
+
                 }
                 else{
                     music.playSFX(6);
@@ -207,9 +234,17 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.buySlot1:
-                if(Score.gold > foodList[1].getShopValue()){
+                Log.d("shop", "[Score.gold] ="  + String.valueOf(Score.gold) + " | [foodList[1].getShopValue()] =" + String.valueOf(foodList[1].getShopValue()));
+                if(Score.gold >= foodList[1].getShopValue()){
+                    sfx.playSFX(7);
                     Score.gold -= foodList[1].getShopValue();
                     Player.hunger += foodList[1].getHunger();
+
+                    imageSlot[1].setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.raw.sold), 176, 176, false));
+                    textSlot[1].setVisibility(View.INVISIBLE);
+                    priceSlot[1].setVisibility(View.INVISIBLE);
+                    buyButtonSlot[1].setVisibility(View.INVISIBLE);
+                    updateText();
                 }
                 else{
                     music.playSFX(6);
@@ -218,9 +253,17 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.buySlot2:
-                if(Score.gold > foodList[2].getShopValue()){
+                Log.d("shop", "[Score.gold] ="  + String.valueOf(Score.gold) + " | [foodList[2].getShopValue()] =" + String.valueOf(foodList[2].getShopValue()));
+                if(Score.gold >= foodList[2].getShopValue()){
+                    sfx.playSFX(7);
                     Score.gold -= foodList[2].getShopValue();
                     Player.hunger += foodList[2].getHunger();
+
+                    imageSlot[2].setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.raw.sold), 176, 176, false));
+                    textSlot[2].setVisibility(View.INVISIBLE);
+                    priceSlot[2].setVisibility(View.INVISIBLE);
+                    buyButtonSlot[2].setVisibility(View.INVISIBLE);
+                    updateText();
                 }
                 else{
                     music.playSFX(6);
@@ -228,6 +271,10 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 break;
+            case R.id.leaveButton:
+                sfx.playSFX(5);
+                music.stop();
+                finish();
         }
     }
 }

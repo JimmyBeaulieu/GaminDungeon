@@ -40,6 +40,8 @@ public class Music {
                 case 6:
                     mp = MediaPlayer.create(context, R.raw.gameover);
                     break;
+                case 7:
+                    mp = MediaPlayer.create(context, R.raw.shopmusic);
             }
             if (!mp.isPlaying()) {
                 mp.start();
@@ -78,6 +80,11 @@ public class Music {
                 case 6:
                     //trying to buy something too expensive
                     mp = MediaPlayer.create(context, R.raw.deny);
+                    break;
+                case 7:
+                    //buy something
+                    mp = MediaPlayer.create(context, R.raw.purchase);
+                    break;
             }
             mp.start();
         }

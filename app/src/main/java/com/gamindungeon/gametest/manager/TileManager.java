@@ -234,11 +234,14 @@ public class TileManager {
     }
     public List<Coin> getCoinOnMap() {
         List<Coin> output = new ArrayList<Coin>();
-        for (int i = 0; i < mapTileNum.length; i++) {
-            for (int j = 0; j < mapTileNum[i].length; j++) {
-                if (mapTileNum[i][j] == 19) {
-                    output.add(new Coin(context, i * 176, j * 176));
-                    tiles[mapTileNum[i][j]] = tiles[2];
+
+        if(getCurrentMapSpawnY() == player.getPositionY() && getCurrentMapSpawnX() == player.getPositionX()) {
+            for (int i = 0; i < mapTileNum.length; i++) {
+                for (int j = 0; j < mapTileNum[i].length; j++) {
+                    if (mapTileNum[i][j] == 19) {
+                        output.add(new Coin(context, i * 176, j * 176));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+                    }
                 }
             }
         }
@@ -247,7 +250,7 @@ public class TileManager {
 
     public List<Food> getFoodOnMap() {
         List<Food> output = new ArrayList<Food>();
-
+        if(getCurrentMapSpawnY() == player.getPositionY() && getCurrentMapSpawnX() == player.getPositionX()) {
         for (int i = 0; i < mapTileNum.length; i++) {
             for (int j = 0; j < mapTileNum.length; j++) {
                 switch (mapTileNum[i][j]) {
@@ -279,6 +282,7 @@ public class TileManager {
                 }
 
             }
+        }
         }
         return output;
     }

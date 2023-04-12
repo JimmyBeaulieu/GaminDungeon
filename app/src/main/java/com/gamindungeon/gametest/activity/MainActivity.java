@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 goToAccount();
                 break;
             case R.id.shopTest:
+                mp.stop();
                 i =  new Intent(this, ShopActivity.class);
                 this.startActivity(i);
         }

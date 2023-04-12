@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.activity.Bonus_Game_Activity;
+import com.gamindungeon.gametest.activity.ShopActivity;
 import com.gamindungeon.gametest.gamepanel.GameOver;
 import com.gamindungeon.gametest.gamepanel.Performance;
 import com.gamindungeon.gametest.graphics.UserInterface;
@@ -368,6 +369,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 ///////////////////////////////////////////////////////////////////////////////////
 
                 //Spin room
+                if (player.getPositionX() == gridPos(41) && player.getPositionY() == gridPos(22)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    shopRoom();
+                }
+                //shop room
                 if (player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(16)) {
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
@@ -513,6 +519,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     }
 
+    private void shopRoom(){
+        player.setPositionX(player.getOldPositionX());
+        player.setPositionY(player.getOldPositionY());
+        music.stop();
+        Intent i = new Intent(getContext(), ShopActivity.class);
+        startActivity(getContext(), i, null);
+    }
+
     private void spinRoom() {
         player.setPositionX(player.getOldPositionX());
         player.setPositionY(player.getOldPositionY());
@@ -641,48 +655,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 foodList.remove(food);
             }
         }
-/*
-        for (int i = 0; i < enemyList.size(); i++) {
-            if (enemyList.get(i).getHealth() <= 0) {
-                String type = enemyList.get(i).getType();
-                Random random = new Random();
-                int chance = random.nextInt(10)+1;
-                if(chance >= 8){
-                    coinList.add(new Coin(getContext(), enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
-                }
-                if(chance <8 && chance >= 5){
-                    foodList.add(getRandomFood(enemyList.get(i).getPositionX(), enemyList.get(i).getPositionY()));
-                }
-                switch(type){
-                    case "bat":
-                            Score.experience += 5;
-                            Score.batDefeated += 1;
-                        break;
-                    case "witch":
-                            Score.experience+=20;
-                            Score.witchDefeated += 1;
-                        break;
-                    case "spirit":
-                            Score.experience += 10;
-                            Score.spiritDefeated += 1;
-                        break;
-                    case "eye":
-                            Score.experience += 100;
-                            Score.eyeDefeated += 1;
-                        break;
-                    case "shade":
-                        Score.experience += shadeExpAmount;
-                        Score.gold += shadeGoldAmount;
-                        shadeGoldAmount = 0;
-                        shadeExpAmount = 0;
-
-                }
-                enemyList.remove(enemyList.get(i));
-
-            }
-        }
-*/
-
             //checks if two enemies intersects, if so, prevent movement for one enemy for one turn
         for(int i = 0; i<enemyList.size();i++){
             for(int j = 0; j<enemyList.size(); j++){

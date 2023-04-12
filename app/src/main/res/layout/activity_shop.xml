@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.ShopActivity"
     android:background="#242424"
-    android:screenOrientation="landscape"
-    android:theme="@style/ImageHoverStyle">
+    android:screenOrientation="landscape">
 
     <TextView
         android:id="@+id/tvTitle"
@@ -167,5 +166,14 @@
         app:layout_constraintStart_toStartOf="@id/textSlot2"
         app:layout_constraintTop_toBottomOf="@id/textSlot2"
         android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/leaveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp"
+        android:text="leave" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

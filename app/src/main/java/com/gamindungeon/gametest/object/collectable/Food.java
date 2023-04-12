@@ -27,37 +27,37 @@ public class Food {
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), 176, 176, false);
                 hungerRestoreAmount = 10;
                 calories = 300;
-                shopValue = 5;
+                shopValue = 10;
                 break;
             case DRUMSTICK:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), 176, 176, false);
                 hungerRestoreAmount = 50;
                 calories = 150;
-                shopValue = 20;
+                shopValue = 25;
                 break;
             case BURGER:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), 176, 176, false);
                 hungerRestoreAmount = 25;
                 calories = 295;
-                shopValue = 10;
+                shopValue = 15;
                 break;
             case CAKE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), 176, 176, false);
                 hungerRestoreAmount = 60;
                 calories = 500;
-                shopValue = 15;
+                shopValue = 20;
                 break;
             case CONE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), 176, 176, false);
                 hungerRestoreAmount = 50;
                 calories = 417;
-                shopValue = 10;
+                shopValue = 15;
                 break;
             case POTION:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), 176, 176, false);
                 hungerRestoreAmount = 100;
                 calories = 10;
-                shopValue = 30;
+                shopValue = 50;
                 break;
         }
         this.positionX = positionX;
