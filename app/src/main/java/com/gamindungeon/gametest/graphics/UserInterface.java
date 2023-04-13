@@ -39,7 +39,7 @@ public class UserInterface {
 
 
     public void draw(Canvas canvas){
-        drawGrid(canvas);
+        //drawGrid(canvas);
         String stringGold = Integer.toString(Score.gold);
         String stringExp = Integer.toString(Score.experience);
         Paint paint = new Paint();
