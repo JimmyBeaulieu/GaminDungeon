@@ -54,7 +54,7 @@ public class Food {
                 shopValue = 15;
                 break;
             case POTION:
-                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), 176, 176, false);
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), 256, 256, false);
                 hungerRestoreAmount = 100;
                 calories = 10;
                 shopValue = 50;

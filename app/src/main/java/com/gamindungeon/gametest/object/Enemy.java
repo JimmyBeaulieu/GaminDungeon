@@ -29,7 +29,7 @@ public class Enemy extends GameObject{
     TileManager tm;
     boolean isFocused;
     boolean isHoming;
-    int adhdLevel = 0;
+    int focusLevel = 0;
     //kamil
     boolean isMovable = false;
     boolean isRandomMovable = false;
@@ -187,17 +187,16 @@ public class Enemy extends GameObject{
         oldPosY = positionY;
 
         if(!inCombat) {
-            if (adhdLevel >= 5) {
+            if (focusLevel >= 5) {
                 isFocused = false;
                 isHoming = false;
             }
-            if (adhdLevel == 0) {
+            if (focusLevel == 0) {
                 isFocused = true;
             }
 
             //if player is within two tiles of this object use HOMING MOVEMENT AI:
             if (Math.abs(player.positionX - positionX) <= 352 && Math.abs(player.positionY - positionY) <= 352 && isFocused) {
-                //System.out.println("Enemy is Focused on you!!!");
                 isHoming = true;
             }
             //Kamil
@@ -234,8 +233,8 @@ public class Enemy extends GameObject{
         if(isRandomMovable) {
 
 
-            if (adhdLevel > 0) {
-                adhdLevel--;
+            if (focusLevel > 0) {
+                focusLevel--;
             }
             Random rand = new Random();
             switch (rand.nextInt(5)) {
@@ -283,7 +282,7 @@ public class Enemy extends GameObject{
                 choice = 0;
             }
             move(movementOptions.get(choice));
-            adhdLevel++;
+            focusLevel++;
         }
     }
 
@@ -357,7 +356,7 @@ public class Enemy extends GameObject{
         tm = tileManager;
     }
     public int getAdhdLevel(){
-        return  adhdLevel;
+        return  focusLevel;
     }
     public boolean isFocused(){
         return  isFocused;
