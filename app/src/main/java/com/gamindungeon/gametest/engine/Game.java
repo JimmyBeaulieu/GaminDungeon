@@ -30,6 +30,7 @@ import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.collectable.Coin;
 import com.gamindungeon.gametest.object.collectable.Food;
+import com.gamindungeon.gametest.object.collectable.powerUpType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -114,7 +115,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         //if player was dead when they left last game
-        if(player.getHealth() <= 0){
+        if(player.getHealth() + Player.lifeBonus <= 0){
             player.setHealth(player.getMaxHealth());
             player.setPositionX(tileManager.getCurrentMapSpawnX());
             player.setPositionY(tileManager.getCurrentMapSpawnY());
@@ -125,7 +126,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
 
         tileManager.cleanUp();
-        Log.d("SAVEFILE", "after cleanup!");
+        //Log.d("SAVEFILE", "after cleanup!");
 
 
     }
@@ -175,12 +176,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         ui.setInDialog(false);
                     }
                 }
+                if(player.getPowerUpState()){
+
+                }
 
                 break;
 
                 //user stop touching the screen
             case MotionEvent.ACTION_UP:
-                if(player.getHealth() > 0 && !ui.isInDialog() && !ui.isMenuOpen()) {
+                if(player.getHealth() + Player.lifeBonus > 0 && !ui.isInDialog() && !ui.isMenuOpen()) {
 
                     //calculates the difference between the point where the user originally touches the screen vs the point where the user stops
                     deltaX = event.getX() - startX;
@@ -294,7 +298,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             enemy.draw(canvas, gameDisplay);
         }
         //Draw Game Over if (player's hp <= 0)
-        if (player.getHealth() <= 0) {
+        if (player.getHealth() + Player.lifeBonus <= 0) {
             player.setPositionX(tileManager.getCurrentMapSpawnX());
             player.setPositionY(tileManager.getCurrentMapSpawnY());
             gameOver.draw(canvas);
@@ -335,7 +339,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     public void update() {
         //Stop updating the game if the player is dead
-        if(player.getHealth() <= 0){
+        if(player.getHealth() + Player.lifeBonus <= 0){
             player.setLastKnownMove("up");
             return;
         }
@@ -368,12 +372,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
                 ///////////////////////////////////////////////////////////////////////////////////
 
-                //Spin room
+                //Shop room
                 if (player.getPositionX() == gridPos(41) && player.getPositionY() == gridPos(22)) {
                     Score.music = tileManager.getCurrentLoadedMap();
                     shopRoom();
                 }
-                //shop room
+                //spin room
                 if (player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(16)) {
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
@@ -418,9 +422,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     dialogPass.add("Now where did Gamin");
                 }
                 if(x == gridPos(22) && y == gridPos(26) && !dialogPass.contains("Those eyes look dangerous")){
-                    ui.createDialog("Those eyes look dangerous... I really don't want to   get stuck between a wall and one of them...");
+                    ui.createDialog("Those eyes look dangerous... I really don't want to   get stuck under one of them...");
                     dialogPass.add("Those eyes look dangerous");
                 }
+
+                if(x == gridPos(5) && y == gridPos(3)){
+                    player.givePowerUp(powerUpType.STRENGTH, 10);
+                    //player.givePowerUp(powerUpType.LIFE, 10);
+                    //player.givePowerUp(powerUpType.COIN, 2);
+                }
+
 
                 break;
             case 1:
@@ -448,12 +459,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     ui.createDialog("It's locked... no way for me to open this door...");
                     player.setPositionY(gridPos(31));
                 }
+
+                //spin room
                 if (player.getPositionX() == gridPos(8) && player.getPositionY() == gridPos(47)) {
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
 
-
+                //shop room
+                if (player.getPositionX() == gridPos(3) && player.getPositionY() == gridPos(44)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    shopRoom();
+                }
 
                 break;
             case 2:
@@ -475,10 +492,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 }
 
                 ///////////////////////////////////////////////////////////////////////////////////
+
+                //spin room
                 if ((player.getPositionX() == gridPos(1) && player.getPositionY() == gridPos(37)) ||
                     player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(5)) {
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
+                }
+                //shop room
+                if (player.getPositionX() == gridPos(23) && player.getPositionY() == gridPos(38)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    shopRoom();
                 }
 
 
@@ -499,17 +523,28 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     reloadMap();
                 }
 
+                //spin room
                 if ((player.getPositionX() == gridPos(26) && player.getPositionY() == gridPos(15)) ||
                         player.getPositionX() == gridPos(44) && player.getPositionY() == gridPos(26)) {
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
 
+                //shop room
+                if (player.getPositionX() == gridPos(17) && player.getPositionY() == gridPos(15)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    shopRoom();
+                }
+                if (player.getPositionX() == gridPos(49) && player.getPositionY() == gridPos(26)) {
+                    Score.music = tileManager.getCurrentLoadedMap();
+                    shopRoom();
+                }
+
 
                 if(x == gridPos(28) && y == gridPos(46)){ teleport(45, 3); }
                 if(x == gridPos(45) && y == gridPos(2)){ teleport(27, 46); }
 
-                if( (x == gridPos(20) && y == gridPos(45))) {
+                if( (x == gridPos(1) && y == gridPos(1))) {
                     ui.createDialog("For some reason I feel like this is the end for now...  I honestly don't know why but I feel like maybe someday it will be finished if anyone asks for it...");
                 }
 
@@ -560,7 +595,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         foodList.addAll(tileManager.getFoodOnMap());
 
         for(Food food : foodList){
-            Log.d("SAVEFILE_FOOD", food.toString());
+            //Log.d("SAVEFILE_FOOD", food.toString());
         }
     }
 
@@ -570,13 +605,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         player.setPositionX(player.getOldPositionX());
         player.setPositionY(player.getOldPositionY());
 
-        enemy.setHealth(enemy.getHealth() - player.getStrength());
-        player.setHealth(player.getHealth() - enemy.getStrength());
+        enemy.setHealth(enemy.getHealth() - (player.getStrength() + Player.strengthBonus));
+        player.setHealth((player.getHealth() + Player.lifeBonus) - enemy.getStrength());
 
-        if(player.getHealth() <= 0){
+        if(player.getHealth() + Player.lifeBonus <= 0){
             //music.stop();
             sfx.play(6);
-            Log.d("gameover", "dead2 eletric boogallo!");
+            //Log.d("gameover", "dead2 eletric boogallo!");
         }
 
     }
@@ -589,7 +624,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             Coin coin = coinList.get(i);
             if (player.getPositionX() == coin.getPositionX() &&
                     player.getPositionY() == coin.getPositionY()) {
-                Score.gold = Score.gold +1;
+                Score.gold = Score.gold + 1 + Player.goldBonus;
                 sfx.playSFX(0);
                 coinList.remove(coin);
             }
@@ -768,7 +803,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             File file = new File(getContext().getFilesDir(), saveFileName);
             if(file.exists()) {
                 firstTimePlaying = false;
-                Log.d("SAVEFILE", "Save found!");
+                //Log.d("SAVEFILE", "Save found!");
                 //found a save file on the system
 
                 FileInputStream fis = getContext().openFileInput(saveFileName);
@@ -785,7 +820,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //takes the whole savefile into a String variables and split it each || character
                 String[] contentArray = content.split("\\|\\|");
                 Score.gold = Integer.parseInt(contentArray[contentArray.length - 3]);
-                Log.d("SAVEFILE", (contentArray[contentArray.length - 2]));
+                //Log.d("SAVEFILE", (contentArray[contentArray.length - 2]));
                 Score.experience = Integer.parseInt(contentArray[contentArray.length - 2]);
 
 //player START
@@ -872,7 +907,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                                 ));
                     }
 
-                    Log.d("SAVEFILE", String.valueOf(index));
+                    //Log.d("SAVEFILE", String.valueOf(index));
 
                     if (splitStr[0].equals("coin")) {
                         coinList.add(new Coin(
@@ -883,7 +918,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     }
 
                     if (splitStr[0].equals("food")) {
-                        Log.d("SAVEFILE_FOOD", splitStr[3]);
+                        //Log.d("SAVEFILE_FOOD", splitStr[3]);
 
                         if(splitStr[3].equalsIgnoreCase("DONUT")){
                             foodList.add(new Food(

@@ -8,172 +8,176 @@
     android:background="#242424"
     android:screenOrientation="landscape">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Shop"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:textColor="#e39950"
-        android:textSize="35sp" />
+        android:gravity="center"
 
-    <TextView
-        android:id="@+id/tvGold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toBaselineOf="@id/tvTitle"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginLeft="20sp"
-        android:textColor="#e39950"
-        android:text="Available coins: "
-        android:textSize="20sp"
-        />
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/imageSlot0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="56dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:srcCompat="@drawable/donut" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shop"
+            android:textColor="#e39950"
+            android:textSize="35sp"
+            android:layout_gravity="center"
+            />
 
-    <TextView
-        android:id="@+id/textSlot0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="\t\t\tDonut"
-        app:layout_constraintStart_toStartOf="@id/imageSlot0"
-        app:layout_constraintTop_toBottomOf="@id/imageSlot0"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
-        android:textSize="20sp"
-        android:textColor="#e39950"
-        />
+        <TextView
+            android:id="@+id/tvGold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20sp"
+            android:text="Available coins: "
+            android:textColor="#e39950"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/priceSlot0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price: 25 Coins"
-        android:textSize="20sp"
-        android:textColor="#e39950"
-        app:layout_constraintStart_toStartOf="@id/textSlot0"
-        app:layout_constraintTop_toBottomOf="@id/textSlot0"
-        android:layout_marginTop="15dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
 
-    <Button
-        android:id="@+id/buySlot0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/imageSlot0"
-        app:layout_constraintTop_toBottomOf="@id/priceSlot0"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:text="Buy" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp">
 
+                <ImageView
+                    android:id="@+id/imageSlot0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginTop="36dp"
+                    app:srcCompat="@raw/shade" />
 
+                <TextView
+                    android:id="@+id/textSlot0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="bad item"
+                    android:textColor="#e39950"
+                    android:textSize="20sp" />
 
-    <ImageView
-        android:id="@+id/imageSlot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="68dp"
-        app:layout_constraintLeft_toRightOf="@id/imageSlot0"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:srcCompat="@drawable/cone" />
+                <TextView
+                    android:id="@+id/priceSlot0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Price: 25 Coins"
+                    android:textColor="#e39950"
+                    android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/textSlot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="\t\t\tCone"
-        app:layout_constraintStart_toStartOf="@id/imageSlot1"
-        app:layout_constraintTop_toBottomOf="@id/imageSlot1"
-        app:layout_constraintBaseline_toBaselineOf="@id/textSlot0"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="25dp"
-        android:textSize="20sp"
-        android:textColor="#e39950"
-        />
+                <Button
+                    android:id="@+id/buySlot0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Buy" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/priceSlot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price: 20 Coins"
-        android:textSize="20sp"
-        android:textColor="#e39950"
-        app:layout_constraintStart_toStartOf="@id/textSlot1"
-        app:layout_constraintTop_toBottomOf="@id/textSlot1"
-        android:layout_marginTop="15dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp">
 
-    <Button
-        android:id="@+id/buySlot1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/imageSlot1"
-        app:layout_constraintTop_toBottomOf="@id/priceSlot1"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:text="Buy" />
+                <ImageView
+                    android:id="@+id/imageSlot1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginTop="36dp"
+                    app:srcCompat="@raw/shade" />
 
+                <TextView
+                    android:id="@+id/textSlot1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="bad item"
+                    android:textColor="#e39950"
+                    android:textSize="20sp" />
 
-    <ImageView
-        android:id="@+id/imageSlot2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="56dp"
-        app:layout_constraintLeft_toRightOf="@id/imageSlot1"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle"
-        app:srcCompat="@drawable/potion" />
+                <TextView
+                    android:id="@+id/priceSlot1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Price: 20 Coins"
+                    android:textColor="#e39950"
+                    android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/textSlot2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="\t\t\tPotion:"
-        app:layout_constraintStart_toStartOf="@id/imageSlot2"
-        app:layout_constraintTop_toBottomOf="@id/imageSlot2"
-        app:layout_constraintBaseline_toBaselineOf="@id/textSlot1"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="25dp"
-        android:textSize="20sp"
-        android:textColor="#e39950"/>
+                <Button
+                    android:id="@+id/buySlot1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Buy" />
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/buySlot2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/imageSlot2"
-        app:layout_constraintBottom_toBottomOf="@id/buySlot1"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="20dp"
-        android:text="Buy" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="48dp"
+                android:layout_marginRight="48dp">
 
-    <TextView
-        android:id="@+id/priceSlot2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price: 40 Coins"
-        android:textSize="20sp"
-        android:textColor="#e39950"
-        app:layout_constraintStart_toStartOf="@id/textSlot2"
-        app:layout_constraintTop_toBottomOf="@id/textSlot2"
-        android:layout_marginTop="15dp" />
+                <ImageView
+                    android:id="@+id/imageSlot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginRight="36dp"
+                    android:layout_marginTop="36dp"
+                    app:srcCompat="@raw/shade" />
 
+                <TextView
+                    android:id="@+id/textSlot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="bad item"
+                    android:textColor="#e39950"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/priceSlot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Price: 40 Coins"
+                    android:textColor="#e39950"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/buySlot2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Buy" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
     <Button
         android:id="@+id/leaveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
         android:text="leave" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

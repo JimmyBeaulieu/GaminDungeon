@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         shopButton = findViewById(R.id.shopTest);
         shopButton.setOnClickListener(this);
+        shopButton.setVisibility(View.INVISIBLE);
 
 
     }

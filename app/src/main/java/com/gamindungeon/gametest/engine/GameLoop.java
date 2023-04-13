@@ -1,7 +1,10 @@
 package com.gamindungeon.gametest.engine;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
+
+import com.gamindungeon.gametest.object.Player;
 
 public class GameLoop extends Thread{
     private static final double MAX_UPS = 60;
@@ -46,6 +49,10 @@ public class GameLoop extends Thread{
         Canvas canvas = null;
         startTime = System.currentTimeMillis();
         while(isRunning){
+
+            //Log.d("powerup","str bonus: " + String.valueOf(Player.strengthBonus));
+            //Log.d("powerup","life bonus: " + String.valueOf(Player.lifeBonus));
+            //Log.d("powerup","coinp bonus: " + String.valueOf(Player.goldBonus));
 
             //try update and render game
             try{

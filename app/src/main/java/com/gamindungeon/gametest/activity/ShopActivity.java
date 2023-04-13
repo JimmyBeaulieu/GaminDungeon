@@ -19,7 +19,9 @@ import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.collectable.Food;
+import com.gamindungeon.gametest.object.collectable.Powerup;
 import com.gamindungeon.gametest.object.collectable.foodType;
+import com.gamindungeon.gametest.object.collectable.powerUpType;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +36,11 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     private TextView[] textSlot;
     private TextView[] priceSlot;
     Food[] foodList;
+    Powerup[] powerupList;
+
+    Object[] allItems;
+    Object[] availableToBuy;
+
     int[] price;
 
     private int coins;
@@ -111,15 +118,33 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
             text.setVisibility(View.INVISIBLE);
         }
 
-        foodList = new Food[]{
-                new Food(this, 0, 0, foodType.DONUT),
-                new Food(this, 0,0,foodType.DRUMSTICK),
-                new Food(this, 0,0, foodType.BURGER),
-                new Food(this, 0,0, foodType.CAKE),
-                new Food(this, 0,0, foodType.CONE),
-                new Food(this, 0,0, foodType.POTION)
-        };
+        allItems = new Object[]{
 
+                new Food(this, 0, 0, foodType.DONUT),       //0
+                new Food(this, 0, 0, foodType.DRUMSTICK),   //1
+                new Food(this, 0, 0, foodType.BURGER),      //2
+                new Food(this, 0, 0, foodType.CAKE),        //3
+                new Food(this, 0, 0, foodType.CONE),        //4
+                new Food(this, 0, 0, foodType.POTION),      //5
+
+                new Powerup(this, 10, powerUpType.LIFE),                //6
+                new Powerup(this, 20, powerUpType.LIFE),                //7
+                new Powerup(this, 30, powerUpType.LIFE),                //8
+                new Powerup(this, 40, powerUpType.LIFE),                //9
+                new Powerup(this, 50, powerUpType.LIFE),                //10
+
+                new Powerup(this, 10, powerUpType.STRENGTH),            //11
+                new Powerup(this, 20, powerUpType.STRENGTH),            //12
+                new Powerup(this, 30, powerUpType.STRENGTH),            //13
+                new Powerup(this, 40, powerUpType.STRENGTH),            //14
+                new Powerup(this, 50, powerUpType.STRENGTH),            //15
+
+                new Powerup(this, 2, powerUpType.COIN),                 //16
+                new Powerup(this, 4, powerUpType.COIN),                 //17
+                new Powerup(this, 6, powerUpType.COIN),                 //18
+                new Powerup(this, 8, powerUpType.COIN),                 //19
+                new Powerup(this, 10, powerUpType.COIN)                 //20
+        };
 
         updateText();
         leaveButton = findViewById(R.id.leaveButton);
@@ -129,22 +154,48 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void updateText(){
-        String gold = String.valueOf(Score.gold);
+        String gold = "Gold: " + String.valueOf(Score.gold);
         tvGold.setText(gold);
     }
 
     private void randomSelection() {
 
+        Random rand = new Random();
+
+        availableToBuy = new Object[3];
+
         for(int i = 0; i<3 ;i++){
 
-            Random rand = new Random();
-            int choice = rand.nextInt(6);
+            int choice = rand.nextInt(21);
 
-            imageSlot[i].setImageBitmap(foodList[choice].getSprite());
-            textSlot[i].setText(foodList[choice].getName());
-            String text = String.valueOf(foodList[choice].getShopValue()) + " $";
-            priceSlot[i].setText(text);
-            price[i] = foodList[choice].getShopValue();
+            availableToBuy[i] = allItems[choice];
+            //Log.d("shop", String.valueOf(choice));
+
+
+        }
+
+        for(int i = 0; i<3 ; i++){
+            if(availableToBuy[i].getClass() == Food.class){
+
+                //Log.d("shop", "Food object");
+
+                imageSlot[i].setImageBitmap(((Food)availableToBuy[i]).getSprite());
+                textSlot[i].setText(((Food)availableToBuy[i]).getName());
+                price[i] = ((Food)availableToBuy[i]).getShopValue();
+                String text = String.valueOf(price[i]) + " $";
+                priceSlot[i].setText(text);
+            }
+
+            if(availableToBuy[i].getClass() == Powerup.class){
+
+                //Log.d("shop", "Powerup object");
+
+                imageSlot[i].setImageBitmap(((Powerup)availableToBuy[i]).getSprite());
+                textSlot[i].setText(((Powerup)availableToBuy[i]).getName());
+                price[i] = ((Powerup)availableToBuy[i]).getShopValue();
+                String text = String.valueOf(price[i]) + " $";
+                priceSlot[i].setText(text);
+            }
 
         }
 
@@ -160,9 +211,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 //set the appropriate button visible
                 textSlot[0].setVisibility(View.VISIBLE);
                 priceSlot[0].setVisibility(View.VISIBLE);
-
                 priceSlot[0].setTextColor(Color.parseColor("#e39950"));
-
                 buyButtonSlot[0].setVisibility(View.VISIBLE);
 
                 //set all the other button invisible
@@ -174,13 +223,12 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 priceSlot[2].setVisibility(View.INVISIBLE);
 
                 break;
+
             case R.id.imageSlot1:
                 //set the appropriate button visible
                 textSlot[1].setVisibility(View.VISIBLE);
                 priceSlot[1].setVisibility(View.VISIBLE);
-
                 priceSlot[1].setTextColor(Color.parseColor("#e39950"));
-
                 buyButtonSlot[1].setVisibility(View.VISIBLE);
 
                 //set all the other button invisible
@@ -192,6 +240,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 priceSlot[2].setVisibility(View.INVISIBLE);
 
                 break;
+
             case R.id.imageSlot2:
                 //set the appropriate button visible
                 textSlot[2].setVisibility(View.VISIBLE);
@@ -212,11 +261,20 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.buySlot0:
-                Log.d("shop", "[Score.gold] ="  + String.valueOf(Score.gold) + " | [foodList[0].getShopValue()] =" + String.valueOf(foodList[0].getShopValue()));
-                if(Score.gold >= foodList[0].getShopValue()){
+
+
+                if(Score.gold >= price[0]){
+
                     sfx.playSFX(7);
-                    Score.gold -= foodList[0].getShopValue();
-                    Player.hunger += foodList[0].getHunger();
+
+                    Score.gold -= price[0];
+
+                    if(availableToBuy[0].getClass() == Food.class) {
+                        Player.hunger += ((Food)availableToBuy[0]).getHunger();
+                    }
+                    if(availableToBuy[0].getClass() == Powerup.class) {
+                        Player.givePowerUp(((Powerup)availableToBuy[0]).getType(), ((Powerup)availableToBuy[0]).getBonus());
+                    }
 
 
                     imageSlot[0].setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.raw.sold), 176, 176, false));
@@ -234,11 +292,17 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.buySlot1:
-                Log.d("shop", "[Score.gold] ="  + String.valueOf(Score.gold) + " | [foodList[1].getShopValue()] =" + String.valueOf(foodList[1].getShopValue()));
-                if(Score.gold >= foodList[1].getShopValue()){
+
+                if(Score.gold >= price[1]){
                     sfx.playSFX(7);
-                    Score.gold -= foodList[1].getShopValue();
-                    Player.hunger += foodList[1].getHunger();
+                    Score.gold -= price[1];
+
+                    if(availableToBuy[1].getClass() == Food.class) {
+                        Player.hunger += ((Food)availableToBuy[1]).getHunger();
+                    }
+                    if(availableToBuy[1].getClass() == Powerup.class) {
+                        Player.givePowerUp(((Powerup)availableToBuy[1]).getType(), ((Powerup)availableToBuy[1]).getBonus());
+                    }
 
                     imageSlot[1].setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.raw.sold), 176, 176, false));
                     textSlot[1].setVisibility(View.INVISIBLE);
@@ -252,12 +316,20 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 break;
+
             case R.id.buySlot2:
-                Log.d("shop", "[Score.gold] ="  + String.valueOf(Score.gold) + " | [foodList[2].getShopValue()] =" + String.valueOf(foodList[2].getShopValue()));
-                if(Score.gold >= foodList[2].getShopValue()){
+
+                if(Score.gold >= price[2]){
                     sfx.playSFX(7);
-                    Score.gold -= foodList[2].getShopValue();
-                    Player.hunger += foodList[2].getHunger();
+                    Score.gold -= price[2];
+
+                    if(availableToBuy[2].getClass() == Food.class) {
+                        Player.hunger += ((Food)availableToBuy[2]).getHunger();
+                    }
+                    if(availableToBuy[2].getClass() == Powerup.class) {
+
+                        Player.givePowerUp(((Powerup)availableToBuy[2]).getType(), ((Powerup)availableToBuy[2]).getBonus());
+                    }
 
                     imageSlot[2].setImageBitmap(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.raw.sold), 176, 176, false));
                     textSlot[2].setVisibility(View.INVISIBLE);
@@ -271,8 +343,10 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
                 break;
+
             case R.id.leaveButton:
                 sfx.playSFX(5);
+                sfx.stop();
                 music.stop();
                 finish();
         }
