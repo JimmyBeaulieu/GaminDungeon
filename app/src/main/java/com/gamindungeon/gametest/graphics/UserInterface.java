@@ -75,6 +75,26 @@ public class UserInterface {
             text = "Strength: " + player.getStrength();
             canvas.drawText(text, 200, 600, paint);
 
+            if(player.getPowerUpState()) {
+
+                paint.setColor(ContextCompat.getColor(context, R.color.green));
+
+                if(Player.strengthBonus > 0) {
+                    text = "Strength bonus: " + Player.strengthBonus;
+                    canvas.drawText(text, 900, 800, paint);
+                }
+                if(Player.lifeBonus > 0) {
+                    text = "Life bonus: " + Player.lifeBonus;
+                    canvas.drawText(text, 900, 900, paint);
+                }
+                if(Player.goldBonus > 0) {
+                    text = "Gold bonus: " + Player.goldBonus + "X";
+                    canvas.drawText(text, 900, 1000, paint);
+                }
+
+                paint.setColor(ContextCompat.getColor(context, R.color.white));
+
+            }
             text = "Experience: " + Score.experience + " / 100";
             canvas.drawText(text, 200, 700, paint);
 
@@ -114,8 +134,26 @@ public class UserInterface {
 
             paint.setColor(ContextCompat.getColor(context, R.color.black));
             paint.setAlpha(200);
-            canvas.drawRect(100, 250, 300, 400, paint);
+            canvas.drawRect(100, 250, 550, 400, paint);
             paint.setAlpha(255);
+
+            if(player.getPowerUpState()){
+
+                if(Player.lifeBonus > 0){
+                    Bitmap lifePower = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.zb_lifebonus), 100, 100, false);
+                    canvas.drawBitmap(lifePower, 350, 280, null);
+                }
+                if(Player.strengthBonus > 0){
+                    Bitmap strPower = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.zc_strengthbonus), 100, 100, false);
+                    canvas.drawBitmap(strPower, 250, 280, null);
+                }
+                if(Player.goldBonus > 0) {
+                    Bitmap goldPower = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.za_coinbonus), 100, 100, false);
+                    canvas.drawBitmap(goldPower, 450, 280, null);
+                }
+            }
+
+
 
             paint.setColor(ContextCompat.getColor(context, R.color.magenta));
             paint.setTextSize(50);

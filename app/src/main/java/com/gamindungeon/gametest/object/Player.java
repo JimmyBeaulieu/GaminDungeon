@@ -19,6 +19,7 @@ import com.gamindungeon.gametest.graphics.Sprite;
 import com.gamindungeon.gametest.manager.Music;
 import com.gamindungeon.gametest.manager.Score;
 import com.gamindungeon.gametest.manager.TileManager;
+import com.gamindungeon.gametest.object.collectable.powerUpType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +31,13 @@ public class Player extends GameObject{
     private double oldPositionY;
     public static double hunger;
     public static double health;
+    public static int strengthBonus;
+    public static int lifeBonus;
+    public static int goldBonus;
+    private static boolean hasPowerUp;
+    private static int powerUpTimer;
     private int levelUpText=0;
+
 
     private String lastKnownMove = "";
     private TileManager tm;
@@ -50,6 +57,10 @@ public class Player extends GameObject{
         this.oldPositionY = oldPositionY;
         this.lastKnownMove = lastKnownMove;
         this.level = level;
+        hasPowerUp = false;
+        lifeBonus = 0;
+        goldBonus = 0;
+        strengthBonus = 0;
 
         mp=music;
 
@@ -101,6 +112,9 @@ public class Player extends GameObject{
         if(getHealth() < 20){
             paint.setColor(ContextCompat.getColor(context, R.color.red));
         }
+        if(Player.strengthBonus > 0){
+            paint.setColor(ContextCompat.getColor(context, R.color.blue));
+        }
         //foreground bar
         canvas.drawRect(110, 110, healthPointPercentage + 110, 140, paint);
 
@@ -138,7 +152,7 @@ public class Player extends GameObject{
 
     public void update() {
 
-        healthPointPercentage =(float) (getHealth() / getMaxHealth());
+        healthPointPercentage =(float) ((getHealth() + Player.lifeBonus) / getMaxHealth());
         healthPointPercentage = healthPointPercentage * 380;
         //if(healthPointPercentage < 110){healthPointPercentage = 110;}
 
@@ -159,6 +173,11 @@ public class Player extends GameObject{
         if(hunger < 0){
             hunger = 0;
         }
+        if(!hasPowerUp){
+            lifeBonus = 0;
+            goldBonus = 0;
+            strengthBonus = 0;
+        }
 
     }
 
@@ -168,9 +187,21 @@ public class Player extends GameObject{
     }
 
     public void move(String direction) {
+
+
         if(levelUpText >= 1){
-            Log.d("levelup", String.valueOf(levelUpText));
             levelUpText--;
+        }
+
+        if(hasPowerUp){
+            powerUpTimer--;
+            if(powerUpTimer <= 0){
+                hasPowerUp = false;
+                powerUpTimer = 0;
+                strengthBonus = 0;
+                lifeBonus = 0;
+                goldBonus = 0;
+            }
         }
 
 //row
@@ -319,5 +350,31 @@ public class Player extends GameObject{
 
     public void setLastKnownMove(String up) {
         lastKnownMove = up;
+    }
+    public static void givePowerUp(powerUpType type, int amount){
+        hasPowerUp = true;
+
+        //Log.d("powerup", "bonus: " + amount + " | powerupType: " + type);
+
+        switch(type){
+            case LIFE:
+                lifeBonus = amount;
+                powerUpTimer = 20;
+                break;
+            case STRENGTH:
+                strengthBonus = amount;
+                powerUpTimer = 20;
+                break;
+            case COIN:
+                goldBonus = amount;
+                powerUpTimer = 50;
+                break;
+        }
+        //Log.d("powerup", "str" + String.valueOf(strengthBonus));
+        //Log.d("powerup", "gold" + String.valueOf(goldBonus));
+        //Log.d("powerup", "life" + String.valueOf(lifeBonus));
+    }
+    public boolean getPowerUpState(){
+        return hasPowerUp;
     }
 }
