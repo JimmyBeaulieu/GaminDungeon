@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -30,7 +29,6 @@ import com.gamindungeon.gametest.object.Enemy;
 import com.gamindungeon.gametest.object.Player;
 import com.gamindungeon.gametest.object.collectable.Coin;
 import com.gamindungeon.gametest.object.collectable.Food;
-import com.gamindungeon.gametest.object.collectable.powerUpType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -232,7 +230,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         player.setPositionY(tileManager.getCurrentMapSpawnY());
         player.setHealth(player.getMaxHealth());
         gameOver.setGameOverState(false);
-        music.play(tileManager.getCurrentLoadedMap());
+        //music.play(tileManager.getCurrentLoadedMap());
         reloadMap();
         shadeSpawn();
         Score.gold /=2;
@@ -366,7 +364,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //go to next map
                 if(x == gridPos(37) && y == gridPos(17)){
-                    tileManager.loadMap(1);
+                    music.stop();
+                    tileManager.setCurrentLoadedMap(1);
                     player.setPositionY(gridPos(7));
                     player.setPositionX(gridPos(3));
                     reloadMap();
@@ -375,11 +374,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //Shop room
                 if (player.getPositionX() == gridPos(41) && player.getPositionY() == gridPos(22)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     shopRoom();
                 }
                 //spin room
                 if (player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(16)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
@@ -427,18 +428,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     dialogPass.add("Those eyes look dangerous");
                 }
 
-                if(x == gridPos(5) && y == gridPos(3)){
-                    player.givePowerUp(powerUpType.STRENGTH, 10);
-                    //player.givePowerUp(powerUpType.LIFE, 10);
-                    //player.givePowerUp(powerUpType.COIN, 2);
-                }
-
 
                 break;
             case 1:
 
                 //go back to previous map
                 if(x == gridPos(2) && y == gridPos(7)){
+                    music.stop();
                     tileManager.loadMap(0);
                     player.setPositionX(gridPos(38));
                     player.setPositionY(gridPos(17));
@@ -447,9 +443,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //go to next map
                 if(x == gridPos(5) && y == gridPos(34)){
+                    music.stop();
                     tileManager.loadMap(2);
-//                    player.setPositionX(9);
-//                    player.setPositionY(3);
                     player.setPositionX(gridPos(9));
                     player.setPositionY(gridPos(3));
                     reloadMap();
@@ -463,12 +458,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //spin room
                 if (player.getPositionX() == gridPos(8) && player.getPositionY() == gridPos(47)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
 
                 //shop room
                 if (player.getPositionX() == gridPos(3) && player.getPositionY() == gridPos(44)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     shopRoom();
                 }
@@ -478,6 +475,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //go back to previous map
                 if(x == gridPos(9) && y == gridPos(2)){
+                    music.stop();
                     tileManager.loadMap(1);
                     player.setPositionX(gridPos(6));
                     player.setPositionY(gridPos(34));
@@ -486,6 +484,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //go to next map
                 if(x == gridPos(1) && y == gridPos(46)){
+                    music.stop();
                     tileManager.loadMap(3);
                     player.setPositionX(gridPos(25));
                     player.setPositionY(gridPos(47));
@@ -497,11 +496,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //spin room
                 if ((player.getPositionX() == gridPos(1) && player.getPositionY() == gridPos(37)) ||
                     player.getPositionX() == gridPos(40) && player.getPositionY() == gridPos(5)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
                 //shop room
                 if (player.getPositionX() == gridPos(23) && player.getPositionY() == gridPos(38)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     shopRoom();
                 }
@@ -518,6 +519,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
                 //go back to previous map
                 if(x == gridPos(25) && y == gridPos(48)){
+                    music.stop();
                     tileManager.loadMap(2);
                     player.setPositionX(gridPos(1));
                     player.setPositionY(gridPos(45));
@@ -527,16 +529,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 //spin room
                 if ((player.getPositionX() == gridPos(26) && player.getPositionY() == gridPos(15)) ||
                         player.getPositionX() == gridPos(44) && player.getPositionY() == gridPos(26)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     spinRoom();
                 }
 
                 //shop room
                 if (player.getPositionX() == gridPos(17) && player.getPositionY() == gridPos(15)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     shopRoom();
                 }
                 if (player.getPositionX() == gridPos(49) && player.getPositionY() == gridPos(26)) {
+                    music.stop();
                     Score.music = tileManager.getCurrentLoadedMap();
                     shopRoom();
                 }
@@ -595,9 +600,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         //food
         foodList.addAll(tileManager.getFoodOnMap());
 
-        for(Food food : foodList){
-            //Log.d("SAVEFILE_FOOD", food.toString());
-        }
     }
 
     private void combat(Enemy enemy, Player player) {

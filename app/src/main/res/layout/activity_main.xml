@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="Save Options"
+        android:text="Return to main menu"
         android:textColor="#15181f"
         app:layout_constraintTop_toBottomOf="@id/sfxToggle"
         app:layout_constraintStart_toStartOf="@id/sfxToggle"

@@ -46,7 +46,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="test11"
+                android:hint="username"
                 android:textColor="#e39950"/>
         </LinearLayout>
 
@@ -75,7 +75,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:text="qwe"
+                android:hint="password"
                 android:textColor="#e39950"/>
         </LinearLayout>
 

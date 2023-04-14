@@ -282,7 +282,9 @@ public class Enemy extends GameObject{
                 choice = 0;
             }
             move(movementOptions.get(choice));
-            focusLevel++;
+            if(!type.equalsIgnoreCase("shade")) {
+                focusLevel++;
+            }
         }
     }
 

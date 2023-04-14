@@ -198,6 +198,9 @@ public class TileManager {
     public int getCurrentLoadedMap() {
         return currentLoadedMap;
     }
+    public void setCurrentLoadedMap(int mapNumber){
+        currentLoadedMap = mapNumber;
+    }
 
     public int[][] getMapTileNum() {
         return mapTileNum;

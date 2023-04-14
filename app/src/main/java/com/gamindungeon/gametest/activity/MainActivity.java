@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         btnPlay.setOnClickListener(this);
         btnOptions.setOnClickListener(this);
         btnAccount.setOnClickListener(this);
+        btnAccount.setVisibility(View.INVISIBLE);
 
         //setting up music for menu
         mp = new Music(this);
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         shopButton = findViewById(R.id.shopTest);
         shopButton.setOnClickListener(this);
-        //shopButton.setVisibility(View.INVISIBLE);
+        shopButton.setVisibility(View.INVISIBLE);
 
 
     }
@@ -127,6 +128,12 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
             case R.id.musicToggle:
                 Option.isMusicOn = !Option.isMusicOn;
+                if(!Option.isMusicOn){
+                    mp.stop();
+                }
+                else{
+                    mp.play(1);
+                }
                 updateText();
                 break;
 
@@ -159,6 +166,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         btnReturnToMenu.setVisibility(View.INVISIBLE);
         musicToggle.setVisibility(View.INVISIBLE);
         sfxToggle.setVisibility(View.INVISIBLE);
+        btnAccount.setVisibility(View.INVISIBLE);
     }
 
     private void goToOptions() {
@@ -170,6 +178,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         btnReturnToMenu.setVisibility(View.VISIBLE);
         musicToggle.setVisibility(View.VISIBLE);
         sfxToggle.setVisibility(View.VISIBLE);
+        btnAccount.setVisibility(View.VISIBLE);
 
 
     }

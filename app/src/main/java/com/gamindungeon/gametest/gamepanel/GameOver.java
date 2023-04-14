@@ -31,7 +31,7 @@ public class GameOver {
         int color = ContextCompat.getColor(context, R.color.GameOver);
         float textSize = 150;
 
-        canvas.drawRect(500,200,1800,1000, paint);
+        canvas.drawRect(0,0,2400,2400, paint);
 
         paint.setColor(color);
         paint.setTextSize(textSize);
