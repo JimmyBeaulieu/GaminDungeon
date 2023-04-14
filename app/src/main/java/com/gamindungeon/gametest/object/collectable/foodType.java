@@ -5,6 +5,8 @@ public enum foodType {
     DRUMSTICK,
     BURGER,
     CAKE,
+    BIGCAKE,
     CONE,
-    POTION
+    POTION,
+    PACZKI
 }

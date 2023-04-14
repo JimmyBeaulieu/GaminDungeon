@@ -37,7 +37,8 @@ public class Player extends GameObject{
     private static boolean hasPowerUp;
     private static int powerUpTimer;
     private int levelUpText=0;
-
+    private double bmi;
+    private double calories;
 
     private String lastKnownMove = "";
     private TileManager tm;
@@ -61,6 +62,7 @@ public class Player extends GameObject{
         lifeBonus = 0;
         goldBonus = 0;
         strengthBonus = 0;
+        bmi = 0;
 
         mp=music;
 
@@ -78,13 +80,28 @@ public class Player extends GameObject{
                 bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback), 176, 176, false);
                 break;
             case "down":
-                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront), 176, 176, false);
+                if(calories <= 1000) {
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront_bigger), 176, 176, false);
+                }
                 break;
             case "left":
-                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainleft), 176, 176, false);
+                if(calories <= 1000) {
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainleft), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainleft_bigger), 176, 176, false);
+                }
                 break;
             case "right":
-                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainright), 176, 176, false);
+                if(calories <= 1000) {
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainright), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainright_bigger), 176, 176, false);
+                }
                 break;
         }
         canvas.drawBitmap(
@@ -178,6 +195,7 @@ public class Player extends GameObject{
             goldBonus = 0;
             strengthBonus = 0;
         }
+
 
     }
 
@@ -354,8 +372,6 @@ public class Player extends GameObject{
     public static void givePowerUp(powerUpType type, int amount){
         hasPowerUp = true;
 
-        //Log.d("powerup", "bonus: " + amount + " | powerupType: " + type);
-
         switch(type){
             case LIFE:
                 lifeBonus = amount;
@@ -370,11 +386,19 @@ public class Player extends GameObject{
                 powerUpTimer = 50;
                 break;
         }
-        //Log.d("powerup", "str" + String.valueOf(strengthBonus));
-        //Log.d("powerup", "gold" + String.valueOf(goldBonus));
-        //Log.d("powerup", "life" + String.valueOf(lifeBonus));
     }
     public boolean getPowerUpState(){
         return hasPowerUp;
     }
+
+    public void addCalorie(double calorie) {
+        this.calories += calorie;
+    }
+    public void substractCalorie(double calorieLost){
+        calories -= calorieLost;
+        if(calories<0){
+            calories = 0;
+        }
+    }
+
 }

@@ -15,6 +15,7 @@ public class Food {
     double positionY;
     Bitmap sprite;
     double hungerRestoreAmount;
+    double healthRestoreAmount;
     double calories;
     //String type;
     foodType type;
@@ -26,38 +27,58 @@ public class Food {
             case DONUT:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cd_donut), 176, 176, false);
                 hungerRestoreAmount = 10;
+                healthRestoreAmount = 0;
                 calories = 300;
                 shopValue = 10;
                 break;
             case DRUMSTICK:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ce_drumstick), 176, 176, false);
-                hungerRestoreAmount = 50;
+                hungerRestoreAmount = 30;
+                healthRestoreAmount = 0;
                 calories = 150;
                 shopValue = 25;
                 break;
             case BURGER:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ca_burger), 176, 176, false);
-                hungerRestoreAmount = 25;
+                hungerRestoreAmount = 35;
+                healthRestoreAmount = 0;
                 calories = 295;
                 shopValue = 15;
                 break;
             case CAKE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cb_cake), 176, 176, false);
-                hungerRestoreAmount = 60;
+                hungerRestoreAmount = 30;
+                healthRestoreAmount = 0;
                 calories = 500;
                 shopValue = 20;
                 break;
+            case BIGCAKE:
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ei_bigcake), 256, 256, false);
+                hungerRestoreAmount = 60;
+                healthRestoreAmount = 0;
+                calories = 1000;
+                shopValue = 35;
+                break;
             case CONE:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cc_cone), 176, 176, false);
-                hungerRestoreAmount = 50;
+                hungerRestoreAmount = 20;
+                healthRestoreAmount = 0;
                 calories = 417;
                 shopValue = 15;
                 break;
             case POTION:
                 sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.cf_potion), 256, 256, false);
-                hungerRestoreAmount = 100;
+                hungerRestoreAmount = 20;
+                healthRestoreAmount = 100;
                 calories = 10;
                 shopValue = 50;
+                break;
+            case PACZKI:
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ej_paczki), 256, 256, false);
+                hungerRestoreAmount = 100;
+                healthRestoreAmount = 100;
+                calories = 700;
+                shopValue = 25;
                 break;
         }
         this.positionX = positionX;
@@ -122,8 +143,17 @@ public class Food {
             case POTION:
                 output = "Potion";
                 break;
+            case PACZKI:
+                output = "Paczki";
+                break;
+            case BIGCAKE:
+                output = "Bigcake";
+                break;
         }
         return output;
+    }
+    public double getHealthRestoreAmount(){
+        return healthRestoreAmount;
     }
 
 }

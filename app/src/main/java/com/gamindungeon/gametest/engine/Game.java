@@ -204,6 +204,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                             move = "up";
                         }
                     }
+                    player.substractCalorie(10);
                     player.setOldX(player.getPositionX());
                     player.setOldY(player.getPositionY());
                     player.move(move);
@@ -685,7 +686,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             if(player.getPositionX() == food.getPositionX() &&
             player.getPositionY() == food.getPositionY()){
                 player.setHunger(player.getHunger() + food.getHunger());
+                player.setHealth(player.getHealth() + food.getHealthRestoreAmount());
                 Score.caloriesIntake += food.getCalorie();
+                player.addCalorie(food.getCalorie());
                 sfx.playSFX(2);
                 foodList.remove(food);
             }

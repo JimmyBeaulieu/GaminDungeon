@@ -25,6 +25,8 @@ import com.gamindungeon.gametest.object.collectable.powerUpType;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ShopActivity extends AppCompatActivity implements View.OnClickListener{
@@ -126,24 +128,26 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
                 new Food(this, 0, 0, foodType.CAKE),        //3
                 new Food(this, 0, 0, foodType.CONE),        //4
                 new Food(this, 0, 0, foodType.POTION),      //5
+                new Food(this, 0, 0, foodType.PACZKI),      //6
+                new Food(this, 0, 0, foodType.BIGCAKE),      //7
 
-                new Powerup(this, 10, powerUpType.LIFE),                //6
-                new Powerup(this, 20, powerUpType.LIFE),                //7
-                new Powerup(this, 30, powerUpType.LIFE),                //8
-                new Powerup(this, 40, powerUpType.LIFE),                //9
-                new Powerup(this, 50, powerUpType.LIFE),                //10
+                new Powerup(this, 10, powerUpType.LIFE),                //8
+                new Powerup(this, 20, powerUpType.LIFE),                //9
+                new Powerup(this, 30, powerUpType.LIFE),                //10
+                new Powerup(this, 40, powerUpType.LIFE),                //11
+                new Powerup(this, 50, powerUpType.LIFE),                //12
 
-                new Powerup(this, 10, powerUpType.STRENGTH),            //11
-                new Powerup(this, 20, powerUpType.STRENGTH),            //12
-                new Powerup(this, 30, powerUpType.STRENGTH),            //13
-                new Powerup(this, 40, powerUpType.STRENGTH),            //14
-                new Powerup(this, 50, powerUpType.STRENGTH),            //15
+                new Powerup(this, 10, powerUpType.STRENGTH),            //13
+                new Powerup(this, 20, powerUpType.STRENGTH),            //14
+                new Powerup(this, 30, powerUpType.STRENGTH),            //15
+                new Powerup(this, 40, powerUpType.STRENGTH),            //16
+                new Powerup(this, 50, powerUpType.STRENGTH),            //17
 
-                new Powerup(this, 2, powerUpType.COIN),                 //16
-                new Powerup(this, 4, powerUpType.COIN),                 //17
-                new Powerup(this, 6, powerUpType.COIN),                 //18
-                new Powerup(this, 8, powerUpType.COIN),                 //19
-                new Powerup(this, 10, powerUpType.COIN)                 //20
+                new Powerup(this, 2, powerUpType.COIN),                 //18
+                new Powerup(this, 4, powerUpType.COIN),                 //19
+                new Powerup(this, 6, powerUpType.COIN),                 //20
+                new Powerup(this, 8, powerUpType.COIN),                 //21
+                new Powerup(this, 10, powerUpType.COIN)                 //22
         };
 
         updateText();
@@ -164,20 +168,24 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
         availableToBuy = new Object[3];
 
+        List<Integer>alreadyInIt = new ArrayList<Integer>();
+
         for(int i = 0; i<3 ;i++){
 
-            int choice = rand.nextInt(21);
+            int choice = rand.nextInt(23);
 
+            for(Integer num : alreadyInIt){
+                while(choice == num){
+                    choice = rand.nextInt(23);
+                }
+            }
             availableToBuy[i] = allItems[choice];
-            //Log.d("shop", String.valueOf(choice));
-
+            alreadyInIt.add(i);
 
         }
 
         for(int i = 0; i<3 ; i++){
             if(availableToBuy[i].getClass() == Food.class){
-
-                //Log.d("shop", "Food object");
 
                 imageSlot[i].setImageBitmap(((Food)availableToBuy[i]).getSprite());
                 textSlot[i].setText(((Food)availableToBuy[i]).getName());
@@ -188,12 +196,20 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
             if(availableToBuy[i].getClass() == Powerup.class){
 
-                //Log.d("shop", "Powerup object");
 
                 imageSlot[i].setImageBitmap(((Powerup)availableToBuy[i]).getSprite());
-                textSlot[i].setText(((Powerup)availableToBuy[i]).getName());
+                String text = "";
+                if(((Powerup)availableToBuy[i]).getType() == powerUpType.COIN){
+                    text = ((Powerup) availableToBuy[i]).getName() + " X " + ((Powerup) availableToBuy[i]).getBonus();
+                }
+                else {
+                    text = ((Powerup) availableToBuy[i]).getName() + " + " + ((Powerup) availableToBuy[i]).getBonus();
+                    ;
+                }
+
+                textSlot[i].setText(text);
                 price[i] = ((Powerup)availableToBuy[i]).getShopValue();
-                String text = String.valueOf(price[i]) + " $";
+                text = String.valueOf(price[i]) + " $";
                 priceSlot[i].setText(text);
             }
 
@@ -271,6 +287,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
                     if(availableToBuy[0].getClass() == Food.class) {
                         Player.hunger += ((Food)availableToBuy[0]).getHunger();
+                        Player.health += ((Food)availableToBuy[0]).getHealthRestoreAmount();
                     }
                     if(availableToBuy[0].getClass() == Powerup.class) {
                         Player.givePowerUp(((Powerup)availableToBuy[0]).getType(), ((Powerup)availableToBuy[0]).getBonus());
@@ -299,6 +316,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
                     if(availableToBuy[1].getClass() == Food.class) {
                         Player.hunger += ((Food)availableToBuy[1]).getHunger();
+                        Player.health += ((Food)availableToBuy[1]).getHealthRestoreAmount();
                     }
                     if(availableToBuy[1].getClass() == Powerup.class) {
                         Player.givePowerUp(((Powerup)availableToBuy[1]).getType(), ((Powerup)availableToBuy[1]).getBonus());
@@ -325,6 +343,7 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
 
                     if(availableToBuy[2].getClass() == Food.class) {
                         Player.hunger += ((Food)availableToBuy[2]).getHunger();
+                        Player.health += ((Food)availableToBuy[2]).getHealthRestoreAmount();
                     }
                     if(availableToBuy[2].getClass() == Powerup.class) {
 
