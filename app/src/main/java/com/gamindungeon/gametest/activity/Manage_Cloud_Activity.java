@@ -99,7 +99,7 @@ public class Manage_Cloud_Activity extends AppCompatActivity implements View.OnC
 
                     if (snapshot.exists()) {
 
-                        boolean isSuccessful = setSaveContent(snapshot.child("save").getValue().toString());
+                        boolean isSuccessful = setSaveContentToDevice(snapshot.child("save").getValue().toString());
 
                         if(isSuccessful){
                             displayMessage("Success to download save");
@@ -127,34 +127,36 @@ public class Manage_Cloud_Activity extends AppCompatActivity implements View.OnC
 
     }
 
-    private boolean setSaveContent(String saveContent) {
+    private boolean setSaveContentToDevice(String saveContent) {
         boolean result = false;
+        //Check if file
+        if(!saveContent.equals("NoSave")) {
 
-        try{
+            try {
 
-            File directory = this.getFilesDir();
-            File[] files = directory.listFiles();
+                File directory = this.getFilesDir();
+                File[] files = directory.listFiles();
 
-            if (files != null) {
+                if (files != null) {
 
-                for (File file : files) {
+                    for (File file : files) {
 
-                    file.delete();
+                        file.delete();
+
+                    }
+                    File newSaveFile = new File(directory + "/SaveFile");
+                    FileWriter fw = new FileWriter(newSaveFile, false);
+                    fw.write(saveContent);
+                    fw.close();
+                    System.out.println("File is created with cloud save.");
+                    result = true;
 
                 }
-                File newSaveFile = new File(directory + "/SaveFile");
-                FileWriter fw = new FileWriter(newSaveFile, false);
-                fw.write(saveContent);
-                fw.close();
-                System.out.println("File is created with cloud save.");
-                result = true;
 
+            } catch (Exception ex) {
+                System.out.println("Exception is" + ex.getMessage());
             }
-
-        } catch (Exception ex){
-            System.out.println("Exception is" + ex.getMessage());
         }
-
         return result;
     }
 
@@ -170,9 +172,15 @@ public class Manage_Cloud_Activity extends AppCompatActivity implements View.OnC
 
                     if (snapshot.exists()) {
 
-                        String content = getSaveFileContent();
-                        usersDatabase.child(username).child("save").setValue(content);
-                        displayMessage("Success to upload save");
+                        String content = getSaveFileContentFromDevice();
+                        //Check to see content isEmpty
+                        if(content.isEmpty()){
+                            displayMessage("FAILED to upload save");
+                        }else {
+                            usersDatabase.child(username).child("save").setValue(content);
+                            displayMessage("Success to upload save");
+                        }
+
 
 
                     }else {
@@ -194,7 +202,7 @@ public class Manage_Cloud_Activity extends AppCompatActivity implements View.OnC
 
     }
 
-    private String getSaveFileContent() {
+    private String getSaveFileContentFromDevice() {
         String content = "";
         File directory = this.getFilesDir();
         File[] files = directory.listFiles();
@@ -225,6 +233,7 @@ public class Manage_Cloud_Activity extends AppCompatActivity implements View.OnC
             }
 
         }
+
 
         return content;
     }
