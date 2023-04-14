@@ -207,7 +207,7 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
             prize = 2;
         }
 
-        Toast.makeText(this,"" + angle, Toast.LENGTH_LONG).show();
+
 
         return prize;
     }
