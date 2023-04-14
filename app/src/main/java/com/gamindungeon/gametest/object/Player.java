@@ -77,7 +77,12 @@ public class Player extends GameObject{
 
         switch(lastKnownMove){
             case "up":
-                bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback), 176, 176, false);
+                if(calories <= 1000) {
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback_bigger), 176, 176, false);
+                }
                 break;
             case "down":
                 if(calories <= 1000) {
