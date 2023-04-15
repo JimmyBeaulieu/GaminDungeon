@@ -15,7 +15,7 @@
         android:weightSum="6">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvCloudTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
@@ -28,7 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_margin="20dp">
+
 
             <TextView
                 android:id="@+id/textView12"
@@ -46,8 +48,13 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="username"
-                android:textColor="#e39950"/>
+                android:hint="Username"
+                android:textColorHint="#e39950"
+                android:textColor="#e39950"
+                android:backgroundTint="#e39950"/>
+
+
+
         </LinearLayout>
 
 
@@ -56,7 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_margin="20dp">
 
             <TextView
                 android:id="@+id/textView8"
@@ -75,8 +83,10 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:hint="password"
-                android:textColor="#e39950"/>
+                android:hint="Password"
+                android:textColorHint="#e39950"
+                android:textColor="#e39950"
+                android:backgroundTint="#e39950"/>
         </LinearLayout>
 
         <LinearLayout

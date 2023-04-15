@@ -78,46 +78,50 @@ public class Login_Activity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void loginToManageSaveCloud() {
+        if((edLoginUsername.getText().toString()).equals("") || (edLoginPassword.getText().toString()).equals("")  ){
 
-        try{
+            Toast.makeText(this, "Username and Password need to be filled." , Toast.LENGTH_LONG ).show();
+        }else {
 
-            username = edLoginUsername.getText().toString();
-            password = edLoginPassword.getText().toString();
-            String encryptPass = encryptString(password);
+            try {
+
+                username = edLoginUsername.getText().toString();
+                password = edLoginPassword.getText().toString();
+                String encryptPass = encryptString(password);
 
 
-            usersDatabase = FirebaseDatabase.getInstance().getReference("users").child(username);
+                usersDatabase = FirebaseDatabase.getInstance().getReference("users").child(username);
 
-            usersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                usersDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    if (!snapshot.exists()) {
+                        if (!snapshot.exists()) {
 
-                        displayMessage("Username or password is incorrect.");
-
-                    }else {
-
-                        if(!encryptPass.equals(snapshot.child("password").getValue().toString())){
                             displayMessage("Username or password is incorrect.");
-                        }else {
-                            goToManageCloud();
+
+                        } else {
+
+                            if (!encryptPass.equals(snapshot.child("password").getValue().toString())) {
+                                displayMessage("Username or password is incorrect.");
+                            } else {
+                                goToManageCloud();
+                            }
                         }
+
                     }
 
-                }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-
-
-        }catch (Exception ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (Exception ex) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
