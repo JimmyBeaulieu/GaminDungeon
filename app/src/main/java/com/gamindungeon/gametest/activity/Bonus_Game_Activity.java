@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.manager.Music;
@@ -139,7 +140,6 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
     private void displayResult(int angle) {
 
 
-
         spinAngle = spinAngle + 1080;
         int result = findPrize(angle);
         switch(result){
@@ -192,20 +192,21 @@ public class Bonus_Game_Activity extends AppCompatActivity implements View.OnCli
             prize = 1;
         }
         else if (angle >= 105 && angle < 157){
-            prize = 2;
+            prize = 6;
         }
         else if (angle >= 157 && angle < 209){
-            prize = 3;
+            prize = 5;
         }
         else if (angle >= 209 && angle < 261){
             prize = 4;
         }
         else if (angle >= 261 && angle < 312){
-            prize = 5;
+            prize = 3;
         }
         else if (angle >= 312 && angle < 365){
-            prize = 6;
+            prize = 2;
         }
+
 
 
         return prize;
