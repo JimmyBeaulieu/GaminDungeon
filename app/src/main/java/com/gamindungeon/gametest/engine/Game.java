@@ -415,12 +415,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     player.setPositionX(gridPos(1));
                 }
 
-                if(x == gridPos(3) && y == gridPos(4) && !dialogPass.contains("Finally I found it!")) {
-                    ui.createDialog("Finally I found it! The famous Gamin's Dungeon...");
-                    dialogPass.add("Finally I found it!");
+
+                if(x == gridPos(3) && y == gridPos(4) && !dialogPass.contains("I can move!")) {
+                    ui.createDialog("I can move by swiping the screen!");
+                    dialogPass.add("I can move!");
                 }
+
                 if(x == gridPos(9) && y == gridPos(4) && !dialogPass.contains("Now where did Gamin")) {
-                    ui.createDialog("Now where did Gamin put his famous recipe for paczki...");
+                    ui.createDialog("Finally I found it! The famous Gamin's Dungeon... Now where did Gamin put his famous recipe for paczki...");
                     dialogPass.add("Now where did Gamin");
                 }
                 if(x == gridPos(22) && y == gridPos(26) && !dialogPass.contains("Those eyes look dangerous")){

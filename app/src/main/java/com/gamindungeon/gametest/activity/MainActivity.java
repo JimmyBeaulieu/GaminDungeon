@@ -1,6 +1,5 @@
 package com.gamindungeon.gametest.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,7 +27,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     Button shopButton;
     Music mp;
 
-    boolean isOptionUp;
 
 
     @Override
