@@ -93,34 +93,40 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
     }
 
     private void registerNewUser() {
+        if((edUsername.getText().toString()).equals("") || (edRegisterEmail.getText().toString()).equals("")
+                || (edRegisterPassword.getText().toString()).equals("") || (edRegisterRetypePassword.getText().toString()).equals("") ) {
 
-        try {
-            username= edUsername.getText().toString();
-            email = edRegisterEmail.getText().toString();
-            password = edRegisterPassword.getText().toString();
-            encryptPass = encryptString(password);
+            Toast.makeText(this, "All fields need to be filled.", Toast.LENGTH_LONG).show();
+
+        }else{
+
+            try {
+                username = edUsername.getText().toString();
+                email = edRegisterEmail.getText().toString();
+                password = edRegisterPassword.getText().toString();
+                encryptPass = encryptString(password);
 
 
-            if(!password.equals(edRegisterRetypePassword.getText().toString()) || password.isEmpty()){
-                Toast.makeText(this,"Passwords do not match or empty.", Toast.LENGTH_LONG).show();
-                return;
+                if (!password.equals(edRegisterRetypePassword.getText().toString()) || password.isEmpty()) {
+                    Toast.makeText(this, "Passwords do not match or empty.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(email);
+                if (!matcher.matches()) {
+                    Toast.makeText(this, "Email does not match email pattern.(aka -> name@test.com)", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                checkIfEmailAndUsernameExistsToAdd(email, username);
+
+            } catch (Exception ex) {
+
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+
             }
-
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(email);
-            if(!matcher.matches()){
-                Toast.makeText(this,"Email does not match email pattern.(aka -> name@test.com)", Toast.LENGTH_LONG).show();
-                return;
-            }
-
-            checkIfEmailAndUsernameExistsToAdd(email, username);
-
-        } catch (Exception ex){
-
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-
         }
-
     }
 
 
@@ -142,15 +148,14 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                         for (DataSnapshot ch: snapshot.getChildren()) {
 
                             if (uEmail.equals(ch.child("email").getValue().toString())){
-                                displayMessage( "Email Exists in database. FAIL to Register");
+                                displayMessage( "Email Exists in database. FAIL to Register.");
                                 isEmailUnique = false;
                             }
 
                             if (uUsername.equals(ch.child("username").getValue().toString())){
-                                displayMessage( "Username Exists in database. FAIL to Register");
+                                displayMessage( "Username Exists in database. FAIL to Register.");
                                 isUsernameUnique = false;
                             }
-
                         }
 
 
@@ -158,7 +163,11 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
 
                             User user = new User(username, email, encryptPass, "NoSave");
                             usersDatabase.child(username).setValue(user);
+
+                            displayMessage( "Registration Successful!");
+
                             clearFields();
+                            finish();
 
                         }
 

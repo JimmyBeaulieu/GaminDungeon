@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gamindungeon.gametest.R;
@@ -29,6 +30,7 @@ import java.io.IOException;
 
 public class Manage_Cloud_Activity extends AppCompatActivity implements View.OnClickListener {
 
+    TextView tvCloudTitle;
     Button btnUploadToCloud, btnDownloadFromCloud, btnReturnToLogin;
 
     DatabaseReference usersDatabase, usersChild;
@@ -58,12 +60,16 @@ public class Manage_Cloud_Activity extends AppCompatActivity implements View.OnC
         btnUploadToCloud = findViewById(R.id.btnUploadToCloud);
         btnDownloadFromCloud = findViewById(R.id.btnDownloadFromCloud);
         btnReturnToLogin = findViewById(R.id.btnReturnToLogin);
+        tvCloudTitle = findViewById(R.id.tvCloudTitle);
 
         btnUploadToCloud.setOnClickListener(this);
         btnDownloadFromCloud.setOnClickListener(this);
         btnReturnToLogin.setOnClickListener(this);
 
         username = getIntent().getStringExtra("username");
+
+        tvCloudTitle.setText(tvCloudTitle.getText().toString() + " For: " + username);
+
 
         usersDatabase = FirebaseDatabase.getInstance().getReference("users");
     }

@@ -15,7 +15,7 @@
         android:weightSum="6">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvCloudTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Register"
@@ -28,7 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp">
 
             <TextView
                 android:id="@+id/textView12"
@@ -46,15 +48,19 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="username"
-                android:textColor="#e39950"/>
+                android:hint="Username"
+                android:textColorHint="#e39950"
+                android:textColor="#e39950"
+                android:backgroundTint="#e39950"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp">
 
             <TextView
                 android:id="@+id/textView7"
@@ -73,15 +79,19 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="email"
-                android:textColor="#e39950"/>
+                android:hint="Email"
+                android:textColorHint="#e39950"
+                android:textColor="#e39950"
+                android:backgroundTint="#e39950"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp">
 
             <TextView
                 android:id="@+id/textView8"
@@ -100,15 +110,19 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:hint="password"
-                android:textColor="#e39950"/>
+                android:hint="Password"
+                android:textColorHint="#e39950"
+                android:textColor="#e39950"
+                android:backgroundTint="#e39950"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp">
 
             <TextView
                 android:id="@+id/textView9"
@@ -127,8 +141,10 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:hint="retype password"
-                android:textColor="#e39950"/>
+                android:hint="Retype Password"
+                android:textColorHint="#e39950"
+                android:textColor="#e39950"
+                android:backgroundTint="#e39950"/>
         </LinearLayout>
 
         <LinearLayout
