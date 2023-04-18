@@ -53,7 +53,7 @@ public class Food {
                 shopValue = 20;
                 break;
             case BIGCAKE:
-                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ei_bigcake), 256, 256, false);
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ej_bigcake), 176, 176, false);
                 hungerRestoreAmount = 60;
                 healthRestoreAmount = 0;
                 calories = 1000;
@@ -74,7 +74,7 @@ public class Food {
                 shopValue = 50;
                 break;
             case PACZKI:
-                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ej_paczki), 256, 256, false);
+                sprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.ej_paczki), 176, 176, false);
                 hungerRestoreAmount = 100;
                 healthRestoreAmount = 100;
                 calories = 700;

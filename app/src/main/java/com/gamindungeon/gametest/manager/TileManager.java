@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.gamindungeon.gametest.R;
 import com.gamindungeon.gametest.engine.GameDisplay;
@@ -89,8 +90,7 @@ public class TileManager {
             tiles[27] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ef_floor), false);
             tiles[28] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.eg_floor), false);
             tiles[29] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.eh_floor), false);
-
-
+            tiles[30] = new Tile(BitmapFactory.decodeResource(context.getResources(), R.raw.ei_floor_bones), false);
 
 
         } catch (Exception e) {
@@ -124,8 +124,8 @@ public class TileManager {
                     currentLoadedMap = 3;
                     break;
                 case 4:
-                    //is = context.getResources().openRawResource(R.raw.map4);
-                    //currentLoadedMap = 4;
+                    is = context.getResources().openRawResource(R.raw.presentation);
+                    currentLoadedMap = 4;
                     break;
             }
 
@@ -281,6 +281,14 @@ public class TileManager {
                         output.add(new Food(context, i * 176, j * 176, foodType.POTION));
                         tiles[mapTileNum[i][j]] = tiles[2];
                         break;
+                    case 31:
+                        output.add(new Food(context, i * 176, j * 176, foodType.BIGCAKE));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+                        break;
+                    case 32:
+                        output.add(new Food(context, i * 176, j * 176, foodType.PACZKI));
+                        tiles[mapTileNum[i][j]] = tiles[2];
+                        break;
 
                 }
 
@@ -328,6 +336,9 @@ public class TileManager {
             case 3:
                 output = 25 * 176;
                 break;
+            case 4:
+                output = 4 * 176;
+                break;
 
         }
         return output;
@@ -347,6 +358,9 @@ public class TileManager {
                 break;
             case 3:
                 output = 47 * 176;
+                break;
+            case 4:
+                output = 4 * 176;
                 break;
 
         }
