@@ -77,35 +77,47 @@ public class Player extends GameObject{
 
         switch(lastKnownMove){
             case "up":
-                if(calories <= 1000) {
+                if(calories <= 500) {
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback), 176, 176, false);
                 }
-                else{
+                if(calories <= 1000 && calories > 500){
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback_bigger), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainback_bigger_2), 176, 176, false);
                 }
                 break;
             case "down":
-                if(calories <= 1000) {
+                if(calories <= 500) {
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront), 176, 176, false);
                 }
-                else{
+                if(calories <= 1000 && calories > 500){
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront_bigger), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainfront_bigger_2), 176, 176, false);
                 }
                 break;
             case "left":
-                if(calories <= 1000) {
+                if(calories <= 500) {
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainleft), 176, 176, false);
                 }
-                else{
+                if(calories <= 1000 && calories > 500){
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainleft_bigger), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainleft_bigger_2), 176, 176, false);
                 }
                 break;
             case "right":
-                if(calories <= 1000) {
+                if(calories <= 500) {
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainright), 176, 176, false);
                 }
-                else{
+                if(calories <= 1000 && calories > 500){
                     bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainright_bigger), 176, 176, false);
+                }
+                else{
+                    bitMapSprite = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.raw.mainright_bigger_2), 176, 176, false);
                 }
                 break;
         }
